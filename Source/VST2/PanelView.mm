@@ -994,6 +994,9 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     if (status[0]) [self drawFitted: status in: box];
     else if (readoutParam >= 0 && host)
     {
+        // a control from another instrument's page: show the instrument instead
+        const int pi = kParams[readoutParam].inst;
+        if (pi != -1 && pi != [self inst]) readoutParam = kInst;
         char v[64], text[160];
         host->getParamText (readoutParam, v, sizeof (v));
         std::snprintf (text, sizeof (text), "%s   %s", kParams[readoutParam].label, v);
