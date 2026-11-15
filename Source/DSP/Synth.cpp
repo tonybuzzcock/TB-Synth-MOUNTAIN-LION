@@ -24,6 +24,7 @@ Synth::Synth()
     eng[kHammond] = new HammondEngine();
     eng[kCembalet] = new CembaletEngine();
     eng[kClavinet] = new ClavEngine();
+    eng[kMultiman] = new MultimanEngine();
     for (int i = 0; i < kNumParams; ++i) pv[i] = kParams[i].def;
     cur = want = paramStep (kInst, pv[kInst]);
     master = map::masterGain (pv[kMaster]);

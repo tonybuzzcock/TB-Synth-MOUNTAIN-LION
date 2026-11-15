@@ -8,7 +8,7 @@
 // name starts with the instrument's two-letter prefix so they stay unique and
 // sort together in a host's generic list: Mg Minimoog Model D, Ox OB-X,
 // So Solina String Ensemble, Wu Wurlitzer 200A, B3 Hammond B-3 (Ls its Leslie
-// 122), Cb Hohner Cembalet, Cl Hohner Clavinet D6.
+// 122), Cb Hohner Cembalet, Cl Hohner Clavinet D6, Cr Crumar Multiman.
 //
 // Plain C++98, header only.
 
@@ -20,7 +20,7 @@
 namespace tbsyn
 {
 
-enum Instrument { kMinimoog = 0, kOBX, kSolina, kWurlitzer, kHammond, kCembalet, kClavinet, kNumInstruments };
+enum Instrument { kMinimoog = 0, kOBX, kSolina, kWurlitzer, kHammond, kCembalet, kClavinet, kMultiman, kNumInstruments };
 
 enum Param
 {
@@ -63,6 +63,15 @@ enum Param
 
     // Hohner Clavinet D6
     kClBrill, kClTreb, kClMed, kClSoft, kClCD, kClAB, kClMute, kClVol,
+
+    // Crumar Multiman (1975): brass filter, the section volumes (lower / upper half
+    // of the keyboard) and their ON tabs, sustain, vibrato, master and bass pedals
+    kCrAtk, kCrDec, kCrEmph, kCrCont,
+    kCrBrLo, kCrBrHi, kCrBrOnLo, kCrBrOnHi,
+    kCrPnLo, kCrPnHi, kCrPiano, kCrClav,
+    kCrCeLo, kCrCeHi, kCrViLo, kCrViHi, kCrCello, kCrViolin,
+    kCrSust, kCrVibSp, kCrVibDp, kCrVibOn,
+    kCrMaster, kCrBassV, kCrBassOn,
 
     kNumParams
 };
@@ -223,18 +232,45 @@ const ParamInfo kParams[kNumParams] = {
     { "ClAB",     "PICKUP A / B",   kClavinet, 2, 1.0f, kUChoice, "A|B" },
     { "ClMute",   "MUTE",           kClavinet, 0, 0.0f, kUDial, 0 },
     { "ClVol",    "VOLUME",         kClavinet, 0, 0.7f, kUDial, 0 },
+
+    // Crumar Multiman: strings on (cello and violin), the rest ready to bring in
+    { "CrAttack", "BRASS ATTACK",   kMultiman, 0, 0.3f, kUSecs, 0 },
+    { "CrDecay",  "BRASS DECAY",    kMultiman, 0, 0.5f, kUSecs, 0 },
+    { "CrEmph",   "BRASS EMPHASIS", kMultiman, 0, 0.3f, kUDial, 0 },
+    { "CrContur", "BRASS CONTOUR",  kMultiman, 0, 0.45f, kUHz, 0 },
+    { "CrBrLo",   "BRASS VOLUME LOWER", kMultiman, 0, 0.7f, kUDial, 0 },
+    { "CrBrHi",   "BRASS VOLUME UPPER", kMultiman, 0, 0.7f, kUDial, 0 },
+    { "CrBrOnLo", "BRASS LOWER",    kMultiman, 2, 0.0f, kUSwitch, 0 },
+    { "CrBrOnHi", "BRASS UPPER",    kMultiman, 2, 0.0f, kUSwitch, 0 },
+    { "CrPnLo",   "PIANO VOLUME LOWER", kMultiman, 0, 0.7f, kUDial, 0 },
+    { "CrPnHi",   "PIANO VOLUME UPPER", kMultiman, 0, 0.7f, kUDial, 0 },
+    { "CrPiano",  "PIANO",          kMultiman, 2, 0.0f, kUSwitch, 0 },
+    { "CrClav",   "CLAVICHORD",     kMultiman, 2, 0.0f, kUSwitch, 0 },
+    { "CrCeLo",   "CELLO VOLUME LOWER", kMultiman, 0, 0.7f, kUDial, 0 },
+    { "CrCeHi",   "CELLO VOLUME UPPER", kMultiman, 0, 0.5f, kUDial, 0 },
+    { "CrViLo",   "VIOLIN VOLUME LOWER", kMultiman, 0, 0.5f, kUDial, 0 },
+    { "CrViHi",   "VIOLIN VOLUME UPPER", kMultiman, 0, 0.7f, kUDial, 0 },
+    { "CrCello",  "CELLO",          kMultiman, 2, 1.0f, kUSwitch, 0 },
+    { "CrViolin", "VIOLIN",         kMultiman, 2, 1.0f, kUSwitch, 0 },
+    { "CrSust",   "SUSTAIN LENGTH", kMultiman, 0, 0.4f, kUSecs, 0 },
+    { "CrVibSpd", "VIBRATO SPEED",  kMultiman, 0, 0.5f, kUHz, 0 },
+    { "CrVibDep", "VIBRATO DEPTH",  kMultiman, 0, 0.3f, kUDial, 0 },
+    { "CrVibOn",  "VIBRATO",        kMultiman, 2, 0.0f, kUSwitch, 0 },
+    { "CrMaster", "MASTER VOLUME",  kMultiman, 0, 0.7f, kUDial, 0 },
+    { "CrBassV",  "BASS PEDAL VOLUME", kMultiman, 0, 0.7f, kUDial, 0 },
+    { "CrBassOn", "BASS",           kMultiman, 2, 0.0f, kUSwitch, 0 },
 };
 
 inline const char* instrumentName (int k)
 {
     static const char* const n[kNumInstruments] = {
         "MINIMOOG MODEL D", "OBERHEIM OB-X", "SOLINA STRING ENSEMBLE", "WURLITZER 200A",
-        "HAMMOND B-3", "HOHNER CEMBALET", "HOHNER CLAVINET D6" };
+        "HAMMOND B-3", "HOHNER CEMBALET", "HOHNER CLAVINET D6", "CRUMAR MULTIMAN" };
     return (k >= 0 && k < kNumInstruments) ? n[k] : "";
 }
 inline const char* instrumentShort (int k)    // <= 8 characters
 {
-    static const char* const n[kNumInstruments] = { "Minimoog", "OB-X", "Solina", "Wurli", "B-3", "Cembalet", "Clavinet" };
+    static const char* const n[kNumInstruments] = { "Minimoog", "OB-X", "Solina", "Wurli", "B-3", "Cembalet", "Clavinet", "Multiman" };
     return (k >= 0 && k < kNumInstruments) ? n[k] : "";
 }
 
@@ -282,6 +318,13 @@ namespace map
     inline double soTuneCents (double v)  { return (v - 0.5) * 100.0; }           // +/- 50 cents
     inline double soCresc (double v)      { return expMap (v, 0.008, 4.0); }
     inline double soSustain (double v)    { return expMap (v, 0.05, 6.0); }
+
+    // Crumar Multiman (estimates: the schematic fixes the circuit, not these ranges)
+    inline double crAttack (double v)     { return expMap (v, 0.004, 3.0); }
+    inline double crDecay (double v)      { return expMap (v, 0.02, 6.0); }
+    inline double crContour (double v)    { return expMap (v, 60.0, 12000.0); }
+    inline double crSustain (double v)    { return expMap (v, 0.08, 5.0); }
+    inline double crVibSpeed (double v)   { return expMap (v, 2.5, 9.0); }
 
     // Hammond drawbars: each step about 3 dB, 0 = off
     inline double drawbarGain (int k)     { return k <= 0 ? 0.0 : std::pow (10.0, -3.0 * (8 - k) / 20.0); }

@@ -1,6 +1,6 @@
 # TB Synth (Mountain Lion VST)
 
-Seven classic keyboards in one VST 2.4 instrument, for **Mac OS X 10.8.5** (64-bit Intel), played in
+Eight classic keyboards in one VST 2.4 instrument, for **Mac OS X 10.8.5** (64-bit Intel), played in
 Pro Tools 11 through Blue Cat PatchWork. Pick the instrument from the **INSTRUMENT** menu at the top of the
 panel (click it for the list, or step with the arrows):
 
@@ -13,6 +13,7 @@ panel (click it for the list, or step with the arrows):
 | **Hammond B-3 + Leslie 122** | 91 tonewheels on the real gear ratios, 9 drawbars, key click, percussion (2nd / 3rd, soft / normal, fast / slow, single trigger), scanner vibrato / chorus V1-C3, preamp drive, expression; Leslie 122 horn and drum with STOP / SLOW / FAST |
 | **Hohner Cembalet** | 61 plucked reeds with capacitive pickup, VOLUME |
 | **Hohner Clavinet D6** | 60 struck strings, two pickups (C/D, A/B), BRILLIANT / TREBLE / MEDIUM / SOFT, mute slider |
+| **Crumar Multiman (1975)** | 61 keys split LOWER / UPPER; BRASS (transistor ladder with ATTACK, DECAY, EMPHASIS, CONTOUR, retriggered by every key), PIANO / CLAVICHORD, CELLO / VIOLIN through the ensemble, SUSTAIN LENGTH, VIBRATO, MASTER, BASS PEDALS on the lowest 13 keys |
 
 **Mono**, like the originals: the same signal on both outputs, so it works on a mono or stereo
 instrument track. Every control is a host parameter, so a session reopens exactly as it was left.
@@ -66,6 +67,7 @@ keys), moves to the next free key of its instrument's bank.
 | Hohner Cembalet | Hohner product descriptions (61 keys C2 - C7, plectrum and steel reed, capacitive pickup beside the reed) |
 | Solina String Ensemble | Eminent / ARP descriptions (divide-down, 49 keys, six voices, crescendo and sustain, ensemble chorus) |
 | Oberheim OB-X | OB-X owner's and service manual descriptions (8 voices, 2 oscillators, 2-pole filter, two envelopes) |
+| Crumar Multiman | Crumar *Multiman* schematic diagram, DWG 1-12, 7/4/75 (`Docs/Crumar_Multiman_1975_schematic.pdf`): block diagram, tone generator and dividers, gates and key contacts (split buses P1/P2, 8A/8B, D1/D2), brass ladder TR1-TR10 with 47 nF stages and its A/D envelope, piano / clavichord, strings, sustain and vibrato, delay lines, bass pedals, panel legends |
 
 The PDFs themselves couldn't be downloaded into the build environment, so the values above were read from
 them online; no component-level schematic was transcribed. These are behavioural models built from
@@ -93,6 +95,13 @@ the documented behaviour and specifications, to be tuned by ear (as with the oth
 - **Clavinet D6**: pickup positions (neck 17 %, bridge 7 % of the string), tone-switch filters
   (BRILLIANT 2 kHz and TREBLE 650 Hz high-pass, MEDIUM 2.2 kHz and SOFT 600 Hz low-pass), string
   decays, mute.
+
+- **Crumar Multiman**: brass contour 4 ms - 3 s attack, 20 ms - 6 s decay, 4-octave sweep, CONTOUR 60 Hz -
+  12 kHz; string attack 60 ms; SUSTAIN LENGTH 80 ms - 5 s; piano decay; vibrato 2.5 - 9 Hz, up to 0.6
+  semitone; cello / violin / piano / clavichord filter corners; ensemble timings; split at C4. The panel
+  is laid out in TB Synth's style rather than copying the Crumar's, with every control the schematic
+  shows. The real bass pedals were a separate pedal board: here the lowest 13 keys (F1 - F2) play them,
+  one note at a time, an octave down.
 
 ## Install (Mac Pro, OS X 10.8.5)
 

@@ -127,7 +127,7 @@ int main (int argc, char** argv)
     // ------------------------------------------------------------ the INSTRUMENT menu's arrows, every page
     std::printf ("\nInstrument pages\n");
     {
-        static const char* const file[kNumInstruments] = { "minimoog", "obx", "solina", "wurlitzer", "hammond", "cembalet", "clavinet" };
+        static const char* const file[kNumInstruments] = { "minimoog", "obx", "solina", "wurlitzer", "hammond", "cembalet", "clavinet", "multiman" };
         bool stepped = true;
         std::vector<NSData*> pages;
         for (int k = 0; k < kNumInstruments; ++k)
@@ -141,7 +141,7 @@ int main (int argc, char** argv)
             click (win, panel, menuArrowRight());
             if (! (automateCalls == 1 && beginCalls == 1 && endCalls == 1)) stepped = false;
         }
-        check (stepped, "the right arrow steps through all seven instruments, telling the host each time");
+        check (stepped, "the right arrow steps through all eight instruments, telling the host each time");
         check (paramStep (kInst, e->getParameter (e, kInst)) == 0, "and wraps round to the first");
         click (win, panel, menuArrowLeft());
         check (paramStep (kInst, e->getParameter (e, kInst)) == kNumInstruments - 1, "the left arrow steps back (wrapping)");

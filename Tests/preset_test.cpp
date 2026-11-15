@@ -112,7 +112,7 @@ int main()
     {
         f = std::fopen (file.c_str(), "w");
         std::fprintf (f, "TBSYNTH-PRESETS 1\n");
-        const float instHammond = stepValue (kHammond, kNumInstruments), instWurli = stepValue (kWurlitzer, kNumInstruments);
+        const float instHammond = stepValue (kHammond, 7), instWurli = stepValue (kWurlitzer, 7);   // the first release: 7 instruments
         std::fprintf (f, "slot 1: %.6f 0.5\nname 1: Gospel organ\n", instHammond);
         std::fprintf (f, "slot 2: %.6f 0.6\nname 2: My Wurli\n", instWurli);
         std::fprintf (f, "slot 5: %.6f 0.7\n", instHammond);
@@ -147,6 +147,17 @@ int main()
         PresetStore x; x.setPath (file); x.load();
         check (x.name (bankSlot (kOBX, 3)) == "My OB pad" && x.name (fk) == "Queen" && ! x.has (bankSlot (kOBX, 4)),
                "and stays there (saved factory presets aren't moved again)");
+    }
+
+    // A file from before the Multiman: its INSTRUMENT values (k / 6) are converted
+    {
+        f = std::fopen (file.c_str(), "w");
+        std::fprintf (f, "TBSYNTH-PRESETS 2\nslot %d: %.6f\nname %d: Old clav\n", bankSlot (kClavinet, 4) + 1, 1.0f, bankSlot (kClavinet, 4) + 1);
+        std::fclose (f);
+        PresetStore q; q.setPath (file); q.load();
+        float w[kNumParams];
+        check (q.get (bankSlot (kClavinet, 4), w) && paramStep (kInst, w[kInst]) == kClavinet,
+               "a Clavinet preset saved before the Multiman still selects the Clavinet");
     }
 
     std::printf ("  default location: %s\n", PresetStore::defaultPath().c_str());

@@ -51,6 +51,11 @@ inline double realValue (int p, double v)
         case kSoTune: return map::soTuneCents (v);
         case kSoCresc: return map::soCresc (v);
         case kSoSust: return map::soSustain (v);
+        case kCrAtk: return map::crAttack (v);
+        case kCrDec: return map::crDecay (v);
+        case kCrCont: return map::crContour (v);
+        case kCrSust: return map::crSustain (v);
+        case kCrVibSp: return map::crVibSpeed (v);
         default: return v;
     }
 }

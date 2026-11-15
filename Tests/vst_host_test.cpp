@@ -144,7 +144,7 @@ int main (int argc, char** argv)
         check (dispOk, "every display string 1 to 8 characters");
         check (defsOk, "defaults as the table");
         struct { int p; float v; const char* want; } shows[] = {
-            { kInst, 0.0f, "Minimoog" }, { kInst, 1.0f, "Clavinet" }, { kInst, stepValue (kHammond, kNumInstruments), "B-3" },
+            { kInst, 0.0f, "Minimoog" }, { kInst, 1.0f, "Multiman" }, { kInst, stepValue (kClavinet, kNumInstruments), "Clavinet" }, { kInst, stepValue (kHammond, kNumInstruments), "B-3" },
             { kMaster, 0.75f, "+0.0" }, { kMaster, 0.0f, "-inf" },
             { kMgCutoff, 1.0f, "20.00k" }, { kMgCutoff, 0.0f, "10.0" }, { kMgO1Rng, 0.0f, "LO" }, { kMgO1Rng, 1.0f, "2'" },
             { kMgO1Wave, 1.0f, "NARROW" }, { kMgFDec, 1.0f, "35.00s" }, { kMgFAtk, 0.0f, "1ms" },
@@ -237,7 +237,7 @@ int main (int argc, char** argv)
             std::printf ("  %-24s peak %.1f dBFS\n", instrumentName (inst), 20.0 * std::log10 (pk + 1e-12));
             if (! finite (L) || pk < 0.02) ok = false;
         }
-        check (ok, "all seven instruments play through the plugin");
+        check (ok, "all eight instruments play through the plugin");
         e->setParameter (e, kInst, 0.0f);
     }
     {

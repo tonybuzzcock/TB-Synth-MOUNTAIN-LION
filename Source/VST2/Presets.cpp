@@ -14,7 +14,8 @@ namespace tbsyn
 
 namespace
 {
-    const char* const kHeader = "TBSYNTH-PRESETS 2";        // banks: slot = instrument * 8 + key
+    const char* const kHeader = "TBSYNTH-PRESETS 3";        // banks: slot = instrument * 8 + key; 8 instruments
+    const char* const kHeaderV2 = "TBSYNTH-PRESETS 2";      // banks, 7 instruments
     const char* const kHeaderV1 = "TBSYNTH-PRESETS 1";      // the first release: 8 shared slots
 
     // mkdir -p for the folder containing 'file'
@@ -83,13 +84,14 @@ bool PresetStore::load()
     if (! f) { addFactory(); return false; }
 
     char line[4096];
-    bool headerOk = false, v1 = false;
+    bool headerOk = false, v1 = false, sevenInst = false;
     while (std::fgets (line, sizeof (line), f))
     {
         if (! headerOk)
         {
             headerOk = std::strncmp (line, kHeader, std::strlen (kHeader)) == 0;
-            if (! headerOk && std::strncmp (line, kHeaderV1, std::strlen (kHeaderV1)) == 0) { headerOk = true; v1 = true; }
+            if (! headerOk && std::strncmp (line, kHeaderV1, std::strlen (kHeaderV1)) == 0) { headerOk = true; v1 = true; sevenInst = true; }
+            if (! headerOk && std::strncmp (line, kHeaderV2, std::strlen (kHeaderV2)) == 0) { headerOk = true; sevenInst = true; }
             if (! headerOk) break;
             continue;
         }
@@ -122,6 +124,11 @@ bool PresetStore::load()
         used[slot - 1] = true;
     }
     std::fclose (f);
+
+    // files from before the Multiman: the INSTRUMENT value was k / 6 (seven instruments)
+    if (headerOk && sevenInst)
+        for (int s2 = 0; s2 < kNumPresetSlots; ++s2)
+            if (used[s2]) vals[s2][kInst] = stepValue (stepOf (vals[s2][kInst], 7), kNumInstruments);
 
     // a first-release file: its 8 shared slots go to the banks of the instruments they
     // were made on, after that bank's factory presets
@@ -212,7 +219,7 @@ bool PresetStore::save() const
     if (! f) return false;
     std::fprintf (f, "%s\n", kHeader);
     std::fprintf (f, "# TB Synth presets. Slot = instrument x 8 + key (Minimoog 1-8, OB-X 9-16, Solina 17-24, Wurlitzer 25-32,\n");
-    std::fprintf (f, "# B-3 33-40, Cembalet 41-48, Clavinet 49-56). Values 0..1 in parameter order; then its name.\n");
+    std::fprintf (f, "# B-3 33-40, Cembalet 41-48, Clavinet 49-56, Multiman 57-64). Values 0..1 in parameter order; then its name.\n");
     for (int s = 0; s < kNumPresetSlots; ++s)
     {
         if (! used[s]) continue;

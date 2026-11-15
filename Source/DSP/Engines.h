@@ -17,6 +17,10 @@
 //   CembaletEngine  Hohner Cembalet: plucked steel reeds, capacitive pickup
 //   ClavEngine      Hohner Clavinet D6: struck strings (waveguide), two pickups
 //                   (C/D, A/B), BRILLIANT / TREBLE / MEDIUM / SOFT, mute slider
+//   MultimanEngine  Crumar Multiman (1975): divide-down generator, keyboard split
+//                   in two halves; brass through a transistor ladder with its
+//                   own attack / decay, piano and clavichord, cello and violin
+//                   through a three-line ensemble, sustain, vibrato, bass pedals
 
 #ifndef TBSYNTH_ENGINES_H
 #define TBSYNTH_ENGINES_H
@@ -292,6 +296,45 @@ private:
     OnePole dcBlock;
     Smooth volS;
     Noise noise;
+};
+
+//==============================================================================
+class MultimanEngine : public Engine
+{
+public:
+    enum { kLowKey = 29, kKeys = 61, kSplit = 60, kBassKeys = 13 };   // F1 .. F6; upper half from C4; bass on F1 .. F2
+    MultimanEngine();
+    void prepare (double sr);
+    void setParam (int p, float v);
+    void noteOn (int note, int vel);
+    void noteOff (int note);
+    void allNotesOff();
+    void silence();
+    void render (float* out, int n);
+
+private:
+    void updateEnv();
+    int  lowestBassKey() const;
+    double sr;
+    float pv[kNumParams];
+    double topCount[12];
+    bool down[kKeys];
+    Envelope strEnv[kKeys], pnoEnv[kKeys];
+    double brassGate[kKeys];
+    double gateUp, gateDown;
+    Envelope brassEnv;
+    double lad[4];
+    // bass pedals (monophonic)
+    int bassNote;
+    double bassPh, bassLevel, bassTarget, bassK;
+    OnePole bassLp1, bassLp2;
+    // voicing
+    Biquad celloLp, celloPk, violinHp, violinPk, violinLp, pianoLp, clavHp, clavPk;
+    Delay<8192> ens;
+    OnePole ensLp1, ensLp2;
+    double lfoSlow, lfoFast, vibPh;
+    OnePole dcBlock;
+    Smooth masterS;
 };
 
 } // namespace tbsyn

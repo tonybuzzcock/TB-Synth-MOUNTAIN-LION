@@ -254,8 +254,8 @@ int main (int argc, char** argv)
         check (std::fabs (c4 - 261.538) < 0.2, "B-3 C is the 85/104 gear's 261.54 Hz, a little flat of equal temperament");
     }
     {
-        const int insts[5] = { kOBX, kWurlitzer, kCembalet, kClavinet, kSolina };
-        for (int k = 0; k < 5; ++k)
+        const int insts[6] = { kOBX, kWurlitzer, kCembalet, kClavinet, kSolina, kMultiman };
+        for (int k = 0; k < 6; ++k)
         {
             defaults (s);
             selectInst (s, insts[k]);
@@ -459,6 +459,42 @@ int main (int argc, char** argv)
             render (s, y, 0, SR * 3);
         }
         check (early[1] < early[0] * 0.5, "CRESCENDO slows the attack");
+    }
+    {
+        // Multiman: the bass pedals play from the lowest 13 keys, an octave down, one at a time
+        defaults (s);
+        selectInst (s, kMultiman);
+        s.setParam (kCrCello, 0.0f); s.setParam (kCrViolin, 0.0f); s.setParam (kCrBassOn, 1.0f);
+        std::vector<float> y;
+        s.midi (0x90, 33, 100);       // A1 -> the A below, 27.5 Hz... the pedal's 55 Hz with the 16' octave
+        render (s, y, 0, SR);
+        const double hz = pitchOf (y, SR / 4, SR, 27.5);
+        s.midi (0x80, 33, 0);
+        render (s, y, SR, SR / 2);
+        std::printf ("  Multiman bass pedal from A1: %.2f Hz\n", hz);
+        check (std::fabs (hz - 27.5) < 0.5, "Multiman bass pedals: the lowest keys, an octave down");
+        y.clear();
+        s.midi (0x90, 72, 100);       // above the pedal keys: no bass
+        render (s, y, 0, SR / 2);
+        s.midi (0x80, 72, 0);
+        check (peakOf (y, 0, SR / 2) < 1e-6, "keys above F2 don't play the bass");
+        // brass: every key contact retriggers the contour (a second key brightens it again)
+        defaults (s);
+        selectInst (s, kMultiman);
+        s.setParam (kCrCello, 0.0f); s.setParam (kCrViolin, 0.0f);
+        s.setParam (kCrBrOnLo, 1.0f); s.setParam (kCrBrOnHi, 1.0f); s.setParam (kCrDec, 0.2f); s.setParam (kCrAtk, 0.0f);
+        s.setParam (kCrCont, 0.1f);     // filter nearly closed once the contour has decayed
+        y.clear();
+        s.midi (0x90, 48, 100);
+        render (s, y, 0, SR);
+        const double settled = rmsOf (y, SR * 3 / 4, SR);
+        s.midi (0x90, 55, 100);
+        render (s, y, SR, SR / 10);
+        const double again = rmsOf (y, SR + SR / 200, SR + SR / 40);
+        s.midi (0x80, 48, 0); s.midi (0x80, 55, 0);
+        render (s, y, y.size(), SR);
+        std::printf ("  brass held %.1f dB, after a second key %.1f dB\n", db (settled), db (again));
+        check (again > settled * 1.5, "Multiman brass: each key retriggers the filter contour");
     }
     {
         // instrument switch while a note sounds: no jump bigger than the signal itself

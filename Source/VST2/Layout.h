@@ -174,6 +174,38 @@ const Ctl kCtls[] = {
     { kClVol,     kKnob,     905, 285, 30, "VOLUME", "0", "10", kRed },
     { kClMute,    kVSlider, 1080, 290, 105, "MUTE", "", "", 0 },
 
+    // ------------------------------------------------------------ Crumar Multiman
+    // BRASS: the filter on top, the two halves' volumes, their ON tabs
+    { kCrAtk,     kKnob,      62, R1, 20, "ATTACK", "0", "10", kGrey },
+    { kCrDec,     kKnob,     142, R1, 20, "DECAY", "0", "10", kGrey },
+    { kCrEmph,    kKnob,     222, R1, 20, "EMPHASIS", "0", "10", kGrey },
+    { kCrCont,    kKnob,     302, R1, 20, "CONTOUR", "0", "10", kOrange },
+    { kCrBrLo,    kKnob,     107, R2, 22, "VOLUME\nLOWER", "0", "10", kGrey },
+    { kCrBrHi,    kKnob,     247, R2, 22, "VOLUME\nUPPER", "0", "10", kGrey },
+    { kCrBrOnLo,  kTab,      107, R3, 0, "LOWER", "ON", "", 0 },
+    { kCrBrOnHi,  kTab,      247, R3, 0, "UPPER", "ON", "", 0 },
+    // PIANO / CLAVICHORD
+    { kCrPnLo,    kKnob,     405, R2, 22, "VOLUME\nLOWER", "0", "10", kGrey },
+    { kCrPnHi,    kKnob,     505, R2, 22, "VOLUME\nUPPER", "0", "10", kGrey },
+    { kCrPiano,   kTab,      405, R3, 0, "PIANO", "ON", "", 0 },
+    { kCrClav,    kTab,      505, R3, 0, "CLAVICH.", "ON", "", 0 },
+    // STRINGS
+    { kCrCeLo,    kKnob,     613, R2, 20, "CELLO\nLOWER", "0", "10", kGrey },
+    { kCrCeHi,    kKnob,     693, R2, 20, "CELLO\nUPPER", "0", "10", kGrey },
+    { kCrViLo,    kKnob,     777, R2, 20, "VIOLIN\nLOWER", "0", "10", kGrey },
+    { kCrViHi,    kKnob,     857, R2, 20, "VIOLIN\nUPPER", "0", "10", kGrey },
+    { kCrCello,   kTab,      653, R3, 0, "CELLO", "ON", "", 0 },
+    { kCrViolin,  kTab,      817, R3, 0, "VIOLIN", "ON", "", 0 },
+    // SUSTAIN and VIBRATO
+    { kCrSust,    kKnob,    1001, R1, 22, "SUSTAIN\nLENGTH", "0", "10", kGrey },
+    { kCrVibSp,   kKnob,     956, R2, 20, "SPEED", "0", "10", kGrey },
+    { kCrVibDp,   kKnob,    1046, R2, 20, "DEPTH", "0", "10", kGrey },
+    { kCrVibOn,   kTab,     1001, R3, 0, "VIBRATO", "ON", "", 0 },
+    // OUTPUT
+    { kCrMaster,  kKnob,    1164, R1, 22, "MASTER", "0", "10", kRed },
+    { kCrBassV,   kKnob,    1164, R2, 22, "BASS\nPEDAL", "0", "10", kGrey },
+    { kCrBassOn,  kTab,     1164, R3, 0, "BASS", "ON", "", 0 },
+
     // ------------------------------------------------------------ every page
     { kMaster,    kKnob,     700, 592, 17, "MASTER", "", "", kRed },
 };
@@ -204,6 +236,11 @@ const Section kSections[] = {
     { kClavinet,  580, 140, 240, 300, "PICKUPS" },
     { kClavinet,  828, 140, 154, 300, "OUTPUT" },
     { kClavinet,  990, 140, 180, 300, "MUTE" },
+    { kMultiman,   12, 76, 330, 424, "BRASS" },
+    { kMultiman,  350, 76, 210, 424, "PIANO" },
+    { kMultiman,  568, 76, 334, 424, "STRINGS" },
+    { kMultiman,  910, 76, 182, 424, "SUSTAIN  VIBRATO" },
+    { kMultiman, 1100, 76, 128, 424, "OUTPUT" },
 };
 const int kNumSections = (int) (sizeof (kSections) / sizeof (kSections[0]));
 
@@ -217,6 +254,7 @@ const Caption kCaptions[] = {
     { kOBX,       440, R3 - 52, "WAVEFORMS" },
     { kOBX,      1070, R1 - 62, "FILTER ENVELOPE" },
     { kOBX,      1070, R2 - 62, "LOUDNESS ENVELOPE" },
+    { kMultiman,  182, R1 - 62, "BRASS FILTER" },
 };
 const int kNumCaptions = (int) (sizeof (kCaptions) / sizeof (kCaptions[0]));
 
