@@ -614,7 +614,6 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
         [sg drawInRect: strip angle: 90.0];
         [rgb (30, 29, 27) set];
         NSRectFill (NSMakeRect (0, kStripTop, w, 1.5));
-        drawText ("PRESETS", boldFont (8.0), ink(), (kSlotX0 + kSlotX0 + 7 * kSlotPitch + kSlotW) * 0.5, kSlotY - 12.0, 1.0);
         for (int i = 0; i < kNumCtls; ++i)
             if (kCtls[i].param == kMaster)
             {
