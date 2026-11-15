@@ -1,6 +1,7 @@
 // Presets.cpp
 
 #include "Presets.h"
+#include "FactoryPresets.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -13,7 +14,8 @@ namespace tbsyn
 
 namespace
 {
-    const char* const kHeader = "TBSYNTH-PRESETS 1";
+    const char* const kHeader = "TBSYNTH-PRESETS 2";        // banks: slot = instrument * 8 + key
+    const char* const kHeaderV1 = "TBSYNTH-PRESETS 1";      // the first release: 8 shared slots
 
     // mkdir -p for the folder containing 'file'
     void makeParentDirs (const std::string& file)
@@ -78,15 +80,16 @@ bool PresetStore::load()
     for (int s = 0; s < kNumPresetSlots; ++s) { used[s] = false; names[s].clear(); }
 
     FILE* f = std::fopen (path.c_str(), "r");
-    if (! f) return false;
+    if (! f) { addFactory(); return false; }
 
-    char line[1024];
-    bool headerOk = false;
+    char line[4096];
+    bool headerOk = false, v1 = false;
     while (std::fgets (line, sizeof (line), f))
     {
         if (! headerOk)
         {
             headerOk = std::strncmp (line, kHeader, std::strlen (kHeader)) == 0;
+            if (! headerOk && std::strncmp (line, kHeaderV1, std::strlen (kHeaderV1)) == 0) { headerOk = true; v1 = true; }
             if (! headerOk) break;
             continue;
         }
@@ -119,7 +122,56 @@ bool PresetStore::load()
         used[slot - 1] = true;
     }
     std::fclose (f);
+
+    // a first-release file: its 8 shared slots go to the banks of the instruments they
+    // were made on, after that bank's factory presets
+    if (headerOk && v1)
+    {
+        bool oldUsed[kSlotsPerBank];
+        std::string oldName[kSlotsPerBank];
+        static float oldVals[kSlotsPerBank][kNumParams];
+        for (int k = 0; k < kSlotsPerBank; ++k)
+        {
+            oldUsed[k] = used[k]; oldName[k] = names[k];
+            for (int i = 0; i < kNumParams; ++i) oldVals[k][i] = vals[k][i];
+        }
+        for (int s2 = 0; s2 < kNumPresetSlots; ++s2) { used[s2] = false; names[s2].clear(); }
+        addFactory();       // the factory presets keep their keys; earlier saves follow them
+        for (int k = 0; k < kSlotsPerBank; ++k)
+        {
+            if (! oldUsed[k]) continue;
+            const int inst = paramStep (kInst, oldVals[k][kInst]);
+            for (int key = 0; key < kSlotsPerBank; ++key)
+            {
+                const int dst = bankSlot (inst, key);
+                if (used[dst]) continue;
+                used[dst] = true;
+                names[dst] = oldName[k];
+                for (int i = 0; i < kNumParams; ++i) vals[dst][i] = oldVals[k][i];
+                break;
+            }
+        }
+    }
+    if (! headerOk) for (int s2 = 0; s2 < kNumPresetSlots; ++s2) { used[s2] = false; names[s2].clear(); }
+    addFactory();
     return headerOk;
+}
+
+// Factory presets fill their keys unless the user has saved something there
+void PresetStore::addFactory()
+{
+    for (int f = 0; f < kNumFactoryPresets; ++f)
+    {
+        const FactoryPreset& fp = kFactoryPresets[f];
+        const int slot = bankSlot (fp.instrument, fp.key);
+        if (slot < 0 || slot >= kNumPresetSlots || used[slot]) continue;
+        for (int i = 0; i < kNumParams; ++i) vals[slot][i] = kParams[i].def;
+        vals[slot][kInst] = stepValue (fp.instrument, kNumInstruments);
+        for (int k = 0; k < 16 && fp.settings[k].param >= 0; ++k)
+            if (fp.settings[k].param < kNumParams) vals[slot][fp.settings[k].param] = fp.settings[k].value;
+        used[slot] = true;
+        names[slot] = fp.name;
+    }
 }
 
 bool PresetStore::save() const
@@ -129,7 +181,8 @@ bool PresetStore::save() const
     FILE* f = std::fopen (tmp.c_str(), "w");
     if (! f) return false;
     std::fprintf (f, "%s\n", kHeader);
-    std::fprintf (f, "# TB Synth presets. One line per slot; values 0..1 in parameter order; then its name.\n");
+    std::fprintf (f, "# TB Synth presets. Slot = instrument x 8 + key (Minimoog 1-8, OB-X 9-16, Solina 17-24, Wurlitzer 25-32,\n");
+    std::fprintf (f, "# B-3 33-40, Cembalet 41-48, Clavinet 49-56). Values 0..1 in parameter order; then its name.\n");
     for (int s = 0; s < kNumPresetSlots; ++s)
     {
         if (! used[s]) continue;

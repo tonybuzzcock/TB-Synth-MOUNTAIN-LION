@@ -27,14 +27,28 @@ In the colours of the TASCAM M-50 and the TB M-50 strips: warm grey face, black 
 knurled knobs (red caps for levels, orange skirts for frequencies), switches that light amber in their
 engaged position, the red lip, the lacquered mahogany frame. Each instrument has its own page laid out
 like the original's front panel, with plain lettering and no manufacturer artwork. Along the bottom: the
-TB electronic logo, SAVE and 8 named presets (a preset recalls the instrument and every setting),
-MASTER, and the tan readout. A LEVEL LED at top right lights amber while it plays, red near full scale.
+TB electronic logo, SAVE and 8 named preset keys (each instrument has its own bank of 8), MASTER,
+and the tan readout. A LEVEL LED at top right lights amber while it plays, red near full scale.
 
 - Knobs and sliders: drag up / down (Shift for fine), double-click for the default, scroll wheel.
 - Rotary switches: click a marked position to go there, or click the knob to step round; drag works too.
 - Drawbars: drag down to pull out, up to push in, a step at a time.
 - Right-click (or Control-click) any control to see its exact value without moving it.
 - Presets: SAVE, then a key; type a name and press Return. Click the readout to rename.
+
+## Factory presets
+
+| Instrument | Key | Name | For |
+|---|---|---|---|
+| Wurlitzer 200A | 1 | Supertramp | "Bloody Well Right" intro: dry, no vibrato, amp pushed to grit |
+| Hohner Clavinet D6 | 1 | Superstition | Stevie Wonder: BRILLIANT + TREBLE, both pickups in phase (D-A) |
+| Hohner Clavinet D6 | 2 | Quatro | Suzi Quatro's keyboard player: TREBLE + MEDIUM, bridge pickup, a little mute, preamp pushed |
+| Solina String Ensemble | 1 | Moroder | "I Feel Love": the record's pad is Moog modular; this is the Solina's take on it |
+
+No published settings exist for these parts (the clavinet.com FAQ says of "Superstition" that it was a
+Clavinet C, overdubbed); the presets are set by ear from the records. Saving over a factory key
+replaces it. Presets saved with the first release (8 shared keys) move into the banks of the
+instruments they were made on, after the factory presets.
 
 ## Sources
 

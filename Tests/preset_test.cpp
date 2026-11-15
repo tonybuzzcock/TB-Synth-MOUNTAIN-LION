@@ -3,6 +3,7 @@
 // later session), merging slots, folder creation, and damaged files.
 
 #include "../Source/VST2/Presets.h"
+#include "../Source/VST2/FactoryPresets.h"
 
 #include <cmath>
 #include <cstdio>
@@ -29,8 +30,27 @@ int main()
     std::printf ("Presets\n");
     PresetStore a;
     a.setPath (file);
-    check (! a.load(), "missing file reads as empty");
-    for (int s = 0; s < kNumPresetSlots; ++s) check (! a.has (s), "slot starts empty");
+    check (! a.load(), "missing file reads as factory presets only");
+    {
+        bool emptyOk = true, factoryOk = true;
+        for (int s = 0; s < kNumPresetSlots; ++s)
+        {
+            bool isFactory = false;
+            for (int f = 0; f < kNumFactoryPresets; ++f)
+                if (bankSlot (kFactoryPresets[f].instrument, kFactoryPresets[f].key) == s) isFactory = true;
+            if (! isFactory && a.has (s)) emptyOk = false;
+            if (isFactory && ! a.has (s)) factoryOk = false;
+        }
+        check (emptyOk, "every other key starts empty");
+        check (factoryOk, "the factory presets are there");
+        float w[kNumParams];
+        const int wurli = bankSlot (kWurlitzer, 0), clav = bankSlot (kClavinet, 0), clav2 = bankSlot (kClavinet, 1), sol = bankSlot (kSolina, 0);
+        check (a.name (wurli) == "Supertramp" && a.name (clav) == "Superstition" && a.name (clav2) == "Quatro" && a.name (sol) == "Moroder",
+               "Wurlitzer 1 Supertramp, Clavinet 1 Superstition, Clavinet 2 Quatro, Solina 1 Moroder");
+        check (a.get (wurli, w) && paramStep (kInst, w[kInst]) == kWurlitzer && std::fabs (w[kWuVol] - 0.85f) < 1e-6f
+               && w[kWuVib] == 0.0f && w[kMgCutoff] == kParams[kMgCutoff].def,
+               "a factory preset selects its instrument, sets what it lists and leaves the rest at defaults");
+    }
 
     float v1[kNumParams], v2[kNumParams];
     for (int i = 0; i < kNumParams; ++i) { v1[i] = (float) i / kNumParams; v2[i] = 1.0f - v1[i]; }
@@ -84,6 +104,24 @@ int main()
     f = std::fopen (file.c_str(), "w"); std::fprintf (f, "hello\nslot 1: 0.1\n"); std::fclose (f);
     PresetStore e; e.setPath (file);
     check (! e.load() && ! e.has (0), "foreign file ignored");
+
+    // A first-release file (8 shared slots) moves into the instruments' banks
+    {
+        f = std::fopen (file.c_str(), "w");
+        std::fprintf (f, "TBSYNTH-PRESETS 1\n");
+        const float instHammond = stepValue (kHammond, kNumInstruments), instWurli = stepValue (kWurlitzer, kNumInstruments);
+        std::fprintf (f, "slot 1: %.6f 0.5\nname 1: Gospel organ\n", instHammond);
+        std::fprintf (f, "slot 2: %.6f 0.6\nname 2: My Wurli\n", instWurli);
+        std::fprintf (f, "slot 5: %.6f 0.7\n", instHammond);
+        std::fclose (f);
+        PresetStore m; m.setPath (file);
+        check (m.load(), "a first-release file is read");
+        check (m.has (bankSlot (kHammond, 0)) && m.name (bankSlot (kHammond, 0)) == "Gospel organ" && m.has (bankSlot (kHammond, 1)),
+               "its B-3 presets go to the B-3 bank, in order");
+        check (m.name (bankSlot (kWurlitzer, 0)) == "Supertramp" && m.name (bankSlot (kWurlitzer, 1)) == "My Wurli",
+               "factory presets keep the first keys; earlier saves follow them");
+        check (! m.has (0) && ! m.has (1), "nothing is left in the Minimoog bank");
+    }
 
     std::printf ("  default location: %s\n", PresetStore::defaultPath().c_str());
     std::string cmd = std::string ("rm -rf '") + dir + "'";

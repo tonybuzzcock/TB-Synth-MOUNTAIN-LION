@@ -11,6 +11,7 @@
 #include "../Source/VST2/vst2_abi.h"
 #include "../Source/VST2/Editor.h"
 #include "../Source/VST2/Layout.h"
+#include "../Source/VST2/Presets.h"
 
 #include <dlfcn.h>
 #include <cmath>
@@ -258,6 +259,37 @@ int main (int argc, char** argv)
 
     // ------------------------------------------------------------ presets
     std::printf ("\nPresets\n");
+    // factory presets: the first key of the Wurlitzer, Clavinet and Solina banks
+    {
+        e->setParameter (e, kInst, stepValue (kWurlitzer, kNumInstruments));
+        pump (0.1);
+        automateCalls = 0;
+        click (win, panel, slotPt (0));
+        check (paramStep (kInst, e->getParameter (e, kInst)) == kWurlitzer && std::fabs (e->getParameter (e, kWuVol) - 0.85f) < 1e-5f
+               && e->getParameter (e, kWuVib) == 0.0f, "Wurlitzer key 1 is 'Supertramp'");
+        pump (0.1);
+        renderPNG (panel, dir + "/panel_factory_supertramp.png");
+        e->setParameter (e, kInst, stepValue (kClavinet, kNumInstruments));
+        pump (0.1);
+        click (win, panel, slotPt (0));
+        check (e->getParameter (e, kClBrill) == 1.0f && e->getParameter (e, kClTreb) == 1.0f && paramStep (kClCD, e->getParameter (e, kClCD)) == 1,
+               "Clavinet key 1 is 'Superstition'");
+        click (win, panel, slotPt (1));
+        check (e->getParameter (e, kClMed) == 1.0f && e->getParameter (e, kClBrill) == 0.0f && paramStep (kClAB, e->getParameter (e, kClAB)) == 1,
+               "Clavinet key 2 is 'Quatro'");
+        pump (0.1);
+        renderPNG (panel, dir + "/panel_factory_quatro.png");
+        e->setParameter (e, kInst, stepValue (kSolina, kNumInstruments));
+        pump (0.1);
+        click (win, panel, slotPt (0));
+        check (e->getParameter (e, kSoCello) == 1.0f && std::fabs (e->getParameter (e, kSoCresc) - 0.48f) < 1e-5f, "Solina key 1 is 'Moroder'");
+        e->setParameter (e, kInst, stepValue (kMinimoog, kNumInstruments));
+        pump (0.1);
+        const float c0 = e->getParameter (e, kMgCutoff);
+        click (win, panel, slotPt (0));
+        check (e->getParameter (e, kMgCutoff) == c0, "each instrument has its own bank (the Minimoog's key 1 is empty)");
+        for (int i = 0; i < kNumParams; ++i) e->setParameter (e, i, kParams[i].def);
+    }
     e->setParameter (e, kInst, stepValue (kWurlitzer, kNumInstruments));
     e->setParameter (e, kWuVib, 0.8f);
     pump (0.1);
@@ -277,9 +309,11 @@ int main (int argc, char** argv)
         pump (0.2);
     }
     bool named = false;
+    char wantLine[64];
+    std::snprintf (wantLine, sizeof (wantLine), "name %d: Wurli with the vibrato up", bankSlot (kWurlitzer, 2) + 1);
     pf = std::fopen (presetFile.c_str(), "r");
-    if (pf) { char ln[1024]; while (std::fgets (ln, sizeof (ln), pf)) if (std::strstr (ln, "name 3: Wurli with the vibrato up")) named = true; std::fclose (pf); }
-    check (named, "Return saves the name with the preset");
+    if (pf) { char ln[4096]; while (std::fgets (ln, sizeof (ln), pf)) if (std::strstr (ln, wantLine)) named = true; std::fclose (pf); }
+    check (named, "Return saves the name with the preset, in the Wurlitzer's bank");
     bool gone = true;
     for (int tries = 0; tries < 10; ++tries)
     {
@@ -290,14 +324,13 @@ int main (int argc, char** argv)
     }
     check (gone, "and the name box goes away");
     renderPNG (panel, dir + "/panel_preset_saved.png");
-    // change the instrument and the vibrato, then recall
-    e->setParameter (e, kInst, 0.0f);
     e->setParameter (e, kWuVib, 0.1f);
+    e->setParameter (e, kWuVol, 0.3f);
     pump (0.1);
     automateCalls = 0;
     click (win, panel, slotPt (2));
-    check (paramStep (kInst, e->getParameter (e, kInst)) == kWurlitzer && std::fabs (e->getParameter (e, kWuVib) - 0.8f) < 1e-5f,
-           "the key brings back the instrument and its settings");
+    check (std::fabs (e->getParameter (e, kWuVib) - 0.8f) < 1e-5f && e->getParameter (e, kWuVol) == kParams[kWuVol].def,
+           "the key brings the settings back");
     check (automateCalls >= kNumParams, "recall tells the host about every parameter");
     renderPNG (panel, dir + "/panel_preset_loaded.png");
     click (win, panel, NSMakePoint (kReadX + kReadW * 0.5, kReadY + kReadH * 0.5));

@@ -368,8 +368,9 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     bool dragMoved;
     int readoutParam;
     bool saveMode;
-    int activePreset;
-    bool presetUsed[kNumPresetSlots];
+    int activePreset;         // key 0..7 in the current instrument's bank, -1 = none
+    int presetBank;           // the bank presetUsed[] was read for
+    bool presetUsed[kSlotsPerBank];
     char status[96];
     NSImage* backdrop[kNumInstruments];
     NSTextField* nameField;
@@ -379,6 +380,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 - (id) initWithFrame: (NSRect) frame host: (EditorHost*) h;
 - (void) shutdown;
 - (void) finishNaming: (BOOL) keep;
+- (void) refreshBank;
 @end
 
 @implementation TBSynthPanelView
@@ -402,7 +404,8 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
         retiredField = nil;
         namingSlot = -1;
         host->refreshPresets();
-        for (int k = 0; k < kNumPresetSlots; ++k) presetUsed[k] = host->presetExists (k);
+        presetBank = paramStep (kInst, shown[kInst]);
+        for (int k = 0; k < kSlotsPerBank; ++k) presetUsed[k] = host->presetExists (bankSlot (presetBank, k));
         timer = [[NSTimer timerWithTimeInterval: 1.0 / 20.0 target: self selector: @selector (tick:) userInfo: nil repeats: YES] retain];
         [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSDefaultRunLoopMode];
         [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSEventTrackingRunLoopMode];
@@ -440,6 +443,15 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 
 - (int) inst { return paramStep (kInst, shown[kInst]); }
 
+// The preset keys show the current instrument's bank
+- (void) refreshBank
+{
+    if (! host) return;
+    host->refreshPresets();
+    presetBank = [self inst];
+    for (int k = 0; k < kSlotsPerBank; ++k) presetUsed[k] = host->presetExists (bankSlot (presetBank, k));
+}
+
 - (void) tick: (NSTimer*) t
 {
     (void) t;
@@ -454,7 +466,12 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     const bool litNow = pk > 0.02f, litBefore = meter[kMeterPeak] > 0.02f;
     const bool hotNow = pk > 0.9f, hotBefore = meter[kMeterPeak] > 0.9f;
     meter[kMeterPeak] = pk;
-    if (changed) { [self setNeedsDisplay: YES]; return; }
+    if (changed)
+    {
+        if (presetBank != [self inst]) { activePreset = -1; [self refreshBank]; }
+        [self setNeedsDisplay: YES];
+        return;
+    }
     if (litNow != litBefore || hotNow != hotBefore)
         [self setNeedsDisplayInRect: faceToView (NSMakeRect (kLedX - 24, kLedY - 24, 48, 48))];
 }
@@ -962,7 +979,8 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 {
     [self drawKey: saveRect() state: saveMode ? 3 : 1];
     drawText ("SAVE", boldFont (14.0), saveMode ? rgb (60, 10, 6) : [NSColor whiteColor], NSMidX (saveRect()), NSMidY (saveRect()));
-    for (int k = 0; k < kNumPresetSlots; ++k)
+    if (presetBank != [self inst]) [self refreshBank];
+    for (int k = 0; k < kSlotsPerBank; ++k)
     {
         const NSRect r = slotRect (k);
         const int state = (k == activePreset) ? 3 : (presetUsed[k] ? 1 : 0);
@@ -1121,8 +1139,9 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 {
     char name[kMaxPresetName + 8] = { 0 };
     if (host) host->presetName (slot, name, (int) sizeof (name));
-    if (name[0]) std::snprintf (status, sizeof (status), "%d   %s", slot + 1, name);
-    else         std::snprintf (status, sizeof (status), "PRESET %d %s", slot + 1, verb);
+    const int key = slot % kSlotsPerBank + 1;
+    if (name[0]) std::snprintf (status, sizeof (status), "%d   %s", key, name);
+    else         std::snprintf (status, sizeof (status), "PRESET %d %s", key, verb);
     [self setNeedsDisplay: YES];
 }
 
@@ -1156,7 +1175,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     [nameField setFocusRingType: NSFocusRingTypeNone];
     [nameField setStringValue: [NSString stringWithUTF8String: name]];
     char hint[64];
-    std::snprintf (hint, sizeof (hint), "NAME PRESET %d, THEN RETURN", slot + 1);
+    std::snprintf (hint, sizeof (hint), "NAME PRESET %d, THEN RETURN", slot % kSlotsPerBank + 1);
     [[nameField cell] setPlaceholderString: [NSString stringWithUTF8String: hint]];
     [[nameField cell] setScrollable: YES];
     [nameField setTarget: self];
@@ -1206,34 +1225,33 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
         [self setNeedsDisplay: YES];
         return YES;
     }
-    for (int k = 0; k < kNumPresetSlots; ++k)
+    for (int k = 0; k < kSlotsPerBank; ++k)
     {
         if (! NSPointInRect (p, slotRect (k))) continue;
+        const int slot = bankSlot ([self inst], k);
         if (saveMode)
         {
-            const bool ok = host->savePreset (k);
+            const bool ok = host->savePreset (slot);
             saveMode = false;
-            host->refreshPresets();
-            for (int j = 0; j < kNumPresetSlots; ++j) presetUsed[j] = host->presetExists (j);
+            [self refreshBank];
             if (ok)
             {
                 activePreset = k;
                 std::snprintf (status, sizeof (status), "PRESET %d SAVED", k + 1);
                 [self setNeedsDisplay: YES];
-                [self startNaming: k];
+                [self startNaming: slot];
                 return YES;
             }
             std::snprintf (status, sizeof (status), "COULD NOT SAVE PRESET %d", k + 1);
         }
         else
         {
-            host->refreshPresets();
-            for (int j = 0; j < kNumPresetSlots; ++j) presetUsed[j] = host->presetExists (j);
-            if (presetUsed[k] && host->loadPreset (k))
+            [self refreshBank];
+            if (presetUsed[k] && host->loadPreset (slot))
             {
                 for (int j = 0; j < kNumParams; ++j) shown[j] = host->getParam (j);
                 activePreset = k;
-                [self showPreset: k verb: "LOADED"];
+                [self showPreset: slot verb: "LOADED"];
             }
             else std::snprintf (status, sizeof (status), "PRESET %d IS EMPTY", k + 1);
         }
@@ -1248,7 +1266,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     const NSPoint p = viewToFace ([self convertPoint: [e locationInWindow] fromView: nil]);
     if (! host) return;
     if (nameField) [self finishNaming: YES];
-    if (NSPointInRect (p, readRect()) && activePreset >= 0) { [self startNaming: activePreset]; return; }
+    if (NSPointInRect (p, readRect()) && activePreset >= 0) { [self startNaming: bankSlot ([self inst], activePreset)]; return; }
     if (([e modifierFlags] & NSControlKeyMask) != 0) { [self showValueAt: p]; return; }
     if ([self presetClick: p]) return;
 
