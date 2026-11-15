@@ -283,11 +283,32 @@ int main (int argc, char** argv)
         pump (0.1);
         click (win, panel, slotPt (0));
         check (e->getParameter (e, kSoCello) == 1.0f && std::fabs (e->getParameter (e, kSoCresc) - 0.48f) < 1e-5f, "Solina key 1 is 'Moroder'");
+        e->setParameter (e, kInst, stepValue (kOBX, kNumInstruments));
+        pump (0.1);
+        click (win, panel, slotPt (1));
+        check (e->getParameter (e, kOxModPw) == 1.0f && e->getParameter (e, kOxO1Pls) == 1.0f, "OB-X key 2 is 'Japan'");
+        pump (0.1);
+        renderPNG (panel, dir + "/panel_factory_japan.png");
         e->setParameter (e, kInst, stepValue (kMinimoog, kNumInstruments));
         pump (0.1);
-        const float c0 = e->getParameter (e, kMgCutoff);
         click (win, panel, slotPt (0));
-        check (e->getParameter (e, kMgCutoff) == c0, "each instrument has its own bank (the Minimoog's key 1 is empty)");
+        check (paramStep (kMgO2Rng, e->getParameter (e, kMgO2Rng)) == 4 && e->getParameter (e, kMgFSus) == 0.0f, "Minimoog key 1 is 'Carlos'");
+        e->setParameter (e, kInst, stepValue (kCembalet, kNumInstruments));
+        pump (0.1);
+        const float c0 = e->getParameter (e, kCbVol);
+        click (win, panel, slotPt (0));
+        check (e->getParameter (e, kCbVol) == c0, "each instrument has its own bank (the Cembalet's key 1 is empty)");
+        // SAVE onto a factory key: refused, the panel stays armed for another key
+        e->setParameter (e, kInst, stepValue (kOBX, kNumInstruments));
+        pump (0.1);
+        click (win, panel, NSMakePoint (kSaveX + kSaveW * 0.5, kSaveY + kSaveH * 0.5));
+        click (win, panel, slotPt (0));
+        bool noField = true;
+        for (NSView* sv in [panel subviews]) if ([sv isKindOfClass: [NSTextField class]]) noField = false;
+        check (noField, "SAVE onto a factory key doesn't save or ask for a name");
+        pump (0.1);
+        renderPNG (panel, dir + "/panel_factory_locked.png");
+        click (win, panel, NSMakePoint (kSaveX + kSaveW * 0.5, kSaveY + kSaveH * 0.5));     // disarm
         for (int i = 0; i < kNumParams; ++i) e->setParameter (e, i, kParams[i].def);
     }
     e->setParameter (e, kInst, stepValue (kWurlitzer, kNumInstruments));

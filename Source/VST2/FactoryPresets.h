@@ -1,7 +1,7 @@
 // FactoryPresets.h
-// Presets that come with TB Synth, each on its instrument's bank. A factory
-// preset starts from every default and changes only what it lists. Saving over
-// its key replaces it. Plain C++98 data.
+// Presets that come with TB Synth, always on the first keys of their
+// instrument's bank (they can't be saved over or renamed). A factory preset
+// starts from every default and changes only what it lists. Plain C++98 data.
 
 #ifndef TBSYNTH_FACTORY_PRESETS_H
 #define TBSYNTH_FACTORY_PRESETS_H
@@ -16,10 +16,48 @@ struct FactoryPreset
 {
     int instrument, key;          // key 0 = the first preset key
     const char* name;
-    FactorySetting settings[16];  // ends at param -1
+    FactorySetting settings[32];  // ends at param -1
 };
 
 const FactoryPreset kFactoryPresets[] = {
+    // Wendy Carlos, Switched-On Bach (a Moog modular): a harpsichord voice, two narrow
+    // pulses an octave apart like a harpsichord's 8' and 4' registers, a quick
+    // plucked filter contour, no sustain
+    { kMinimoog, 0, "Carlos", {
+        { kMgO1Rng, 0.6f }, { kMgO1Wave, 1.0f }, { kMgO2Rng, 0.8f }, { kMgO2Wave, 0.8f }, { kMgO2Freq, 0.5f },
+        { kMgO1Vol, 0.8f }, { kMgO2Vol, 0.55f }, { kMgO3On, 0.0f }, { kMgNzOn, 0.0f },
+        { kMgCutoff, 0.38f }, { kMgEmph, 0.15f }, { kMgContAm, 0.7f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgFAtk, 0.0f }, { kMgFDec, 0.38f }, { kMgFSus, 0.0f },
+        { kMgLAtk, 0.0f }, { kMgLDec, 0.52f }, { kMgLSus, 0.0f }, { kMgDecay, 1.0f }, { kMgGlideOn, 0.0f },
+        { -1, 0.0f } } },
+
+    // Queen, Flash Gordon / "Flash": big detuned brass, the filter opening on each stab
+    { kOBX, 0, "Queen", {
+        { kOxO1Saw, 1.0f }, { kOxO1Pls, 0.0f }, { kOxO2Saw, 1.0f }, { kOxO2Pls, 0.0f }, { kOxO2Det, 0.6f },
+        { kOxCut, 0.42f }, { kOxRes, 0.2f }, { kOxEnvAm, 0.62f }, { kOxKbd, 1.0f },
+        { kOxFA, 0.18f }, { kOxFD, 0.52f }, { kOxFS, 0.45f }, { kOxFR, 0.45f },
+        { kOxLA, 0.05f }, { kOxLS, 1.0f }, { kOxLR, 0.45f },
+        { -1, 0.0f } } },
+
+    // Japan, Tin Drum (Richard Barbieri): a dark pulse-wave pad, slow attack, the
+    // pulse width moving slowly
+    { kOBX, 1, "Japan", {
+        { kOxO1Saw, 0.0f }, { kOxO1Pls, 1.0f }, { kOxO2Saw, 0.0f }, { kOxO2Pls, 1.0f }, { kOxO2Det, 0.55f }, { kOxPW, 0.35f },
+        { kOxLfoRt, 0.3f }, { kOxModDp, 0.35f }, { kOxModO1, 0.0f }, { kOxModO2, 0.0f }, { kOxModPw, 1.0f },
+        { kOxCut, 0.35f }, { kOxRes, 0.3f }, { kOxEnvAm, 0.25f },
+        { kOxFA, 0.6f }, { kOxFS, 0.6f }, { kOxFR, 0.65f },
+        { kOxLA, 0.55f }, { kOxLS, 0.9f }, { kOxLR, 0.7f },
+        { -1, 0.0f } } },
+
+    // John Foxx, The Garden: a lush shimmering pad, saw and pulse, a gentle vibrato
+    { kOBX, 2, "Foxx", {
+        { kOxO1Saw, 1.0f }, { kOxO1Pls, 0.0f }, { kOxO2Saw, 0.0f }, { kOxO2Pls, 1.0f }, { kOxPW, 0.25f }, { kOxO2Det, 0.64f },
+        { kOxLfoRt, 0.7f }, { kOxModDp, 0.04f }, { kOxModO1, 1.0f }, { kOxModO2, 1.0f },
+        { kOxCut, 0.5f }, { kOxRes, 0.15f }, { kOxEnvAm, 0.3f },
+        { kOxFA, 0.45f }, { kOxFS, 0.7f }, { kOxFR, 0.6f },
+        { kOxLA, 0.4f }, { kOxLS, 1.0f }, { kOxLR, 0.6f },
+        { -1, 0.0f } } },
+
     // Supertramp, "Bloody Well Right" (Rick Davies' intro): dry, no vibrato,
     // played hard into an amp that's starting to grit
     { kWurlitzer, 0, "Supertramp", {
@@ -30,14 +68,14 @@ const FactoryPreset kFactoryPresets[] = {
     // for the body of the low riff, BRILLIANT + TREBLE for the snap
     { kClavinet, 0, "Superstition", {
         { kClBrill, 1.0f }, { kClTreb, 1.0f }, { kClMed, 0.0f }, { kClSoft, 0.0f },
-        { kClCD, 1.0f }, { kClAB, 0.0f }, { kClMute, 0.0f }, { kClVol, 0.7f },
+        { kClCD, 1.0f }, { kClAB, 0.0f }, { kClMute, 0.0f }, { kClVol, 0.56f },
         { -1, 0.0f } } },
 
     // Suzi Quatro's keyboard player: a glam-rock clav, TREBLE + MEDIUM for a gritty
     // middle, the bridge pickup, a little mute for chunky staccato, the preamp pushed
     { kClavinet, 1, "Quatro", {
         { kClBrill, 0.0f }, { kClTreb, 1.0f }, { kClMed, 1.0f }, { kClSoft, 0.0f },
-        { kClCD, 0.0f }, { kClAB, 1.0f }, { kClMute, 0.15f }, { kClVol, 0.95f },
+        { kClCD, 0.0f }, { kClAB, 1.0f }, { kClMute, 0.15f }, { kClVol, 0.82f },
         { -1, 0.0f } } },
 
     // Donna Summer, "I Feel Love" (Giorgio Moroder): the record's pad is the Moog

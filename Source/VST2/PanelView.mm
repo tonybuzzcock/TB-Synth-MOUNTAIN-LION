@@ -1229,6 +1229,15 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     {
         if (! NSPointInRect (p, slotRect (k))) continue;
         const int slot = bankSlot ([self inst], k);
+        if (saveMode && host->presetIsFactory (slot))
+        {
+            // the factory presets always keep the first keys: stay armed for another key
+            char nm[kMaxPresetName + 8] = { 0 };
+            host->presetName (slot, nm, (int) sizeof (nm));
+            std::snprintf (status, sizeof (status), "%d IS '%s': SAVE TO ANOTHER KEY", k + 1, nm);
+            [self setNeedsDisplay: YES];
+            return YES;
+        }
         if (saveMode)
         {
             const bool ok = host->savePreset (slot);
@@ -1266,7 +1275,11 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     const NSPoint p = viewToFace ([self convertPoint: [e locationInWindow] fromView: nil]);
     if (! host) return;
     if (nameField) [self finishNaming: YES];
-    if (NSPointInRect (p, readRect()) && activePreset >= 0) { [self startNaming: bankSlot ([self inst], activePreset)]; return; }
+    if (NSPointInRect (p, readRect()) && activePreset >= 0 && ! host->presetIsFactory (bankSlot ([self inst], activePreset)))
+    {
+        [self startNaming: bankSlot ([self inst], activePreset)];
+        return;
+    }
     if (([e modifierFlags] & NSControlKeyMask) != 0) { [self showValueAt: p]; return; }
     if ([self presetClick: p]) return;
 

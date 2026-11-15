@@ -108,8 +108,10 @@ public:
 
     void refreshPresets() { presets.load(); }
     bool presetExists (int slot) const { return presets.has (slot); }
+    bool presetIsFactory (int slot) const { return PresetStore::isFactory (slot); }
     bool savePreset (int slot)
     {
+        if (PresetStore::isFactory (slot)) return false;       // factory keys always keep their preset
         presets.load();
         presets.put (slot, params);
         return presets.save();
@@ -124,7 +126,7 @@ public:
     bool renamePreset (int slot, const char* name)
     {
         presets.load();
-        if (! presets.has (slot)) return false;
+        if (! presets.has (slot) || PresetStore::isFactory (slot)) return false;
         presets.setName (slot, name ? name : "");
         return presets.save();
     }

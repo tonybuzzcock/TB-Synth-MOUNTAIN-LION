@@ -40,15 +40,20 @@ and the tan readout. A LEVEL LED at top right lights amber while it plays, red n
 
 | Instrument | Key | Name | For |
 |---|---|---|---|
+| Minimoog Model D | 1 | Carlos | Wendy Carlos, Switched-On Bach (a Moog modular): a harpsichord voice, 8' + 4' narrow pulses, plucked contours |
+| Oberheim OB-X | 1 | Queen | Flash Gordon: big detuned brass, the filter opening on each stab |
+| Oberheim OB-X | 2 | Japan | Tin Drum (Richard Barbieri): a dark pulse-wave pad, slow attack, slowly moving pulse width |
+| Oberheim OB-X | 3 | Foxx | John Foxx, The Garden: a lush shimmering pad, saw and pulse, gentle vibrato |
 | Wurlitzer 200A | 1 | Supertramp | "Bloody Well Right" intro: dry, no vibrato, amp pushed to grit |
 | Hohner Clavinet D6 | 1 | Superstition | Stevie Wonder: BRILLIANT + TREBLE, both pickups in phase (D-A) |
 | Hohner Clavinet D6 | 2 | Quatro | Suzi Quatro's keyboard player: TREBLE + MEDIUM, bridge pickup, a little mute, preamp pushed |
 | Solina String Ensemble | 1 | Moroder | "I Feel Love": the record's pad is Moog modular; this is the Solina's take on it |
 
 No published settings exist for these parts (the clavinet.com FAQ says of "Superstition" that it was a
-Clavinet C, overdubbed); the presets are set by ear from the records. Saving over a factory key
-replaces it. Presets saved with the first release (8 shared keys) move into the banks of the
-instruments they were made on, after the factory presets.
+Clavinet C, overdubbed); the presets are set by ear from the records. The factory presets always
+hold the first keys of their bank: they can't be saved over or renamed (SAVE stays armed for another
+key). Any of your presets found on one of those keys, or saved with the first release (8 shared
+keys), moves to the next free key of its instrument's bank.
 
 ## Sources
 

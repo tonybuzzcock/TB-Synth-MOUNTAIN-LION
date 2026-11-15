@@ -34,6 +34,7 @@ public:
     // User presets (slots 0..kNumPresetSlots-1), stored in a file shared by every instance
     virtual void  refreshPresets() = 0;
     virtual bool  presetExists (int slot) const = 0;
+    virtual bool  presetIsFactory (int slot) const = 0;   // can't be saved over or renamed
     virtual bool  savePreset (int slot) = 0;
     virtual bool  loadPreset (int slot) = 0;
     virtual void  presetName (int slot, char* text, int size) const = 0;

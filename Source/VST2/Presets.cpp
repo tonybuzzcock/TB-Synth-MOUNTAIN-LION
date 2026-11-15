@@ -144,7 +144,7 @@ bool PresetStore::load()
             for (int key = 0; key < kSlotsPerBank; ++key)
             {
                 const int dst = bankSlot (inst, key);
-                if (used[dst]) continue;
+                if (used[dst] || isFactory (dst)) continue;
                 used[dst] = true;
                 names[dst] = oldName[k];
                 for (int i = 0; i < kNumParams; ++i) vals[dst][i] = oldVals[k][i];
@@ -153,8 +153,38 @@ bool PresetStore::load()
         }
     }
     if (! headerOk) for (int s2 = 0; s2 < kNumPresetSlots; ++s2) { used[s2] = false; names[s2].clear(); }
-    addFactory();
+    placeFactory();
     return headerOk;
+}
+
+bool PresetStore::isFactory (int slot)
+{
+    for (int f = 0; f < kNumFactoryPresets; ++f)
+        if (bankSlot (kFactoryPresets[f].instrument, kFactoryPresets[f].key) == slot) return true;
+    return false;
+}
+
+// The factory presets take their keys; a user preset found on one (and not the
+// factory preset itself) moves to the first free ordinary key of the same bank
+void PresetStore::placeFactory()
+{
+    for (int f = 0; f < kNumFactoryPresets; ++f)
+    {
+        const FactoryPreset& fp = kFactoryPresets[f];
+        const int slot = bankSlot (fp.instrument, fp.key);
+        if (slot < 0 || slot >= kNumPresetSlots || ! used[slot] || names[slot] == fp.name) continue;
+        for (int key = 0; key < kSlotsPerBank; ++key)
+        {
+            const int dst = bankSlot (fp.instrument, key);
+            if (used[dst] || isFactory (dst)) continue;
+            used[dst] = true;
+            names[dst] = names[slot];
+            for (int i = 0; i < kNumParams; ++i) vals[dst][i] = vals[slot][i];
+            break;
+        }
+        used[slot] = false;
+    }
+    addFactory();
 }
 
 // Factory presets fill their keys unless the user has saved something there
@@ -167,7 +197,7 @@ void PresetStore::addFactory()
         if (slot < 0 || slot >= kNumPresetSlots || used[slot]) continue;
         for (int i = 0; i < kNumParams; ++i) vals[slot][i] = kParams[i].def;
         vals[slot][kInst] = stepValue (fp.instrument, kNumInstruments);
-        for (int k = 0; k < 16 && fp.settings[k].param >= 0; ++k)
+        for (int k = 0; k < 32 && fp.settings[k].param >= 0; ++k)
             if (fp.settings[k].param < kNumParams) vals[slot][fp.settings[k].param] = fp.settings[k].value;
         used[slot] = true;
         names[slot] = fp.name;
@@ -210,7 +240,7 @@ bool PresetStore::get (int slot, float values[kNumParams]) const
 
 void PresetStore::put (int slot, const float values[kNumParams])
 {
-    if (slot < 0 || slot >= kNumPresetSlots) return;
+    if (slot < 0 || slot >= kNumPresetSlots || isFactory (slot)) return;
     for (int i = 0; i < kNumParams; ++i) vals[slot][i] = values[i];
     used[slot] = true;
 }
@@ -222,7 +252,7 @@ std::string PresetStore::name (int slot) const
 
 void PresetStore::setName (int slot, const std::string& n)
 {
-    if (slot < 0 || slot >= kNumPresetSlots) return;
+    if (slot < 0 || slot >= kNumPresetSlots || isFactory (slot)) return;
     names[slot] = cleanName (n);
 }
 
