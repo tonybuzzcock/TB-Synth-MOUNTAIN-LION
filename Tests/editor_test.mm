@@ -209,6 +209,7 @@ int main (int argc, char** argv)
         check (allOk, "every control on every page moves on its own and tells the host");
         check (tested == kNumParams - 1, "that is every parameter but the instrument itself");
         e->setParameter (e, kInst, 0.0f);
+        pump (0.1);       // let the panel's timer turn to the Minimoog page
     }
 
     // ------------------------------------------------------------ particular controls
@@ -252,6 +253,7 @@ int main (int argc, char** argv)
         renderPNG (panel, dir + "/panel_hammond_registration.png");
         for (int p = 0; p < kNumParams; ++p) if (kParams[p].inst == kHammond) e->setParameter (e, p, kParams[p].def);
         e->setParameter (e, kInst, 0.0f);
+        pump (0.1);
     }
 
     // ------------------------------------------------------------ presets
