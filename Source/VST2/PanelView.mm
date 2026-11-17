@@ -581,7 +581,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
                 drawText ("ON", boldFont (6.5), ink(), x, y - 22.0, 0.3);
                 break;
             case kTab:
-                if (c.label[0]) drawLabel (c.label, boldFont (8.0), ink(), x, y - kTabH * 0.5 - (twoLines (c.label) ? 17.0 : 12.0), 9.5);
+                if (c.label[0]) drawLabel (c.label, boldFont (8.0), ink(), x, y - tabH (c) * 0.5 - (twoLines (c.label) ? 17.0 : 12.0), 9.5);
                 break;
             case kDrawbar:
             {
@@ -781,8 +781,9 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 // Tab: a cream tablet; down = lit amber from inside, with its LED
 - (void) drawTab: (const Ctl&) c on: (bool) on
 {
-    const NSRect r = NSMakeRect (c.x - kTabW * 0.5, c.y - kTabH * 0.5 + (on ? 2.0 : 0.0), kTabW, kTabH);
-    NSBezierPath* well = [NSBezierPath bezierPathWithRoundedRect: NSInsetRect (NSMakeRect (c.x - kTabW * 0.5, c.y - kTabH * 0.5, kTabW, kTabH), -3.0, -3.0) xRadius: 3.0 yRadius: 3.0];
+    const double tw = tabW (c), th = tabH (c);
+    const NSRect r = NSMakeRect (c.x - tw * 0.5, c.y - th * 0.5 + (on ? 2.0 : 0.0), tw, th);
+    NSBezierPath* well = [NSBezierPath bezierPathWithRoundedRect: NSInsetRect (NSMakeRect (c.x - tw * 0.5, c.y - th * 0.5, tw, th), -3.0, -3.0) xRadius: 3.0 yRadius: 3.0];
     [rgb (30, 29, 28) set];
     [well fill];
     NSBezierPath* tp = [NSBezierPath bezierPathWithRoundedRect: r xRadius: 3.0 yRadius: 3.0];
@@ -1115,7 +1116,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
             case kKnob:     if (dx * dx + dy * dy < (c.r + 6.0) * (c.r + 6.0)) return i; break;
             case kSelector: if (dx * dx + dy * dy < (c.r + 24.0) * (c.r + 24.0)) return i; break;
             case kRocker:   if (std::fabs (dx) <= 13.0 && std::fabs (dy) <= 19.0) return i; break;
-            case kTab:      if (std::fabs (dx) <= kTabW * 0.5 + 3.0 && std::fabs (dy) <= kTabH * 0.5 + 3.0) return i; break;
+            case kTab:      if (std::fabs (dx) <= tabW (c) * 0.5 + 3.0 && std::fabs (dy) <= tabH (c) * 0.5 + 3.0) return i; break;
             case kDrawbar:  if (std::fabs (dx) <= kBarW * 0.5 + 2.0 && p.y >= kBarTop - 4.0 && p.y <= drawbarY (8) + kBarHandleH) return i; break;
             case kSlide:
             {

@@ -27,7 +27,7 @@ enum CtlType
 };
 
 // Knob caps (the M-50's colours): grey cap, red cap (levels), orange skirt (frequency)
-enum Style { kGrey = 0, kRed, kOrange, kWave = 10, kLever = 20 };   // kWave: selector positions drawn as waveforms; kLever: compact slider
+enum Style { kGrey = 0, kRed, kOrange, kWave = 10, kLever = 20, kSmallTab = 21 };   // kSmallTab: a smaller tab   // kWave: selector positions drawn as waveforms; kLever: compact slider
 
 struct Ctl
 {
@@ -241,8 +241,8 @@ const Ctl kCtls[] = {
     // ------------------------------------------------------------ Yamaha SK-30
     // ORGAN
     { kSkOrgSel, kSelector,   66, S1, 16, "ORGAN", "", "", 0 },
-    { kSkOrgDec, kTab,       150, S1, 0, "DECAY", "", "", 0 },
-    { kSkOrgSus, kTab,       205, S1, 0, "SUSTAIN", "", "", 0 },
+    { kSkOrgDec, kTab,       150, S1, 0, "DECAY", "", "", kSmallTab },
+    { kSkOrgSus, kTab,       205, S1, 0, "SUSTAIN", "", "", kSmallTab },
     { kSkOrgDS, kVSlider, 256, S1, kLevR, "D / S\nTIME", "", "", kLever },
     { kSkOrgBril, kVSlider, 296, S1, kLevR, "BRILL-\nIANCE", "", "", kLever },
     { kSkO16, kVSlider, 40, S2, kLevR, "16'", "", "", kLever },
@@ -258,8 +258,8 @@ const Ctl kCtls[] = {
     { kSkPerc3, kVSlider, 78, S3, kLevR, "3RD", "", "", kLever },
     { kSkPerc5, kVSlider, 116, S3, kLevR, "5TH", "", "", kLever },
     { kSkPercDec, kVSlider, 154, S3, kLevR, "DECAY\nTIME", "", "", kLever },
-    { kSkOrgTrem, kTab,      222, S3, 0, "TREMOLO", "", "", 0 },
-    { kSkOrgEns, kTab,       278, S3, 0, "ENSEMBLE", "", "", 0 },
+    { kSkOrgTrem, kTab,      222, S3, 0, "TREMOLO", "", "", kSmallTab },
+    { kSkOrgEns, kTab,       278, S3, 0, "ENSEMBLE", "", "", kSmallTab },
     { kSkTrFast, kSlide,     340, S3, 0, "SPEED", "", "", 0 },
     // POLY-SYNTH / STRINGS
     { kSkStrSel, kSelector,  470, S1, 16, "STRINGS", "", "", 0 },
@@ -273,18 +273,18 @@ const Ctl kCtls[] = {
     { kSkEgA, kVSlider, 566, S2, kLevR, "ATTACK", "", "", kLever },
     { kSkEgD, kVSlider, 604, S2, kLevR, "DECAY", "", "", kLever },
     { kSkPBril, kVSlider, 660, S2, kLevR, "BRILL-\nIANCE", "", "", kLever },
-    { kSkSlow,   kTab,       718, S2, 0, "SLOW\nATTACK", "", "", 0 },
-    { kSkPSus,   kTab,       776, S2, 0, "SUSTAIN", "", "", 0 },
+    { kSkSlow,   kTab,       718, S2, 0, "SLOW\nATTACK", "", "", kSmallTab },
+    { kSkPSus,   kTab,       776, S2, 0, "SUSTAIN", "", "", kSmallTab },
     { kSkPSusT, kVSlider, 826, S2, kLevR, "SUSTAIN\nTIME", "", "", kLever },
     { kSkVibDl, kVSlider, 452, S3, kLevR, "DELAY", "", "", kLever },
     { kSkVibSp, kVSlider, 490, S3, kLevR, "SPEED", "", "", kLever },
     { kSkVibDp, kVSlider, 528, S3, kLevR, "DEPTH", "", "", kLever },
     { kSkDetune, kVSlider, 580, S3, kLevR, "DETUNE", "", "", kLever },
-    { kSkPTrem,  kTab,       640, S3, 0, "TREMOLO", "", "", 0 },
-    { kSkPEns,   kTab,       700, S3, 0, "ENSEMBLE", "", "", 0 },
+    { kSkPTrem,  kTab,       640, S3, 0, "TREMOLO", "", "", kSmallTab },
+    { kSkPEns,   kTab,       700, S3, 0, "ENSEMBLE", "", "", kSmallTab },
     // SOLO SYNTHESIZER
     { kSkSoFeet, kSelector,  904, S1, 16, "FEET", "", "", 0 },
-    { kSkSoMode, kTab,       974, S1, 0, "MANUAL\nBASS", "", "", 0 },
+    { kSkSoMode, kTab,       974, S1, 0, "MANUAL\nBASS", "", "", kSmallTab },
     { kSkSoPwm,  kSlide,     1052, S1, 0, "PW MOD", "", "", 0 },
     { kSkSoVca,  kSelector,  1186, S1, 16, "VCA", "", "", 0 },
     { kSkSoWave, kVSlider, 893, S2, kLevR, "WAVE", "", "", kLever },
@@ -393,6 +393,8 @@ const double kReadX = 760.0, kReadY = 556.0, kReadW = 466.0, kReadH = 62.0;
 const double kSlideHalf = 30.0;
 // Tabs
 const double kTabW = 44.0, kTabH = 58.0;
+inline double tabW (const Ctl& c) { return c.style == kSmallTab ? 34.0 : kTabW; }
+inline double tabH (const Ctl& c) { return c.style == kSmallTab ? 38.0 : kTabH; }
 
 } // namespace layout
 } // namespace tbsyn
