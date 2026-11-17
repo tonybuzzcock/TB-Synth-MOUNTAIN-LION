@@ -28,7 +28,7 @@ In the colours of the TASCAM M-50 and the TB M-50 strips: warm grey face, black 
 knurled knobs (red caps for levels, orange skirts for frequencies), switches that light amber in their
 engaged position, the red lip, the lacquered mahogany frame. Each instrument has its own page laid out
 like the original's front panel, with plain lettering and no manufacturer artwork. Along the bottom: the
-TB electronic logo, DEFAULT, SAVE and the preset menu (each instrument has its own, up to 32 presets),
+TB electronic logo, DEFAULT, SAVE and the preset menu (each instrument has its own, up to 99 presets),
 MASTER, and the tan readout. A LEVEL LED at top right lights amber while it plays, red near full scale.
 
 - Knobs and sliders: drag up / down (Shift for fine), double-click for the default, scroll wheel.

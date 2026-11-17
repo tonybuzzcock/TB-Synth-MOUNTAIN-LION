@@ -1,5 +1,5 @@
 // Presets.h
-// A preset menu of up to 32 for each instrument (slot = instrument * 32 + entry), each
+// A preset menu of up to 99 for each instrument (slot = instrument * 99 + entry), each
 // holding every parameter (the instrument included) and a name, kept in one small
 // text file so all instances and sessions share them:
 //   Mac:   ~/Library/Application Support/TB/TB Synth/Presets.txt
@@ -22,7 +22,7 @@
 namespace tbsyn
 {
 
-enum { kSlotsPerBank = 32, kNumPresetSlots = kSlotsPerBank * kNumInstruments, kMaxPresetName = 40 };
+enum { kSlotsPerBank = 99, kNumPresetSlots = kSlotsPerBank * kNumInstruments, kMaxPresetName = 40 };
 
 inline int bankSlot (int instrument, int key) { return instrument * kSlotsPerBank + key; }
 

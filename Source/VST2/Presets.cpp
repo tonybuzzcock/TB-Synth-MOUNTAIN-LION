@@ -14,7 +14,7 @@ namespace tbsyn
 
 namespace
 {
-    const char* const kHeader = "TBSYNTH-PRESETS 4";        // menus: slot = instrument * 32 + entry; 8 instruments
+    const char* const kHeader = "TBSYNTH-PRESETS 4";        // menus: slot = instrument * 99 + entry; 8 instruments
     const char* const kHeaderV3 = "TBSYNTH-PRESETS 3";      // banks of 8 keys, 8 instruments
     const char* const kHeaderV2 = "TBSYNTH-PRESETS 2";      // banks, 7 instruments
     const char* const kHeaderV1 = "TBSYNTH-PRESETS 1";      // the first release: 8 shared slots
@@ -231,8 +231,8 @@ bool PresetStore::save() const
     FILE* f = std::fopen (tmp.c_str(), "w");
     if (! f) return false;
     std::fprintf (f, "%s\n", kHeader);
-    std::fprintf (f, "# TB Synth presets. Slot = instrument x 32 + menu entry (Minimoog 1-32, OB-X 33-64, Solina 65-96,\n");
-    std::fprintf (f, "# Wurlitzer 97-128, B-3 129-160, Cembalet 161-192, Clavinet 193-224, Multiman 225-256).\n");
+    std::fprintf (f, "# TB Synth presets. Slot = instrument x 99 + menu entry (Minimoog 1-99, OB-X 100-198, Solina 199-297,\n");
+    std::fprintf (f, "# Wurlitzer 298-396, B-3 397-495, Cembalet 496-594, Clavinet 595-693, Multiman 694-792).\n");
     std::fprintf (f, "# Values 0..1 in parameter order; then its name.\n");
     for (int s = 0; s < kNumPresetSlots; ++s)
     {
