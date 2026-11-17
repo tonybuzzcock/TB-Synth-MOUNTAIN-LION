@@ -75,7 +75,7 @@ MASTER, and the tan readout. A LEVEL LED at top right lights amber while it play
 | Yamaha SK-30 | 8 | Solo Lead | the solo synthesizer: 8' saw, a little resonance, portamento |
 | Yamaha SK-30 | 9 | Bass and Strings | MANUAL BASS: a 16' solo bass on the lowest 19 keys under STRING 3 (violins) |
 | Yamaha SK-30 | 10 | Big Strings | violas with a 4' poly-synth layer through the ensemble (an owner's SS-30-style stack) |
-| Yamaha SK-30 | 11 | Blade Runner | Vangelis, "Main Titles" (played on a Yamaha CS-80): two detuned saws, resonant low-pass, slow attack, long release, delayed vibrato. Add a big reverb, as on the record |
+| Yamaha SK-30 | 11 | Vangel Blade | Vangelis, "Main Titles" (played on a Yamaha CS-80): two detuned saws, resonant low-pass, slow attack, long release, delayed vibrato. Add a big reverb, as on the record |
 | Solina String Ensemble | 1 | Moroder | "I Feel Love": the record's pad is Moog modular; this is the Solina's take on it |
 | Solina String Ensemble | 2 | Shine On | Pink Floyd, Wish You Were Here (Rick Wright): full, slow-swelling strings that ring on |
 | Solina String Ensemble | 3 | Dream Weaver | Gary Wright, "Dream Weaver": soft upper strings, gentle swell |

@@ -308,7 +308,7 @@ const FactoryPreset kFactoryPresets[] = {
         { -1, 0.0f } } },
     // Vangelis, Blade Runner "Main Titles" (a Yamaha CS-80, the SK-30's big brother): two detuned
     // saws into a resonant low-pass, slow attack and long release, delayed vibrato; add a big reverb
-    { kSK30, 10, "Blade Runner", {
+    { kSK30, 10, "Vangel Blade", {
         { kSkOrgV, 0.0f }, { kSkPolySel, 1.0f }, { kSkWave, 0.0f }, { kSkFeet, 0.5f }, { kSkMode, 1.0f },
         { kSkDetune, 0.64f }, { kSkCut, 0.3f }, { kSkRes, 0.45f }, { kSkEgDp, 0.55f }, { kSkEgA, 0.68f },
         { kSkEgD, 0.82f }, { kSkPBril, 0.55f }, { kSkSlow, 1.0f }, { kSkPSus, 1.0f }, { kSkPSusT, 0.85f },
