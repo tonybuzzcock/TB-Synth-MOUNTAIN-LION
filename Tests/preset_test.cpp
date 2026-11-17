@@ -119,11 +119,11 @@ int main()
         std::fclose (f);
         PresetStore m; m.setPath (file);
         check (m.load(), "a first-release file is read");
-        check (m.has (bankSlot (kHammond, 0)) && m.name (bankSlot (kHammond, 0)) == "Gospel organ" && m.has (bankSlot (kHammond, 1)),
+        check (m.has (bankSlot (kHammond, 2)) && m.name (bankSlot (kHammond, 2)) == "Gospel organ" && m.has (bankSlot (kHammond, 3)),
                "its B-3 presets go to the B-3 bank, in order");
         check (m.name (bankSlot (kWurlitzer, 0)) == "Supertramp" && m.name (bankSlot (kWurlitzer, 1)) == "My Wurli",
                "factory presets keep the first keys; earlier saves follow them");
-        check (m.name (0) == "Carlos" && ! m.has (11), "nothing of theirs is left in the Minimoog bank");
+        check (m.name (0) == "Carlos" && ! m.has (14), "nothing of theirs is left in the Minimoog bank");
     }
 
     // Factory keys are locked: always their preset, never saved over or renamed
@@ -135,18 +135,18 @@ int main()
         z.put (fk, w);
         z.setName (fk, "Mine");
         check (z.name (fk) == "Queen" && z.get (fk, w) && w[kOxO2Saw] == 1.0f, "a factory key can't be saved over or renamed");
-        check (PresetStore::isFactory (fk) && ! PresetStore::isFactory (bankSlot (kOBX, 10)), "factory keys are known");
+        check (PresetStore::isFactory (fk) && ! PresetStore::isFactory (bankSlot (kOBX, 13)), "factory keys are known");
         // a user preset found on a factory key (an older file) moves to the next free key
         f = std::fopen (file.c_str(), "w");
         const int oldFk = kOBX * 8 + 1;      // the OB-X's first key in a banks-of-8 file
         std::fprintf (f, "TBSYNTH-PRESETS 3\nslot %d: %.6f 0.3\nname %d: My OB pad\n", oldFk, stepValue (kOBX, 8), oldFk);
         std::fclose (f);
         PresetStore y; y.setPath (file); y.load();
-        check (y.name (fk) == "Queen" && y.name (bankSlot (kOBX, 10)) == "My OB pad",
-               "a user preset on a factory key moves after the factory presets (the ten OB-X ones, then it)");
+        check (y.name (fk) == "Queen" && y.name (bankSlot (kOBX, 13)) == "My OB pad",
+               "a user preset on a factory key moves after the factory presets (the OB-X ones, then it)");
         y.save();
         PresetStore x; x.setPath (file); x.load();
-        check (x.name (bankSlot (kOBX, 10)) == "My OB pad" && x.name (fk) == "Queen" && ! x.has (bankSlot (kOBX, 11)),
+        check (x.name (bankSlot (kOBX, 13)) == "My OB pad" && x.name (fk) == "Queen" && ! x.has (bankSlot (kOBX, 14)),
                "and stays there (saved factory presets aren't moved again)");
     }
 

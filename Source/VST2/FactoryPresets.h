@@ -541,6 +541,98 @@ const FactoryPreset kFactoryPresets[] = {
         { kCrCeHi, 0.5f }, { kCrViLo, 0.4f }, { kCrViHi, 0.65f }, { kCrAtk, 0.7f }, { kCrDec, 0.85f },
         { kCrEmph, 0.3f }, { kCrCont, 0.3f }, { kCrBrHi, 0.5f }, { kCrSust, 0.85f }, { kCrMaster, 0.58f },
         { -1, 0.0f } } },
+    // ---- 1970s / early-80s Italian horror (Goblin, Fabio Frizzi): settings worked out from
+    // the records (estimates)
+    // Goblin, Profondo Rosso (1975, Minimoog among the gear): the driving, biting Moog bass line
+    { kMinimoog, 11, "Profondo Rosso", {
+        { kMgO1Rng, 0.4f }, { kMgO1Wave, 0.4f }, { kMgO2Rng, 0.4f }, { kMgO2Wave, 0.6f }, { kMgO2Freq, 0.506f },
+        { kMgO3On, 0.0f }, { kMgO3Rng, 0.4f }, { kMgO3Wave, 0.6f }, { kMgO3Freq, 0.494f }, { kMgO1Vol, 0.9f },
+        { kMgO2Vol, 0.7f }, { kMgO3Vol, 0.0f }, { kMgNzOn, 0.0f }, { kMgCutoff, 0.4f }, { kMgEmph, 0.42f },
+        { kMgContAm, 0.5f }, { kMgFAtk, 0.02f }, { kMgFDec, 0.4f }, { kMgFSus, 0.35f }, { kMgLAtk, 0.01f },
+        { kMgLDec, 0.45f }, { kMgLSus, 0.85f }, { kMgDecay, 1.0f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgGlideOn, 0.0f },
+        { -1, 0.0f } } },
+    // Goblin, Suspiria (1977, Minimoog and a big Moog): a dark, detuned, resonant growl with a breath of noise
+    { kMinimoog, 12, "Suspiria Moog", {
+        { kMgO1Rng, 0.2f }, { kMgO1Wave, 0.4f }, { kMgO2Rng, 0.4f }, { kMgO2Wave, 0.4f }, { kMgO2Freq, 0.53f },
+        { kMgO3On, 1.0f }, { kMgO3Rng, 0.4f }, { kMgO3Wave, 0.6f }, { kMgO3Freq, 0.47f }, { kMgO1Vol, 0.85f },
+        { kMgO2Vol, 0.7f }, { kMgO3Vol, 0.6f }, { kMgNzOn, 1.0f }, { kMgCutoff, 0.28f }, { kMgEmph, 0.65f },
+        { kMgContAm, 0.45f }, { kMgFAtk, 0.55f }, { kMgFDec, 0.7f }, { kMgFSus, 0.4f }, { kMgLAtk, 0.3f },
+        { kMgLDec, 0.6f }, { kMgLSus, 1.0f }, { kMgDecay, 1.0f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgGlideOn, 1.0f }, { kMgGlide, 0.3f }, { kMgNzVol, 0.25f }, { kMgNzCol, 1.0f },
+        { -1, 0.0f } } },
+    // a late-70s giallo lead: a wailing square with emphasis, slow glide
+    { kMinimoog, 13, "Giallo Lead", {
+        { kMgO1Rng, 0.6f }, { kMgO1Wave, 0.6f }, { kMgO2Rng, 0.6f }, { kMgO2Wave, 0.4f }, { kMgO2Freq, 0.512f },
+        { kMgO3On, 0.0f }, { kMgO3Rng, 0.4f }, { kMgO3Wave, 0.6f }, { kMgO3Freq, 0.494f }, { kMgO1Vol, 0.8f },
+        { kMgO2Vol, 0.55f }, { kMgO3Vol, 0.0f }, { kMgNzOn, 0.0f }, { kMgCutoff, 0.5f }, { kMgEmph, 0.5f },
+        { kMgContAm, 0.35f }, { kMgFAtk, 0.15f }, { kMgFDec, 0.55f }, { kMgFSus, 0.65f }, { kMgLAtk, 0.1f },
+        { kMgLDec, 0.5f }, { kMgLSus, 1.0f }, { kMgDecay, 1.0f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgGlideOn, 1.0f }, { kMgGlide, 0.4f },
+        { -1, 0.0f } } },
+    // Fabio Frizzi, Zombi 2 (1979, polysynths of the Prophet / Jupiter / CS-80 kind): the heavy, dark synth theme
+    { kOBX, 10, "Zombi 2", {
+        { kOxO1Saw, 1.0f }, { kOxO1Pls, 0.0f }, { kOxO2Saw, 1.0f }, { kOxO2Pls, 0.0f }, { kOxModDp, 0.0f },
+        { kOxModO1, 1.0f }, { kOxModO2, 1.0f }, { kOxModFl, 0.0f }, { kOxModPw, 0.0f }, { kOxO2Det, 0.6f },
+        { kOxO2Frq, 0.25f }, { kOxCut, 0.33f }, { kOxRes, 0.35f }, { kOxEnvAm, 0.45f }, { kOxFA, 0.25f },
+        { kOxFD, 0.6f }, { kOxFS, 0.45f }, { kOxFR, 0.5f }, { kOxLA, 0.1f }, { kOxLS, 0.9f },
+        { kOxLR, 0.5f },
+        { -1, 0.0f } } },
+    // Fabio Frizzi, The Beyond (1981): a ghostly, vocal-like pad that slowly breathes
+    { kOBX, 11, "The Beyond", {
+        { kOxO1Saw, 0.0f }, { kOxO1Pls, 1.0f }, { kOxO2Saw, 1.0f }, { kOxO2Pls, 0.0f }, { kOxModDp, 0.12f },
+        { kOxModO1, 0.0f }, { kOxModO2, 0.0f }, { kOxModFl, 1.0f }, { kOxModPw, 0.0f }, { kOxPW, 0.25f },
+        { kOxO2Det, 0.62f }, { kOxCut, 0.4f }, { kOxRes, 0.45f }, { kOxEnvAm, 0.2f }, { kOxLfoRt, 0.2f },
+        { kOxFA, 0.7f }, { kOxFD, 0.7f }, { kOxFS, 0.7f }, { kOxFR, 0.7f }, { kOxLA, 0.65f },
+        { kOxLS, 1.0f }, { kOxLR, 0.7f }, { kOxVol, 0.45f },
+        { -1, 0.0f } } },
+    // Goblin / Simonetti, Tenebre (1982; Simonetti is credited with an OB-X): the bright, driving arpeggio voice
+    { kOBX, 12, "Tenebre", {
+        { kOxO1Saw, 1.0f }, { kOxO1Pls, 0.0f }, { kOxO2Saw, 1.0f }, { kOxO2Pls, 0.0f }, { kOxModDp, 0.0f },
+        { kOxModO1, 1.0f }, { kOxModO2, 1.0f }, { kOxModFl, 0.0f }, { kOxModPw, 0.0f }, { kOxO2Det, 0.57f },
+        { kOxO2Frq, 0.75f }, { kOxCut, 0.5f }, { kOxRes, 0.3f }, { kOxEnvAm, 0.5f }, { kOxFA, 0.0f },
+        { kOxFD, 0.42f }, { kOxFS, 0.3f }, { kOxFR, 0.35f }, { kOxLA, 0.0f }, { kOxLD, 0.5f },
+        { kOxLS, 0.6f }, { kOxLR, 0.35f },
+        { -1, 0.0f } } },
+    // Goblin, Profondo Rosso: a full, gothic organ, chorus vibrato and a slow Leslie
+    { kHammond, 0, "Profondo Organ", {
+        { kB3Db1, 1.000f }, { kB3Db2, 0.000f }, { kB3Db3, 1.000f }, { kB3Db4, 1.000f }, { kB3Db5, 0.500f },
+        { kB3Db6, 0.750f }, { kB3Db7, 0.000f }, { kB3Db8, 0.500f }, { kB3Db9, 0.750f }, { kB3Perc, 0.0f },
+        { kB3VibOn, 1.0f }, { kB3VibSel, 1.0f }, { kLsOn, 1.0f }, { kLsSpeed, 0.5f }, { kB3Drive, 0.3f },
+        { kB3Vol, 0.75f },
+        { -1, 0.0f } } },
+    // Goblin, Suspiria (Hammond B-3 among the gear): a dark, low organ, deep vibrato, Leslie stopped and driven
+    { kHammond, 1, "Suspiria Organ", {
+        { kB3Db1, 1.000f }, { kB3Db2, 0.750f }, { kB3Db3, 0.500f }, { kB3Db4, 0.000f }, { kB3Db5, 0.000f },
+        { kB3Db6, 0.000f }, { kB3Db7, 0.000f }, { kB3Db8, 0.000f }, { kB3Db9, 0.000f }, { kB3Perc, 0.0f },
+        { kB3VibOn, 1.0f }, { kB3VibSel, 0.8f }, { kLsOn, 1.0f }, { kLsSpeed, 0.0f }, { kB3Drive, 0.55f },
+        { kB3Vol, 0.75f },
+        { -1, 0.0f } } },
+    // Goblin, Suspiria (Hohner Clavinet among the gear): a dark, muted, plucked clav
+    { kClavinet, 2, "Suspiria Clav", {
+        { kClBrill, 0.0f }, { kClTreb, 0.0f }, { kClMed, 1.0f }, { kClSoft, 1.0f }, { kClCD, 1.0f },
+        { kClAB, 0.0f }, { kClMute, 0.4f }, { kClVol, 0.85f },
+        { -1, 0.0f } } },
+    // eerie, thin violins with slow, wide vibrato, for 70s Italian thrillers
+    { kMultiman, 20, "Giallo Strings", {
+        { kCrBrOnLo, 0.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 0.0f },
+        { kCrViolin, 1.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 1.0f }, { kCrViLo, 0.55f }, { kCrViHi, 0.8f },
+        { kCrSust, 0.7f }, { kCrVibDp, 0.55f }, { kCrVibSp, 0.25f }, { kCrMaster, 0.65f },
+        { -1, 0.0f } } },
+    // an ominous low brass swell with emphasis under cellos, for Lucio Fulci-style horror
+    { kMultiman, 21, "Fulci Brass", {
+        { kCrBrOnLo, 1.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 1.0f },
+        { kCrViolin, 0.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 0.0f }, { kCrAtk, 0.55f }, { kCrDec, 0.8f },
+        { kCrEmph, 0.6f }, { kCrCont, 0.22f }, { kCrBrLo, 0.95f }, { kCrCeLo, 0.7f }, { kCrCeHi, 0.3f },
+        { kCrSust, 0.7f }, { kCrMaster, 0.75f },
+        { -1, 0.0f } } },
+    // Goblin used an Elka organ on Profondo Rosso and Suspiria: a reedy, eerie combo organ with the ensemble
+    { kSK30, 11, "Elka Organ", {
+        { kSkOrgSel, 1.0f }, { kSkO16, 0.0f }, { kSkO8, 1.0f }, { kSkO513, 0.0f }, { kSkO4, 0.9f },
+        { kSkO223, 0.6f }, { kSkO2, 0.8f }, { kSkO135, 0.4f }, { kSkO113, 0.0f }, { kSkO1, 0.5f },
+        { kSkOrgBril, 0.75f }, { kSkOrgEns, 1.0f }, { kSkOrgV, 0.65f }, { kSkPolyV, 0.0f }, { kSkStrV, 0.0f },
+        { kSkSoloV, 0.0f },
+        { -1, 0.0f } } },
 };
 const int kNumFactoryPresets = (int) (sizeof (kFactoryPresets) / sizeof (kFactoryPresets[0]));
 

@@ -267,7 +267,7 @@ int main (int argc, char** argv)
         e->setParameter (e, kInst, instValue (kOBX));
         pump (0.1);
         NSMenu* m = [(id) panel presetMenu];
-        check ([m numberOfItems] == 10 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Queen"]
+        check ([m numberOfItems] == 13 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Queen"]
                && [[[m itemAtIndex: 1] title] isEqualToString: @"2   Japan"] && [[[m itemAtIndex: 2] title] isEqualToString: @"3   Foxx"]
                && [[[m itemAtIndex: 3] title] isEqualToString: @"4   Tom Sawyer"] && [[[m itemAtIndex: 9] title] isEqualToString: @"10   Jarre Brass"],
                "the OB-X menu lists 1 Queen, 2 Japan, 3 Foxx ... 10 Jarre Brass");
@@ -374,7 +374,7 @@ int main (int argc, char** argv)
         click (win, panel, savePt);
         pump (0.2);
         m = [(id) panel presetMenu];
-        check ([m numberOfItems] == 21 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Full Strings"] && [[[m itemAtIndex: 20] title] isEqualToString: @"21   Strings"], "every instrument has its own menu, working the same way");
+        check ([m numberOfItems] == 23 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Full Strings"] && [[[m itemAtIndex: 22] title] isEqualToString: @"23   Strings"], "every instrument has its own menu, working the same way");
     }
     #undef PICK
     for (int i = 0; i < kNumParams; ++i) e->setParameter (e, i, kParams[i].def);

@@ -106,6 +106,18 @@ MASTER, and the tan readout. A LEVEL LED at top right lights amber while it play
 | Yamaha SK-30 | 9 | Bass and Strings | MANUAL BASS: a 16' solo bass on the lowest 19 keys under STRING 3 (violins) |
 | Yamaha SK-30 | 10 | Big Strings | violas with a 4' poly-synth layer through the ensemble (an owner's SS-30-style stack) |
 | Yamaha SK-30 | 11 | Vangel Blade | Vangelis, "Main Titles" (played on a Yamaha CS-80): two detuned saws, resonant low-pass, slow attack, long release, delayed vibrato. Add a big reverb, as on the record |
+| Minimoog Model D | 12 | Profondo Rosso | Goblin, Profondo Rosso (1975, Minimoog among the gear): the driving, biting Moog bass line |
+| Minimoog Model D | 13 | Suspiria Moog | Goblin, Suspiria (1977, Minimoog and a big Moog): a dark, detuned, resonant growl with a breath of noise |
+| Minimoog Model D | 14 | Giallo Lead | a late-70s giallo lead: a wailing square with emphasis, slow glide |
+| Oberheim OB-X | 11 | Zombi 2 | Fabio Frizzi, Zombi 2 (1979, polysynths of the Prophet / Jupiter / CS-80 kind): the heavy, dark synth theme |
+| Oberheim OB-X | 12 | The Beyond | Fabio Frizzi, The Beyond (1981): a ghostly, vocal-like pad that slowly breathes |
+| Oberheim OB-X | 13 | Tenebre | Goblin / Simonetti, Tenebre (1982; Simonetti is credited with an OB-X): the bright, driving arpeggio voice |
+| Hammond B-3 | 1 | Profondo Organ | Goblin, Profondo Rosso: a full, gothic organ, chorus vibrato and a slow Leslie |
+| Hammond B-3 | 2 | Suspiria Organ | Goblin, Suspiria (Hammond B-3 among the gear): a dark, low organ, deep vibrato, Leslie stopped and driven |
+| Hohner Clavinet D6 | 3 | Suspiria Clav | Goblin, Suspiria (Hohner Clavinet among the gear): a dark, muted, plucked clav |
+| Crumar Multiman | 21 | Giallo Strings | eerie, thin violins with slow, wide vibrato, for 70s Italian thrillers |
+| Crumar Multiman | 22 | Fulci Brass | an ominous low brass swell with emphasis under cellos, for Lucio Fulci-style horror |
+| Yamaha SK-30 | 12 | Elka Organ | Goblin used an Elka organ on Profondo Rosso and Suspiria: a reedy, eerie combo organ with the ensemble |
 | Solina String Ensemble | 1 | Moroder | "I Feel Love": the record's pad is Moog modular; this is the Solina's take on it |
 | Solina String Ensemble | 2 | Shine On | Pink Floyd, Wish You Were Here (Rick Wright): full, slow-swelling strings that ring on |
 | Solina String Ensemble | 3 | Dream Weaver | Gary Wright, "Dream Weaver": soft upper strings, gentle swell |
