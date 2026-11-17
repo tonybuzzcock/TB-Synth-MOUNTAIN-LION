@@ -24,6 +24,9 @@
 //   OmniEngine      ARP Omni: divide-down generator; violins, violas, cellos and
 //                   bass, the synthesizer through one shared ladder VCF / ADSR,
 //                   monophonic bass on the bottom 20 keys, string phasers
+//   SK30Engine      Yamaha SK-30: 7-note organ (nine tone levers, percussion),
+//                   poly-synth and strings with vibrato, a solo synthesizer,
+//                   tremolo / ensemble
 
 #ifndef TBSYNTH_ENGINES_H
 #define TBSYNTH_ENGINES_H
@@ -382,6 +385,58 @@ private:
     double ensPh[3], choPh[3];
     OnePole ensLp, dcBlock;
     Smooth masterS;
+};
+
+//==============================================================================
+class SK30Engine : public Engine
+{
+public:
+    enum { kLowKey = 36, kKeys = 61, kVoices = 7 };   // C2 .. C7; 7-note polyphony
+    SK30Engine();
+    void prepare (double sr);
+    void setParam (int p, float v);
+    void noteOn (int note, int vel);
+    void noteOff (int note);
+    void allNotesOff();
+    void silence();
+    void sustainPedal (bool down);
+    void render (float* out, int n);
+
+private:
+    void updateEnv();
+    void updateBrill();
+    void updateSolo (bool newKey);
+    int  soloKey() const;
+    int  findSlot (int note);
+    void releaseKey (int k);
+    double effect (Delay<4096>& d, double x, bool ens, bool trem);
+    double sr;
+    float pv[kNumParams];
+    double topOrg[12], topPoly[12], topPoly2[12];
+    bool down[kKeys], held[kKeys], pedal;
+    int slotNote[kVoices];
+    bool slotKey[kVoices];
+    unsigned int slotAge[kVoices];
+    int orgSlotsHeld;
+    unsigned int clock;
+    Envelope orgEnv[kVoices], percEnv[kVoices], polyEnv[kVoices], strEnv[kVoices], fEnv[kVoices];
+    SVF filt[kVoices];
+    double click[kVoices];
+    double vibPh, vibAmt, vibRise;
+    // solo
+    int soNote;
+    double soPitch, soTarget, soGlide, soPh, soLfoPh;
+    bool soGate;
+    double soDrone;
+    Envelope soEnv;
+    SVF soFilt;
+    // effects
+    double tremRate, tremPh, ensPh1, ensPh2;
+    int lastOrgSel;
+    Delay<4096> orgDel, polyDel, strDel;
+    Biquad celloLp, celloPk, violaLp, violaPk, violinHp, violinPk, violinLp, clickBp, orgShelf;
+    OnePole orgLp, polyLp, strLp, dcBlock;
+    Noise noise;
 };
 
 } // namespace tbsyn

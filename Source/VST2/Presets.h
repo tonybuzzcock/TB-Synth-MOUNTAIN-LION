@@ -31,6 +31,7 @@ class PresetStore
 {
 public:
     PresetStore();
+    ~PresetStore();
 
     void setPath (const std::string& p) { path = p; }
     const std::string& getPath() const { return path; }
@@ -54,7 +55,9 @@ private:
     std::string path;
     bool used[kNumPresetSlots];
     std::string names[kNumPresetSlots];
-    float vals[kNumPresetSlots][kNumParams];
+    float (*vals)[kNumParams];      // on the heap: about 1.3 MB, too big for a thread's stack
+    PresetStore (const PresetStore&);
+    PresetStore& operator= (const PresetStore&);
 };
 
 } // namespace tbsyn

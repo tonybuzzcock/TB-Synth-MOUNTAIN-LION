@@ -126,7 +126,7 @@ int main (int argc, char** argv)
     // ------------------------------------------------------------ the INSTRUMENT menu's arrows, every page
     std::printf ("\nInstrument pages\n");
     {
-        static const char* const file[kNumInstruments] = { "minimoog", "obx", "solina", "wurlitzer", "hammond", "cembalet", "clavinet", "multiman", "omni" };
+        static const char* const file[kNumInstruments] = { "minimoog", "obx", "solina", "wurlitzer", "hammond", "cembalet", "clavinet", "multiman", "omni", "sk30" };
         bool stepped = true;
         std::vector<NSData*> pages;
         for (int k = 0; k < kNumInstruments; ++k)

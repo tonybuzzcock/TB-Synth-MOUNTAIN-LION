@@ -56,7 +56,7 @@ namespace
 }
 
 PresetStore::PresetStore()
-    : path (defaultPath())
+    : path (defaultPath()), vals (new float[kNumPresetSlots][kNumParams])
 {
     for (int s = 0; s < kNumPresetSlots; ++s)
     {
@@ -178,6 +178,11 @@ bool PresetStore::load()
     if (! headerOk) for (int s2 = 0; s2 < kNumPresetSlots; ++s2) { used[s2] = false; names[s2].clear(); }
     placeFactory();
     return headerOk;
+}
+
+PresetStore::~PresetStore()
+{
+    delete[] vals;
 }
 
 bool PresetStore::isFactory (int slot)

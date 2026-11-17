@@ -20,7 +20,7 @@
 namespace tbsyn
 {
 
-enum Instrument { kMinimoog = 0, kOBX, kSolina, kWurlitzer, kHammond, kCembalet, kClavinet, kMultiman, kOmni, kNumInstruments };
+enum Instrument { kMinimoog = 0, kOBX, kSolina, kWurlitzer, kHammond, kCembalet, kClavinet, kMultiman, kOmni, kSK30, kNumInstruments };
 
 enum Param
 {
@@ -79,6 +79,16 @@ enum Param
     kOmVcfF, kOmVcfR, kOmVcfEnv, kOmVcfLfo, kOmLfo,
     kOmA, kOmD, kOmS, kOmR,
     kOmMix, kOmBassV, kOmMaster,
+
+    // Yamaha SK-30 Symphonic Ensemble: organ, poly-synth / strings, solo synthesizer, output
+    kSkOrgSel, kSkO16, kSkO8, kSkO513, kSkO4, kSkO223, kSkO2, kSkO135, kSkO113, kSkO1,
+    kSkPerc2, kSkPerc3, kSkPerc5, kSkPercDec, kSkOrgDec, kSkOrgSus, kSkOrgDS, kSkOrgBril, kSkOrgTrem, kSkOrgEns,
+    kSkStrSel, kSkPolySel, kSkMode, kSkFeet, kSkWave, kSkCut, kSkRes, kSkEgDp, kSkEgA, kSkEgD,
+    kSkPBril, kSkSlow, kSkVibDl, kSkVibSp, kSkVibDp, kSkPSus, kSkPSusT, kSkDetune, kSkPTrem, kSkPEns,
+    kSkTrFast,
+    kSkSoMode, kSkSoFeet, kSkSoWave, kSkSoPW, kSkSoPwm, kSkSoCut, kSkSoRes, kSkSoMod, kSkSoEgDp,
+    kSkSoVca, kSkSoA, kSkSoD, kSkSoS, kSkSoR, kSkSoLfo, kSkSoTune, kSkSoPorta, kSkSoGlide,
+    kSkOrgV, kSkPolyV, kSkStrV, kSkSoloV,
 
     kNumParams
 };
@@ -293,18 +303,83 @@ const ParamInfo kParams[kNumParams] = {
     { "OmMix",    "STRING / SYNTH MIX", kOmni, 0, 0.35f, kUDial, 0 },
     { "OmBassV",  "BASS VOLUME",    kOmni, 0, 0.7f, kUDial, 0 },
     { "OmMaster", "MASTER VOLUME",  kOmni, 0, 0.7f, kUDial, 0 },
+
+    // Yamaha SK-30: power-on presets ORGAN 1, POLY-SYNTH 1, STRING 1; organ up, the rest down
+    { "SkOrgSel", "ORGAN",          kSK30, 5, 0.25f, kUChoice, "OFF|1|2|3|MAN" },
+    { "SkO16",    "ORGAN 16'",      kSK30, 0, 0.8f, kUDial, 0 },
+    { "SkO8",     "ORGAN 8'",       kSK30, 0, 0.8f, kUDial, 0 },
+    { "SkO513",   "ORGAN 5 1/3'",   kSK30, 0, 0.0f, kUDial, 0 },
+    { "SkO4",     "ORGAN 4'",       kSK30, 0, 0.6f, kUDial, 0 },
+    { "SkO223",   "ORGAN 2 2/3'",   kSK30, 0, 0.0f, kUDial, 0 },
+    { "SkO2",     "ORGAN 2'",       kSK30, 0, 0.4f, kUDial, 0 },
+    { "SkO135",   "ORGAN 1 3/5'",   kSK30, 0, 0.0f, kUDial, 0 },
+    { "SkO113",   "ORGAN 1 1/3'",   kSK30, 0, 0.0f, kUDial, 0 },
+    { "SkO1",     "ORGAN 1'",       kSK30, 0, 0.0f, kUDial, 0 },
+    { "SkPerc2",  "PERCUSSION 2ND", kSK30, 0, 0.0f, kUDial, 0 },
+    { "SkPerc3",  "PERCUSSION 3RD", kSK30, 0, 0.0f, kUDial, 0 },
+    { "SkPerc5",  "PERCUSSION 5TH", kSK30, 0, 0.0f, kUDial, 0 },
+    { "SkPrcDec", "PERC. DECAY TIME", kSK30, 0, 0.5f, kUSecs, 0 },
+    { "SkOrgDec", "ORGAN DECAY",    kSK30, 2, 0.0f, kUSwitch, 0 },
+    { "SkOrgSus", "ORGAN SUSTAIN",  kSK30, 2, 0.0f, kUSwitch, 0 },
+    { "SkOrgDS",  "ORGAN DECAY / SUSTAIN", kSK30, 0, 0.5f, kUSecs, 0 },
+    { "SkOrgBri", "ORGAN BRILLIANCE", kSK30, 0, 0.5f, kUDial, 0 },
+    { "SkOrgTrm", "ORGAN TREMOLO",  kSK30, 2, 0.0f, kUSwitch, 0 },
+    { "SkOrgEns", "ORGAN ENSEMBLE", kSK30, 2, 0.0f, kUSwitch, 0 },
+    { "SkStrSel", "STRINGS",        kSK30, 4, 1.0f / 3.0f, kUChoice, "OFF|1|2|3" },
+    { "SkPlySel", "POLY-SYNTH",     kSK30, 5, 0.25f, kUChoice, "OFF|1|2|3|MAN" },
+    { "SkMode",   "MODE",           kSK30, 2, 0.0f, kUChoice, "I|II" },
+    { "SkFeet",   "FEET",           kSK30, 3, 0.5f, kUChoice, "16'|8'|4'" },
+    { "SkWave",   "WAVE",           kSK30, 2, 0.0f, kUChoice, "SAW|SQUARE" },
+    { "SkCut",    "CUT OFF FREQ",   kSK30, 0, 0.4f, kUHz, 0 },
+    { "SkRes",    "RESONANCE",      kSK30, 0, 0.15f, kUDial, 0 },
+    { "SkEgDp",   "EG DEPTH",       kSK30, 0, 0.5f, kUDial, 0 },
+    { "SkEgA",    "EG ATTACK TIME", kSK30, 0, 0.35f, kUSecs, 0 },
+    { "SkEgD",    "EG DECAY TIME",  kSK30, 0, 0.5f, kUSecs, 0 },
+    { "SkPBril",  "POLY BRILLIANCE", kSK30, 0, 0.5f, kUDial, 0 },
+    { "SkSlow",   "SLOW ATTACK",    kSK30, 2, 0.0f, kUSwitch, 0 },
+    { "SkVibDl",  "VIBRATO DELAY",  kSK30, 0, 0.3f, kUSecs, 0 },
+    { "SkVibSp",  "VIBRATO SPEED",  kSK30, 0, 0.5f, kUHz, 0 },
+    { "SkVibDp",  "VIBRATO DEPTH",  kSK30, 0, 0.0f, kUDial, 0 },
+    { "SkPSus",   "POLY SUSTAIN",   kSK30, 2, 0.0f, kUSwitch, 0 },
+    { "SkPSusT",  "POLY SUSTAIN TIME", kSK30, 0, 0.5f, kUSecs, 0 },
+    { "SkDetune", "POLY DETUNE",    kSK30, 0, 0.6f, kUCents, 0 },
+    { "SkPTrem",  "POLY TREMOLO",   kSK30, 2, 0.0f, kUSwitch, 0 },
+    { "SkPEns",   "POLY ENSEMBLE",  kSK30, 2, 0.0f, kUSwitch, 0 },
+    { "SkTrFast", "TREMOLO SPEED",  kSK30, 2, 0.0f, kUChoice, "SLOW|FAST" },
+    { "SkSoMode", "SOLO MODE",      kSK30, 2, 0.0f, kUChoice, "NORMAL|BASS" },
+    { "SkSoFeet", "SOLO FEET",      kSK30, 6, 0.6f, kUChoice, "64'|32'|16'|8'|5 1/3'|4'" },
+    { "SkSoWave", "SOLO WAVE",      kSK30, 0, 0.0f, kUDial, 0 },
+    { "SkSoPW",   "SOLO PULSE WIDTH", kSK30, 0, 0.0f, kUPct, 0 },
+    { "SkSoPwm",  "SOLO PW MOD",    kSK30, 3, 0.0f, kUChoice, "MAN|LFO|EG" },
+    { "SkSoCut",  "SOLO CUT OFF FREQ", kSK30, 0, 0.55f, kUHz, 0 },
+    { "SkSoRes",  "SOLO RESONANCE", kSK30, 0, 0.2f, kUDial, 0 },
+    { "SkSoMod",  "SOLO MODULATION", kSK30, 0, 0.0f, kUDial, 0 },
+    { "SkSoEgDp", "SOLO EG DEPTH",  kSK30, 0, 0.4f, kUDial, 0 },
+    { "SkSoVca",  "SOLO VCA",       kSK30, 3, 1.0f, kUChoice, "HOLD|GATE|EG" },
+    { "SkSoA",    "SOLO ATTACK",    kSK30, 0, 0.1f, kUSecs, 0 },
+    { "SkSoD",    "SOLO DECAY",     kSK30, 0, 0.4f, kUSecs, 0 },
+    { "SkSoS",    "SOLO SUSTAIN",   kSK30, 0, 0.7f, kUDial, 0 },
+    { "SkSoR",    "SOLO RELEASE",   kSK30, 0, 0.3f, kUSecs, 0 },
+    { "SkSoLfo",  "SOLO LFO SPEED", kSK30, 0, 0.35f, kUHz, 0 },
+    { "SkSoTune", "SOLO TUNE",      kSK30, 0, 500.0f / 1200.0f, kUCents, 0 },
+    { "SkSoPort", "PORTAMENTO",     kSK30, 0, 0.0f, kUSecs, 0 },
+    { "SkSoGlid", "GLIDE DEPTH",    kSK30, 0, 0.5f, kUSemis, 0 },
+    { "SkOrgV",   "ORGAN VOLUME",   kSK30, 0, 0.7f, kUDial, 0 },
+    { "SkPolyV",  "POLY-SYNTH VOLUME", kSK30, 0, 0.0f, kUDial, 0 },
+    { "SkStrV",   "STRINGS VOLUME", kSK30, 0, 0.0f, kUDial, 0 },
+    { "SkSoloV",  "SOLO VOLUME",    kSK30, 0, 0.0f, kUDial, 0 },
 };
 
 inline const char* instrumentName (int k)
 {
     static const char* const n[kNumInstruments] = {
         "MINIMOOG MODEL D", "OBERHEIM OB-X", "SOLINA STRING ENSEMBLE", "WURLITZER 200A",
-        "HAMMOND B-3", "HOHNER CEMBALET", "HOHNER CLAVINET D6", "CRUMAR MULTIMAN", "ARP OMNI" };
+        "HAMMOND B-3", "HOHNER CEMBALET", "HOHNER CLAVINET D6", "CRUMAR MULTIMAN", "ARP OMNI", "YAMAHA SK-30" };
     return (k >= 0 && k < kNumInstruments) ? n[k] : "";
 }
 inline const char* instrumentShort (int k)    // <= 8 characters
 {
-    static const char* const n[kNumInstruments] = { "Minimoog", "OB-X", "Solina", "Wurli", "B-3", "Cembalet", "Clavinet", "Multiman", "Omni" };
+    static const char* const n[kNumInstruments] = { "Minimoog", "OB-X", "Solina", "Wurli", "B-3", "Cembalet", "Clavinet", "Multiman", "Omni", "SK-30" };
     return (k >= 0 && k < kNumInstruments) ? n[k] : "";
 }
 
@@ -373,6 +448,24 @@ namespace map
     inline double omLfo (double v)        { return expMap (v, 0.1, 20.0); }      // about 0.1 - 20 Hz (spec)
     inline double omAttack (double v)     { return expMap (v, 0.002, 5.0); }
     inline double omDecay (double v)      { return expMap (v, 0.01, 8.0); }
+
+    // Yamaha SK-30 (owner's manual ranges where given, the rest estimates)
+    inline double skDS (double v)         { return expMap (v, 0.03, 1.6); }      // decay / sustain lever 0.03 - 1.6 s (spec)
+    inline double skPercDec (double v)    { return expMap (v, 0.05, 0.8); }      // percussion decay, 0.8 s max (spec)
+    inline double skCut (double v)        { return expMap (v, 40.0, 12000.0); }
+    inline double skEgA (double v)        { return expMap (v, 0.003, 3.0); }
+    inline double skEgD (double v)        { return expMap (v, 0.03, 10.0); }
+    inline double skVibDelay (double v)   { return 3.2 * v; }                    // 0 - 3.2 s (spec)
+    inline double skVibSpeed (double v)   { return 3.0 + 6.0 * v; }
+    inline double skDetune (double v)     { return (v - 0.5) * 118.0; }          // +/- 59 cents (spec)
+    inline double skSoCut (double v)      { return expMap (v, 30.0, 15000.0); }
+    inline double skSoA (double v)        { return expMap (v, 0.003, 3.0); }     // 3 ms - 3 s (spec)
+    inline double skSoDR (double v)       { return expMap (v, 0.03, 30.0); }     // 30 ms - 30 s (spec)
+    inline double skSoLfo (double v)      { return expMap (v, 0.1, 100.0); }     // 0.1 - 100 Hz (spec)
+    inline double skSoTune (double v)     { return v * 1200.0 - 500.0; }         // -500 .. +700 cents (spec)
+    inline double skSoPW (double v)       { return 0.5 + 0.35 * v; }             // 50 - 85 % (spec)
+    inline double skPorta (double v)      { return v < 0.01 ? 0.0 : expMap (v, 0.01, 3.0); }
+    inline double skGlide (double v)      { return (v - 0.5) * 24.0; }           // semitones from above / below
 
     // Hammond drawbars: each step about 3 dB, 0 = off
     inline double drawbarGain (int k)     { return k <= 0 ? 0.0 : std::pow (10.0, -3.0 * (8 - k) / 20.0); }

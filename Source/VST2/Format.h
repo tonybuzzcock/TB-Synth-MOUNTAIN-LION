@@ -62,6 +62,22 @@ inline double realValue (int p, double v)
         case kOmLfo: return map::omLfo (v);
         case kOmA: return map::omAttack (v);
         case kOmD: case kOmR: return map::omDecay (v);
+        case kSkOrgDS: case kSkPSusT: return map::skDS (v);
+        case kSkPercDec: return map::skPercDec (v);
+        case kSkCut: return map::skCut (v);
+        case kSkEgA: return map::skEgA (v);
+        case kSkEgD: return map::skEgD (v);
+        case kSkVibDl: return map::skVibDelay (v);
+        case kSkVibSp: return map::skVibSpeed (v);
+        case kSkDetune: return map::skDetune (v);
+        case kSkSoCut: return map::skSoCut (v);
+        case kSkSoA: return map::skSoA (v);
+        case kSkSoD: case kSkSoR: return map::skSoDR (v);
+        case kSkSoLfo: return map::skSoLfo (v);
+        case kSkSoTune: return map::skSoTune (v);
+        case kSkSoPW: return map::skSoPW (v) * 100.0;
+        case kSkSoPorta: return map::skPorta (v);
+        case kSkSoGlide: return map::skGlide (v);
         default: return v;
     }
 }

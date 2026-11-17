@@ -556,6 +556,67 @@ int main (int argc, char** argv)
         check (cent[1] > cent[0] * 2.0, "Omni VCF: the ADSR opens the filter");
     }
     {
+        // SK-30: organ 8' alone is in tune; 7-note polyphony; STRING 3 an octave above STRING 2;
+        // the solo synthesizer plays the highest key of the upper three octaves
+        defaults (s);
+        selectInst (s, kSK30);
+        s.setParam (kSkOrgSel, 1.0f);
+        const int lv[9] = { kSkO16, kSkO8, kSkO513, kSkO4, kSkO223, kSkO2, kSkO135, kSkO113, kSkO1 };
+        for (int i = 0; i < 9; ++i) s.setParam (lv[i], i == 1 ? 1.0f : 0.0f);
+        std::vector<float> y;
+        s.midi (0x90, 69, 100);
+        render (s, y, 0, SR / 2);
+        s.midi (0x80, 69, 0);
+        const double a4 = pitchOf (y, SR / 8, SR / 2, 440.0);
+        render (s, y, 0, SR / 2);
+        std::printf ("  SK-30 organ 8' A4: %.2f Hz\n", a4);
+        check (std::fabs (a4 - 440.0) < 2.0, "SK-30 organ in tune");
+        // eight keys: the first is taken for the eighth
+        y.clear();
+        const int keys[8] = { 48, 52, 55, 60, 64, 67, 71, 74 };
+        for (int k = 0; k < 7; ++k) s.midi (0x90, keys[k], 100);
+        render (s, y, 0, SR / 4);
+        const double seven = rmsOf (y, SR / 8, SR / 4);
+        s.midi (0x90, keys[7], 100);
+        render (s, y, SR / 4, SR / 4);
+        const double eight = rmsOf (y, SR * 3 / 8, SR / 2);
+        for (int k = 0; k < 8; ++k) s.midi (0x80, keys[k], 0);
+        render (s, y, 0, SR / 2);
+        std::printf ("  SK-30 seven keys %.1f dB, eight keys %.1f dB\n", db (seven), db (eight));
+        check (std::fabs (db (eight) - db (seven)) < 2.5, "SK-30: 7-note polyphony (the eighth key takes a channel)");
+        // strings
+        double hz[2];
+        for (int k = 0; k < 2; ++k)
+        {
+            defaults (s);
+            selectInst (s, kSK30);
+            s.setParam (kSkOrgV, 0.0f); s.setParam (kSkStrV, 0.8f); s.setParam (kSkStrSel, k ? 1.0f : 2.0f / 3.0f);
+            y.clear();
+            s.midi (0x90, 57, 100);
+            render (s, y, 0, SR / 2);
+            s.midi (0x80, 57, 0);
+            hz[k] = pitchOf (y, SR / 4, SR / 2, k ? 440.0 : 220.0);
+            render (s, y, 0, SR);
+        }
+        std::printf ("  SK-30 A3 on STRING 2: %.1f Hz, STRING 3: %.1f Hz\n", hz[0], hz[1]);
+        check (std::fabs (hz[0] - 220.0) < 2.0 && std::fabs (hz[1] - 440.0) < 3.0, "SK-30 strings: each preset an octave higher");
+        // solo: high-note priority on the upper three octaves, nothing below
+        defaults (s);
+        selectInst (s, kSK30);
+        s.setParam (kSkOrgV, 0.0f); s.setParam (kSkSoloV, 0.8f); s.setParam (kSkSoVca, 0.5f); s.setParam (kSkSoCut, 0.9f);
+        y.clear();
+        s.midi (0x90, 48, 100);
+        render (s, y, 0, SR / 4);
+        const double low = peakOf (y, 0, SR / 4);
+        s.midi (0x90, 69, 100); s.midi (0x90, 64, 100);
+        render (s, y, SR / 4, SR / 2);
+        const double solo = pitchOf (y, SR / 2, SR * 3 / 4, 440.0);
+        s.midi (0x80, 48, 0); s.midi (0x80, 69, 0); s.midi (0x80, 64, 0);
+        render (s, y, 0, SR / 2);
+        std::printf ("  SK-30 solo with E4 + A4 held: %.1f Hz\n", solo);
+        check (low < 1e-6 && std::fabs (solo - 440.0) < 2.0, "SK-30 solo: the upper three octaves, high-note priority");
+    }
+    {
         // instrument switch while a note sounds: no jump bigger than the signal itself
         defaults (s);
         selectInst (s, kOBX);

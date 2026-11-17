@@ -26,6 +26,7 @@ Synth::Synth()
     eng[kClavinet] = new ClavEngine();
     eng[kMultiman] = new MultimanEngine();
     eng[kOmni] = new OmniEngine();
+    eng[kSK30] = new SK30Engine();
     for (int i = 0; i < kNumParams; ++i) pv[i] = kParams[i].def;
     cur = want = instIndex (pv[kInst]);
     master = map::masterGain (pv[kMaster]);

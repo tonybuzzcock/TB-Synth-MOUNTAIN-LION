@@ -1,6 +1,6 @@
 # TB Synth (Mountain Lion VST)
 
-Nine classic keyboards in one VST 2.4 instrument, for **Mac OS X 10.8.5** (64-bit Intel), played in
+Ten classic keyboards in one VST 2.4 instrument, for **Mac OS X 10.8.5** (64-bit Intel), played in
 Pro Tools 11 through Blue Cat PatchWork. Pick the instrument from the **INSTRUMENT** menu at the top of the
 panel (click it for the list, or step with the arrows):
 
@@ -15,6 +15,7 @@ panel (click it for the list, or step with the arrows):
 | **Hohner Clavinet D6** | 60 struck strings, two pickups (C/D, A/B), BRILLIANT / TREBLE / MEDIUM / SOFT, mute slider |
 | **Crumar Multiman (1975)** | 61 keys split LOWER / UPPER; BRASS (transistor ladder with ATTACK, DECAY, EMPHASIS, CONTOUR, retriggered by every key), PIANO / CLAVICHORD, CELLO / VIOLIN through the ensemble, SUSTAIN LENGTH, VIBRATO, MASTER, BASS PEDALS on the lowest 13 keys |
 | **ARP Omni (1975)** | 49 keys; STRINGS: VIOLINS 4' and VIOLAS 8' (polyphonic), CELLOS 8' and BASS 16' (monophonic, low-note priority, bottom 20 keys), ATTACK, RELEASE, the string phasers; SYNTHESIZER: 4' / 8' polyphonic and BASS 8' / 16', SAW or DYNAMIC PULSE, ENHANCEMENT, one 24 dB ladder VCF (FREQUENCY, RESONANCE, ADSR, LFO) and ADSR retriggered by every key, LFO 0.1 - 20 Hz, CHORUS PHASER; STRING / SYNTH MIX, BASS VOLUME, MASTER, sustain pedal |
+| **Yamaha SK-30 Symphonic Ensemble (1980)** | 61 keys, 7-note ORGAN / POLY-SYNTH / STRINGS from one divide-down generator; ORGAN presets 1-3 or MANUAL with nine tone levers, PERCUSSIVE 2nd / 3rd / 5th, DECAY / SUSTAIN, BRILLIANCE; POLY-SYNTH presets 1-3 or MANUAL (wave, cutoff, resonance, EG), FEET, MODE I / II with DETUNE, SLOW ATTACK, SUSTAIN; STRINGS 1-3 (cello / viola / violin); VIBRATO with delay; SOLO SYNTHESIZER (64' - 4', saw to square, PW and PWM, VCF, HOLD / GATE / EG, ADSR, LFO, portamento, glide, NORMAL / MANUAL BASS); TREMOLO / ENSEMBLE; four section volumes, sustain pedal |
 
 **Mono**, like the originals: the same signal on both outputs, so it works on a mono or stereo
 instrument track. Every control is a host parameter, so a session reopens exactly as it was left.
@@ -64,6 +65,16 @@ MASTER, and the tan readout. A LEVEL LED at top right lights amber while it play
 | ARP Omni | 1 | Joy Division | "Atmosphere" / Closer: violins, violas and cellos through the phasers, slow swell, long release |
 | ARP Omni | 2-10 | Brass, Brass Strings Bass, Shimmer Sweep, Phased Sweep, Sweep Enh Strings, Poly Wah, Harpsichord Bass, Lower Strings, Lucy in the Sky | the nine patches in ARP's Omni-2 owner's manual (1978), set from their names and the Omni's controls (the manual's slider charts weren't readable here) |
 | ARP Omni | 11 | Moving In Stereo | The Cars: Greg Hawkes said every keyboard on the track is the Omni; a dark hollow pad with a slow filter swell |
+| Yamaha SK-30 | 1 | Jazz Organ | Hammond-style 16' / 5 1/3' / 8' with the 3rd percussion, slow tremolo |
+| Yamaha SK-30 | 2 | Gospel Organ | every tone lever out, bright, fast tremolo |
+| Yamaha SK-30 | 3 | Home Organ | ORGAN 3 with the ensemble (the 1981 review's "flat-out" home-organ sound) |
+| Yamaha SK-30 | 4 | Clarinet | POLY-SYNTH 2, the square-wave voice the manual recommends for clarinet, delayed vibrato |
+| Yamaha SK-30 | 5 | Brass Section | MANUAL poly-synth: MODE II detuned saws, the filter following the EG for brass |
+| Yamaha SK-30 | 6 | Symphonic Strings | STRING 2 (violas), MODE II, sustain and delayed vibrato |
+| Yamaha SK-30 | 7 | Cello Section | STRING 1 (cellos), long sustain |
+| Yamaha SK-30 | 8 | Solo Lead | the solo synthesizer: 8' saw, a little resonance, portamento |
+| Yamaha SK-30 | 9 | Bass and Strings | MANUAL BASS: a 16' solo bass on the lowest 19 keys under STRING 3 (violins) |
+| Yamaha SK-30 | 10 | Big Strings | violas with a 4' poly-synth layer through the ensemble (an owner's SS-30-style stack) |
 | Solina String Ensemble | 1 | Moroder | "I Feel Love": the record's pad is Moog modular; this is the Solina's take on it |
 | Solina String Ensemble | 2 | Shine On | Pink Floyd, Wish You Were Here (Rick Wright): full, slow-swelling strings that ring on |
 | Solina String Ensemble | 3 | Dream Weaver | Gary Wright, "Dream Weaver": soft upper strings, gentle swell |
@@ -92,6 +103,7 @@ first in their instrument's menu and can't be saved over or renamed. Presets sav
 | Oberheim OB-X | OB-X owner's and service manual descriptions (8 voices, 2 oscillators, 2-pole filter, two envelopes) |
 | Crumar Multiman | Crumar *Multiman* schematic diagram, DWG 1-12, 7/4/75 (`Docs/Crumar_Multiman_1975_schematic.pdf`): block diagram, tone generator and dividers, gates and key contacts (split buses P1/P2, 8A/8B, D1/D2), brass ladder TR1-TR10 with 47 nF stages and its A/D envelope, piano / clavichord, strings, sustain and vibrato, delay lines, bass pedals, panel legends |
 | ARP Omni | ARP *Omni Model 2480 Service Manual* (Feb. 1977, doc. 90020000): product description and control functions, simplified block diagram (master top-octave generator, 49 divided lines, string 4' / 8' and bass voicing, 4075 24 dB VCF on the summed 4' / 8' polyphonic and 8' / 16' bass pitches, ADSR, LFO, phaser), trim procedures; patch names from the *Omni-2 Owner's Manual* (1978) |
+| Yamaha SK-30 | Yamaha *SK30 Owner's Manual*: sections and controls, keyboard modes, 7-note polyphony, ranges (organ decay 0.8 s max, decay / sustain 0.03 - 1.6 s, slow attack 3 / 80 ms, vibrato delay 0 - 3.2 s and 30 cents, poly DETUNE +/- 59 cents, solo feet 64' - 4', PW 50 - 85 %, ADSR 3 ms - 3 s / 30 ms - 30 s, LFO 0.1 - 100 Hz, SOLO TUNE -500 .. +700 cents); the 1981 review (synthforbreakfast.nl) for the presets' character |
 
 The PDFs themselves couldn't be downloaded into the build environment, so the values above were read from
 them online; no component-level schematic was transcribed. These are behavioural models built from
@@ -133,6 +145,13 @@ the documented behaviour and specifications, to be tuned by ear (as with the oth
   at 0.63 / 0.81 / 1.07 Hz, CHORUS PHASER at 0.45 x those rates and deeper; voicing filters. The synth
   bass goes through the VCF with the polyphonic pitches, as the service manual describes. The LFO range and the 4075 ladder
   are from the service manual.
+
+- **Yamaha SK-30**: the organ's tone (sines at the nine footages; the real one is an early FM circuit),
+  preset lever settings for ORGAN 1-3, POLY-SYNTH 1-3 voicings, string voicing filters, the 12 dB
+  filters, poly cutoff 40 Hz - 12 kHz and EG 3 ms - 3 s / 30 ms - 10 s, vibrato speed 3 - 9 Hz, string
+  attack 90 ms, tremolo 0.8 / 6.7 Hz, the ensembles' delays. Touch response (aftertouch) and the
+  keyboard split aren't modelled. The panel uses TB Synth's knobs, tabs and compact levers rather
+  than copying Yamaha's.
 
 ## Install (Mac Pro, OS X 10.8.5)
 

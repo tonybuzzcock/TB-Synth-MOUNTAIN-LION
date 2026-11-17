@@ -596,6 +596,24 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
                 if (c.label[0]) drawText (c.label, boldFont (8.5), ink(), x, y - 42.0, 0.8);
                 break;
             case kVSlider:
+            if (c.style == kLever)
+            {
+                // a compact tone lever (SK-30): slot, ticks at 0 / 5 / 10 and between, no numbers
+                NSBezierPath* slot = [NSBezierPath bezierPathWithRoundedRect: NSMakeRect (x - 2.5, y - c.r - 8.0, 5.0, 2.0 * c.r + 16.0) xRadius: 2.5 yRadius: 2.5];
+                [rgb (24, 23, 22) set];
+                [slot fill];
+                for (int k = 0; k <= 10; ++k)
+                {
+                    const CGFloat ty = vSliderY (c, k / 10.0f);
+                    const bool major = k == 0 || k == 5 || k == 10;
+                    [ink() set];
+                    line (x - (major ? 14.0 : 12.0), ty, x - 8.0, ty, major ? 1.2 : 0.7);
+                    line (x + 8.0, ty, x + (major ? 14.0 : 12.0), ty, major ? 1.2 : 0.7);
+                }
+                drawLabel (c.label, boldFont (7.0), ink(), x, y + c.r + (twoLines (c.label) ? 21.0 : 17.0), 8.5);
+                break;
+            }
+            else
             {
                 NSBezierPath* slot = [NSBezierPath bezierPathWithRoundedRect: NSMakeRect (x - 3.0, y - c.r - 12.0, 6.0, 2.0 * c.r + 24.0) xRadius: 3.0 yRadius: 3.0];
                 [rgb (24, 23, 22) set];
@@ -875,7 +893,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 - (void) drawVSlider: (const Ctl&) c value: (float) v
 {
     const CGFloat y = vSliderY (c, v);
-    const CGFloat w = 38.0, h = 20.0;
+    const CGFloat w = c.style == kLever ? 22.0 : 38.0, h = c.style == kLever ? 12.0 : 20.0;
     const NSRect r = NSMakeRect (c.x - w * 0.5, y - h * 0.5, w, h);
     NSBezierPath* cp = [NSBezierPath bezierPathWithRoundedRect: r xRadius: 2.5 yRadius: 2.5];
     shadowFill (cp, rgb (150, 146, 132), 2.0, -4.0, 5.0, 0.6);
@@ -1105,7 +1123,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
                 if (std::fabs (dx) <= slideSpacing (n) * (n - 1) * 0.5 + 18.0 && std::fabs (dy) <= 14.0) return i;
                 break;
             }
-            case kVSlider:  if (std::fabs (dx) <= 22.0 && dy >= -c.r - 14.0 && dy <= c.r + 14.0) return i; break;
+            case kVSlider:  if (std::fabs (dx) <= (c.style == kLever ? 15.0 : 22.0) && dy >= -c.r - 14.0 && dy <= c.r + 14.0) return i; break;
             default: break;
         }
     }

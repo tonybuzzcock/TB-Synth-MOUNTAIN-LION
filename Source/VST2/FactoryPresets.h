@@ -246,6 +246,66 @@ const FactoryPreset kFactoryPresets[] = {
         { kOmVcfF, 0.33f }, { kOmVcfR, 0.35f }, { kOmVcfEnv, 0.55f }, { kOmVcfLfo, 0.1f }, { kOmLfo, 0.25f },
         { kOmA, 0.7f }, { kOmD, 0.7f }, { kOmS, 0.6f }, { kOmR, 0.65f }, { kOmMix, 0.7f }, { kOmBassV, 0.6f },
         { -1, 0.0f } } },
+    // ---- Yamaha SK-30: no published patch settings were readable (the manual's
+    // SOUND MEMO pages are blank charts), so these are built from the manual's
+    // advice and the 1981 review's descriptions (estimates).
+    // Hammond-style 16' / 5 1/3' / 8' with the 3rd percussion, slow tremolo
+    { kSK30, 0, "Jazz Organ", {
+        { kSkOrgSel, 1.0f }, { kSkO16, 1.0f }, { kSkO8, 1.0f }, { kSkO513, 1.0f }, { kSkO4, 0.0f },
+        { kSkO2, 0.0f }, { kSkPerc3, 0.7f }, { kSkPercDec, 0.35f }, { kSkOrgTrem, 1.0f }, { kSkTrFast, 0.0f },
+        { kSkOrgV, 0.75f },
+        { -1, 0.0f } } },
+    // every tone lever out, bright, fast tremolo
+    { kSK30, 1, "Gospel Organ", {
+        { kSkOrgSel, 1.0f }, { kSkO16, 1.0f }, { kSkO8, 1.0f }, { kSkO513, 1.0f }, { kSkO4, 1.0f },
+        { kSkO223, 0.8f }, { kSkO2, 0.8f }, { kSkO135, 0.5f }, { kSkO113, 0.6f }, { kSkO1, 0.9f },
+        { kSkOrgBril, 0.65f }, { kSkOrgTrem, 1.0f }, { kSkTrFast, 1.0f }, { kSkOrgV, 0.62f },
+        { -1, 0.0f } } },
+    // ORGAN 3 with the ensemble (the 1981 review's "flat-out" home-organ sound)
+    { kSK30, 2, "Home Organ", {
+        { kSkOrgSel, 0.75f }, { kSkOrgEns, 1.0f }, { kSkOrgV, 0.7f },
+        { -1, 0.0f } } },
+    // POLY-SYNTH 2, the square-wave voice the manual recommends for clarinet, delayed vibrato
+    { kSK30, 3, "Clarinet", {
+        { kSkOrgV, 0.0f }, { kSkPolySel, 0.5f }, { kSkPolyV, 0.75f }, { kSkVibDp, 0.35f }, { kSkVibDl, 0.3f },
+        { kSkVibSp, 0.45f },
+        { -1, 0.0f } } },
+    // MANUAL poly-synth: MODE II detuned saws, the filter following the EG for brass
+    { kSK30, 4, "Brass Section", {
+        { kSkOrgV, 0.0f }, { kSkPolySel, 1.0f }, { kSkWave, 0.0f }, { kSkMode, 1.0f }, { kSkDetune, 0.62f },
+        { kSkCut, 0.32f }, { kSkRes, 0.2f }, { kSkEgDp, 0.7f }, { kSkEgA, 0.45f }, { kSkEgD, 0.6f },
+        { kSkPBril, 0.55f }, { kSkPolyV, 0.75f },
+        { -1, 0.0f } } },
+    // STRING 2 (violas), MODE II, sustain and delayed vibrato
+    { kSK30, 5, "Symphonic Strings", {
+        { kSkOrgV, 0.0f }, { kSkStrSel, 0.6667f }, { kSkStrV, 0.75f }, { kSkMode, 1.0f }, { kSkDetune, 0.6f },
+        { kSkVibDp, 0.3f }, { kSkVibDl, 0.35f }, { kSkPSus, 1.0f }, { kSkPSusT, 0.6f },
+        { -1, 0.0f } } },
+    // STRING 1 (cellos), long sustain
+    { kSK30, 6, "Cello Section", {
+        { kSkOrgV, 0.0f }, { kSkStrSel, 0.3333f }, { kSkStrV, 0.8f }, { kSkPSus, 1.0f }, { kSkPSusT, 0.55f },
+        { kSkVibDp, 0.25f },
+        { -1, 0.0f } } },
+    // the solo synthesizer: 8' saw, a little resonance, portamento
+    { kSK30, 7, "Solo Lead", {
+        { kSkOrgV, 0.0f }, { kSkSoloV, 0.75f }, { kSkSoFeet, 0.6f }, { kSkSoWave, 0.2f }, { kSkSoCut, 0.55f },
+        { kSkSoRes, 0.35f }, { kSkSoEgDp, 0.4f }, { kSkSoVca, 1.0f }, { kSkSoA, 0.05f }, { kSkSoD, 0.45f },
+        { kSkSoS, 0.7f }, { kSkSoR, 0.35f }, { kSkSoPorta, 0.3f },
+        { -1, 0.0f } } },
+    // MANUAL BASS: a 16' solo bass on the lowest 19 keys under STRING 3 (violins)
+    { kSK30, 8, "Bass and Strings", {
+        { kSkOrgV, 0.0f }, { kSkSoMode, 1.0f }, { kSkSoFeet, 0.4f }, { kSkSoWave, 0.6f }, { kSkSoPW, 0.3f },
+        { kSkSoCut, 0.35f }, { kSkSoRes, 0.3f }, { kSkSoEgDp, 0.5f }, { kSkSoVca, 1.0f }, { kSkSoA, 0.0f },
+        { kSkSoD, 0.5f }, { kSkSoS, 0.4f }, { kSkSoR, 0.2f }, { kSkSoloV, 0.8f }, { kSkStrSel, 1.0f },
+        { kSkStrV, 0.6f }, { kSkPSus, 1.0f }, { kSkPSusT, 0.5f },
+        { -1, 0.0f } } },
+    // violas with a 4' poly-synth layer through the ensemble (an owner's SS-30-style stack)
+    { kSK30, 9, "Big Strings", {
+        { kSkOrgV, 0.0f }, { kSkStrSel, 0.6667f }, { kSkStrV, 0.7f }, { kSkPolySel, 1.0f }, { kSkFeet, 1.0f },
+        { kSkWave, 0.0f }, { kSkCut, 0.55f }, { kSkRes, 0.1f }, { kSkEgDp, 0.1f }, { kSkEgA, 0.5f },
+        { kSkPolyV, 0.45f }, { kSkSlow, 1.0f }, { kSkPEns, 1.0f }, { kSkMode, 1.0f }, { kSkDetune, 0.62f },
+        { kSkPSus, 1.0f }, { kSkPSusT, 0.65f }, { kSkVibDp, 0.2f },
+        { -1, 0.0f } } },
 };
 const int kNumFactoryPresets = (int) (sizeof (kFactoryPresets) / sizeof (kFactoryPresets[0]));
 
