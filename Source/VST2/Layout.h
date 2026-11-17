@@ -27,7 +27,7 @@ enum CtlType
 };
 
 // Knob caps (the M-50's colours): grey cap, red cap (levels), orange skirt (frequency)
-enum Style { kGrey = 0, kRed, kOrange, kWave = 10 };   // kWave: selector positions drawn as waveforms
+enum Style { kGrey = 0, kRed, kOrange, kWave = 10, kLever = 20 };   // kWave: selector positions drawn as waveforms; kLever: compact slider
 
 struct Ctl
 {
@@ -44,6 +44,8 @@ struct Section { int inst; double x, y, w, h; const char* title; };
 
 // Rows of the main control area
 const double R1 = 170.0, R2 = 300.0, R3 = 430.0;
+// the SK-30's three lever rows
+const double S1 = 160.0, S2 = 295.0, S3 = 430.0, kLevR = 32.0;
 
 const Ctl kCtls[] = {
     // ------------------------------------------------------------ Minimoog Model D
@@ -236,6 +238,74 @@ const Ctl kCtls[] = {
     { kOmBassV,   kKnob,     998, R2 + 20, 22, "BASS\nVOLUME", "0", "10", kGrey },
     { kOmMaster,  kKnob,    1138, R2 + 20, 22, "MASTER", "0", "10", kRed },
 
+    // ------------------------------------------------------------ Yamaha SK-30
+    // ORGAN
+    { kSkOrgSel, kSelector,   66, S1, 16, "ORGAN", "", "", 0 },
+    { kSkOrgDec, kTab,       150, S1, 0, "DECAY", "", "", 0 },
+    { kSkOrgSus, kTab,       205, S1, 0, "SUSTAIN", "", "", 0 },
+    { kSkOrgDS, kVSlider, 256, S1, kLevR, "D / S\nTIME", "", "", kLever },
+    { kSkOrgBril, kVSlider, 296, S1, kLevR, "BRILL-\nIANCE", "", "", kLever },
+    { kSkO16, kVSlider, 40, S2, kLevR, "16'", "", "", kLever },
+    { kSkO8, kVSlider, 78, S2, kLevR, "8'", "", "", kLever },
+    { kSkO513, kVSlider, 116, S2, kLevR, "5 1/3'", "", "", kLever },
+    { kSkO4, kVSlider, 154, S2, kLevR, "4'", "", "", kLever },
+    { kSkO223, kVSlider, 192, S2, kLevR, "2 2/3'", "", "", kLever },
+    { kSkO2, kVSlider, 230, S2, kLevR, "2'", "", "", kLever },
+    { kSkO135, kVSlider, 268, S2, kLevR, "1 3/5'", "", "", kLever },
+    { kSkO113, kVSlider, 306, S2, kLevR, "1 1/3'", "", "", kLever },
+    { kSkO1, kVSlider, 344, S2, kLevR, "1'", "", "", kLever },
+    { kSkPerc2, kVSlider, 40, S3, kLevR, "2ND", "", "", kLever },
+    { kSkPerc3, kVSlider, 78, S3, kLevR, "3RD", "", "", kLever },
+    { kSkPerc5, kVSlider, 116, S3, kLevR, "5TH", "", "", kLever },
+    { kSkPercDec, kVSlider, 154, S3, kLevR, "DECAY\nTIME", "", "", kLever },
+    { kSkOrgTrem, kTab,      236, S3, 0, "TREMOLO", "", "", 0 },
+    { kSkOrgEns, kTab,       294, S3, 0, "ENSEMBLE", "", "", 0 },
+    { kSkTrFast, kSlide,     368, S3, 0, "SPEED", "", "", 0 },
+    // POLY-SYNTH / STRINGS
+    { kSkStrSel, kSelector,  474, S1, 16, "STRINGS", "", "", 0 },
+    { kSkPolySel, kSelector, 584, S1, 16, "POLY-SYNTH", "", "", 0 },
+    { kSkMode,   kSlide,     672, S1, 0, "MODE", "", "", 0 },
+    { kSkFeet,   kSelector,  752, S1, 16, "FEET", "", "", 0 },
+    { kSkWave,   kSlide,     826, S1, 0, "WAVE", "", "", 0 },
+    { kSkCut, kVSlider, 452, S2, kLevR, "CUT OFF\nFREQ", "", "", kLever },
+    { kSkRes, kVSlider, 490, S2, kLevR, "RESO-\nNANCE", "", "", kLever },
+    { kSkEgDp, kVSlider, 528, S2, kLevR, "EG\nDEPTH", "", "", kLever },
+    { kSkEgA, kVSlider, 566, S2, kLevR, "ATTACK", "", "", kLever },
+    { kSkEgD, kVSlider, 604, S2, kLevR, "DECAY", "", "", kLever },
+    { kSkPBril, kVSlider, 660, S2, kLevR, "BRILL-\nIANCE", "", "", kLever },
+    { kSkSlow,   kTab,       718, S2, 0, "SLOW\nATTACK", "", "", 0 },
+    { kSkPSus,   kTab,       776, S2, 0, "SUSTAIN", "", "", 0 },
+    { kSkPSusT, kVSlider, 826, S2, kLevR, "SUSTAIN\nTIME", "", "", kLever },
+    { kSkVibDl, kVSlider, 452, S3, kLevR, "DELAY", "", "", kLever },
+    { kSkVibSp, kVSlider, 490, S3, kLevR, "SPEED", "", "", kLever },
+    { kSkVibDp, kVSlider, 528, S3, kLevR, "DEPTH", "", "", kLever },
+    { kSkDetune, kVSlider, 600, S3, kLevR, "DETUNE", "", "", kLever },
+    { kSkPTrem,  kTab,       680, S3, 0, "TREMOLO", "", "", 0 },
+    { kSkPEns,   kTab,       740, S3, 0, "ENSEMBLE", "", "", 0 },
+    // SOLO SYNTHESIZER
+    { kSkSoFeet, kSelector,  918, S1, 16, "FEET", "", "", 0 },
+    { kSkSoMode, kSlide,     1003, S1, 0, "MODE", "", "", 0 },
+    { kSkSoPwm,  kSlide,     1083, S1, 0, "PW MOD", "", "", 0 },
+    { kSkSoVca,  kSlide,     1163, S1, 0, "VCA", "", "", 0 },
+    { kSkSoWave, kVSlider, 893, S2, kLevR, "WAVE", "", "", kLever },
+    { kSkSoPW, kVSlider, 931, S2, kLevR, "PW", "", "", kLever },
+    { kSkSoCut, kVSlider, 969, S2, kLevR, "CUT OFF\nFREQ", "", "", kLever },
+    { kSkSoRes, kVSlider, 1007, S2, kLevR, "RESO-\nNANCE", "", "", kLever },
+    { kSkSoMod, kVSlider, 1045, S2, kLevR, "MODU-\nLATION", "", "", kLever },
+    { kSkSoEgDp, kVSlider, 1083, S2, kLevR, "EG\nDEPTH", "", "", kLever },
+    { kSkSoLfo, kVSlider, 1121, S2, kLevR, "LFO\nSPEED", "", "", kLever },
+    { kSkSoTune, kVSlider, 1159, S2, kLevR, "SOLO\nTUNE", "", "", kLever },
+    { kSkSoPorta, kVSlider, 1197, S2, kLevR, "PORTA-\nMENTO", "", "", kLever },
+    { kSkSoA, kVSlider, 893, S3, kLevR, "ATTACK", "", "", kLever },
+    { kSkSoD, kVSlider, 931, S3, kLevR, "DECAY", "", "", kLever },
+    { kSkSoS, kVSlider, 969, S3, kLevR, "SUSTAIN", "", "", kLever },
+    { kSkSoR, kVSlider, 1007, S3, kLevR, "RELEASE", "", "", kLever },
+    { kSkSoGlide, kVSlider, 1045, S3, kLevR, "GLIDE\nDEPTH", "", "", kLever },
+    { kSkOrgV, kVSlider, 1097, S3, kLevR, "ORGAN", "", "", kLever },
+    { kSkPolyV, kVSlider, 1135, S3, kLevR, "POLY", "", "", kLever },
+    { kSkStrV, kVSlider, 1173, S3, kLevR, "STRINGS", "", "", kLever },
+    { kSkSoloV, kVSlider, 1211, S3, kLevR, "SOLO", "", "", kLever },
+
     // ------------------------------------------------------------ every page
     { kMaster,    kKnob,     714, 592, 17, "MASTER", "", "", kRed },
 };
@@ -274,6 +344,9 @@ const Section kSections[] = {
     { kOmni,       12, 76, 360, 424, "STRINGS" },
     { kOmni,      380, 76, 520, 424, "SYNTHESIZER" },
     { kOmni,      908, 76, 320, 424, "GENERAL" },
+    { kSK30,       12, 76, 400, 424, "ORGAN" },
+    { kSK30,      420, 76, 440, 424, "POLY-SYNTH / STRINGS" },
+    { kSK30,      868, 76, 360, 424, "SOLO SYNTHESIZER" },
 };
 const int kNumSections = (int) (sizeof (kSections) / sizeof (kSections[0]));
 
@@ -290,6 +363,13 @@ const Caption kCaptions[] = {
     { kMultiman,  182, R1 - 62, "BRASS FILTER" },
     { kOmni,      550, R2 - 58, "VCF" },
     { kOmni,      550, R3 - 58, "ADSR" },
+    { kSK30,      192, S2 - 55, "TONE LEVERS" },
+    { kSK30,       97, S3 - 52, "PERCUSSIVE" },
+    { kSK30,      528, S2 - 55, "MANUAL VOICE" },
+    { kSK30,      490, S3 - 52, "VIBRATO" },
+    { kSK30,     1045, S2 - 55, "VCO  /  VCF  /  LFO" },
+    { kSK30,      969, S3 - 52, "EG" },
+    { kSK30,     1154, S3 - 52, "VOLUME" },
 };
 const int kNumCaptions = (int) (sizeof (kCaptions) / sizeof (kCaptions[0]));
 
