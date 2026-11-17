@@ -84,6 +84,40 @@ const FactoryPreset kFactoryPresets[] = {
         { kSoViolin, 1.0f }, { kSoViola, 1.0f }, { kSoTrump, 0.0f }, { kSoHorn, 0.0f },
         { kSoCello, 1.0f }, { kSoBass, 0.0f }, { kSoCresc, 0.48f }, { kSoSust, 0.55f }, { kSoVol, 0.7f },
         { -1, 0.0f } } },
+    // The classic Solina sounds: settings worked out from the records (no published
+    // settings exist for a preset-only machine like this; the tabs and slider positions are estimates)
+    // Pink Floyd, Wish You Were Here (Rick Wright): full, slow-swelling strings that ring on
+    { kSolina, 1, "Shine On", {
+        { kSoViolin, 1.0f }, { kSoViola, 1.0f }, { kSoTrump, 0.0f }, { kSoHorn, 0.0f }, { kSoCello, 1.0f }, { kSoBass, 0.0f }, { kSoCresc, 0.62f }, { kSoSust, 0.8f }, { kSoVol, 0.68f },
+        { -1, 0.0f } } },
+    // Gary Wright, "Dream Weaver": soft upper strings, gentle swell
+    { kSolina, 2, "Dream Weaver", {
+        { kSoViolin, 1.0f }, { kSoViola, 1.0f }, { kSoTrump, 0.0f }, { kSoHorn, 0.0f }, { kSoCello, 0.0f }, { kSoBass, 0.0f }, { kSoCresc, 0.5f }, { kSoSust, 0.62f }, { kSoVol, 0.7f },
+        { -1, 0.0f } } },
+    // The Buggles, "Video Killed the Radio Star": bright, quick pop strings
+    { kSolina, 3, "Video Killed", {
+        { kSoViolin, 1.0f }, { kSoViola, 1.0f }, { kSoTrump, 0.0f }, { kSoHorn, 0.0f }, { kSoCello, 0.0f }, { kSoBass, 0.0f }, { kSoCresc, 0.18f }, { kSoSust, 0.38f }, { kSoVol, 0.68f },
+        { -1, 0.0f } } },
+    // Elton John, "Someone Saved My Life Tonight": violins, violas and cellos
+    { kSolina, 4, "Elton", {
+        { kSoViolin, 1.0f }, { kSoViola, 1.0f }, { kSoTrump, 0.0f }, { kSoHorn, 0.0f }, { kSoCello, 1.0f }, { kSoBass, 0.0f }, { kSoCresc, 0.42f }, { kSoSust, 0.58f }, { kSoVol, 0.68f },
+        { -1, 0.0f } } },
+    // Bee Gees, "Nights on Broadway": the whole section, cellos and basses in
+    { kSolina, 5, "Bee Gees", {
+        { kSoViolin, 1.0f }, { kSoViola, 1.0f }, { kSoTrump, 0.0f }, { kSoHorn, 0.0f }, { kSoCello, 1.0f }, { kSoBass, 1.0f }, { kSoCresc, 0.3f }, { kSoSust, 0.5f }, { kSoVol, 0.64f },
+        { -1, 0.0f } } },
+    // Parliament (Bernie Worrell): the Solina played as a solo voice, brassy and quick
+    { kSolina, 6, "Chocolate City", {
+        { kSoViolin, 0.0f }, { kSoViola, 1.0f }, { kSoTrump, 1.0f }, { kSoHorn, 0.0f }, { kSoCello, 0.0f }, { kSoBass, 0.0f }, { kSoCresc, 0.12f }, { kSoSust, 0.32f }, { kSoVol, 0.7f },
+        { -1, 0.0f } } },
+    // Peter Frampton, "I'm in You" (Stevie Wonder's string line): violins and violas, singing
+    { kSolina, 7, "I'm In You", {
+        { kSoViolin, 1.0f }, { kSoViola, 1.0f }, { kSoTrump, 0.0f }, { kSoHorn, 0.0f }, { kSoCello, 0.0f }, { kSoBass, 0.0f }, { kSoCresc, 0.36f }, { kSoSust, 0.55f }, { kSoVol, 0.7f },
+        { -1, 0.0f } } },
+    // Pink Floyd, Animals, the middle of "Dogs": dark, low, very slow swell
+    { kSolina, 8, "Dogs", {
+        { kSoViolin, 0.0f }, { kSoViola, 1.0f }, { kSoTrump, 0.0f }, { kSoHorn, 1.0f }, { kSoCello, 1.0f }, { kSoBass, 1.0f }, { kSoCresc, 0.72f }, { kSoSust, 0.86f }, { kSoVol, 0.64f },
+        { -1, 0.0f } } },
     // ---- ARP Omni. Names 2-10 are the patches in ARP's Omni-2 owner's manual (1978);
     // the settings are worked out from the patch names and the Omni's controls, not
     // copied from the manual's charts (estimates). "Joy Division" and "Moving In

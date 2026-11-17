@@ -58,6 +58,14 @@ MASTER, and the tan readout. A LEVEL LED at top right lights amber while it play
 | ARP Omni | 2-10 | Brass, Brass Strings Bass, Shimmer Sweep, Phased Sweep, Sweep Enh Strings, Poly Wah, Harpsichord Bass, Lower Strings, Lucy in the Sky | the nine patches in ARP's Omni-2 owner's manual (1978), set from their names and the Omni's controls (the manual's slider charts weren't readable here) |
 | ARP Omni | 11 | Moving In Stereo | The Cars: Greg Hawkes said every keyboard on the track is the Omni; a dark hollow pad with a slow filter swell |
 | Solina String Ensemble | 1 | Moroder | "I Feel Love": the record's pad is Moog modular; this is the Solina's take on it |
+| Solina String Ensemble | 2 | Shine On | Pink Floyd, Wish You Were Here (Rick Wright): full, slow-swelling strings that ring on |
+| Solina String Ensemble | 3 | Dream Weaver | Gary Wright, "Dream Weaver": soft upper strings, gentle swell |
+| Solina String Ensemble | 4 | Video Killed | The Buggles, "Video Killed the Radio Star": bright, quick pop strings |
+| Solina String Ensemble | 5 | Elton | Elton John, "Someone Saved My Life Tonight": violins, violas and cellos |
+| Solina String Ensemble | 6 | Bee Gees | Bee Gees, "Nights on Broadway": the whole section, cellos and basses in |
+| Solina String Ensemble | 7 | Chocolate City | Parliament (Bernie Worrell): the Solina played as a solo voice, brassy and quick |
+| Solina String Ensemble | 8 | I'm In You | Peter Frampton, "I'm in You" (Stevie Wonder's string line): violins and violas, singing |
+| Solina String Ensemble | 9 | Dogs | Pink Floyd, Animals, the middle of "Dogs": dark, low, very slow swell |
 
 No published settings exist for these parts (the clavinet.com FAQ says of "Superstition" that it was a
 Clavinet C, overdubbed); the presets are set by ear from the records. The factory presets always come
