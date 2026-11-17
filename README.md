@@ -82,6 +82,16 @@ MASTER, and the tan readout. A LEVEL LED at top right lights amber while it play
 | Crumar Multiman | 8 | Piano and Strings | piano with violins over the upper half |
 | Crumar Multiman | 9 | Bass and Strings | the bass pedals on the lowest 13 keys under full strings |
 | Crumar Multiman | 10 | Berlin School | strings and a slow brass swell with vibrato and long sustain, in the spirit of Klaus Schulze and Tangerine Dream, who both used the Multiman |
+| Crumar Multiman | 11 | Moondawn | Klaus Schulze, Moondawn (1976, Crumar keyboards on the credits): warm cellos and violins under a slow brass swell, long sustain |
+| Crumar Multiman | 12 | Timewind | in the spirit of Schulze's Timewind (1975): a slow, rising string wash that rings for seconds |
+| Crumar Multiman | 13 | Mirage | in the spirit of Schulze's Mirage (1977): stark, glassy violins, no vibrato, very long sustain |
+| Crumar Multiman | 14 | Symphonic X | in the spirit of Schulze's X (1978): a full symphonic section, low cellos leading, vibrato |
+| Crumar Multiman | 15 | Phaedra Drone | in the spirit of Tangerine Dream's Phaedra era: a dark, resonant brass drone that opens slowly |
+| Crumar Multiman | 16 | Rubycon Brass | in the spirit of Tangerine Dream's Rubycon: low brass with emphasis, swelling under cellos |
+| Crumar Multiman | 17 | Stratosfear | in the spirit of Tangerine Dream's Stratosfear: bright brass over violins, the contour opening on every chord |
+| Crumar Multiman | 18 | Ostinato Brass | short, resonant brass blips for repeating Berlin School patterns: every key retriggers the filter |
+| Crumar Multiman | 19 | Cosmic Choir | cellos and violins split low and high with deep, slow vibrato: a choir-like pad |
+| Crumar Multiman | 20 | Bass Drone Pad | the bass pedals as a low drone under a slow brass and string pad |
 | ARP Omni | 1 | Joy Division | "Atmosphere" / Closer: violins, violas and cellos through the phasers, slow swell, long release |
 | ARP Omni | 2-10 | Brass, Brass Strings Bass, Shimmer Sweep, Phased Sweep, Sweep Enh Strings, Poly Wah, Harpsichord Bass, Lower Strings, Lucy in the Sky | the nine patches in ARP's Omni-2 owner's manual (1978), set from their names and the Omni's controls (the manual's slider charts weren't readable here) |
 | ARP Omni | 11 | Moving In Stereo | The Cars: Greg Hawkes said every keyboard on the track is the Omni; a dark hollow pad with a slow filter swell |

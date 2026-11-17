@@ -470,6 +470,77 @@ const FactoryPreset kFactoryPresets[] = {
         { kCrCont, 0.28f }, { kCrBrLo, 0.5f }, { kCrBrHi, 0.5f }, { kCrSust, 0.75f }, { kCrVibDp, 0.3f },
         { kCrVibSp, 0.35f }, { kCrMaster, 0.62f },
         { -1, 0.0f } } },
+    // more Berlin School sounds (estimates, in the spirit of the records named)
+    // Klaus Schulze, Moondawn (1976, Crumar keyboards on the credits): warm cellos and violins under a slow brass swell, long sustain
+    { kMultiman, 10, "Moondawn", {
+        { kCrBrOnLo, 1.0f }, { kCrBrOnHi, 1.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 1.0f },
+        { kCrViolin, 1.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 1.0f }, { kCrCeLo, 0.8f }, { kCrCeHi, 0.55f },
+        { kCrViLo, 0.45f }, { kCrViHi, 0.7f }, { kCrAtk, 0.75f }, { kCrDec, 0.85f }, { kCrEmph, 0.3f },
+        { kCrCont, 0.32f }, { kCrBrLo, 0.55f }, { kCrBrHi, 0.45f }, { kCrSust, 0.8f }, { kCrVibDp, 0.25f },
+        { kCrVibSp, 0.3f }, { kCrMaster, 0.6f },
+        { -1, 0.0f } } },
+    // in the spirit of Schulze's Timewind (1975): a slow, rising string wash that rings for seconds
+    { kMultiman, 11, "Timewind", {
+        { kCrBrOnLo, 0.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 1.0f },
+        { kCrViolin, 1.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 1.0f }, { kCrCeLo, 0.75f }, { kCrCeHi, 0.6f },
+        { kCrViLo, 0.55f }, { kCrViHi, 0.75f }, { kCrSust, 0.9f }, { kCrVibDp, 0.35f }, { kCrVibSp, 0.25f },
+        { kCrMaster, 0.65f },
+        { -1, 0.0f } } },
+    // in the spirit of Schulze's Mirage (1977): stark, glassy violins, no vibrato, very long sustain
+    { kMultiman, 12, "Mirage", {
+        { kCrBrOnLo, 0.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 0.0f },
+        { kCrViolin, 1.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 0.0f }, { kCrViLo, 0.5f }, { kCrViHi, 0.8f },
+        { kCrSust, 0.95f }, { kCrMaster, 0.7f },
+        { -1, 0.0f } } },
+    // in the spirit of Schulze's X (1978): a full symphonic section, low cellos leading, vibrato
+    { kMultiman, 13, "Symphonic X", {
+        { kCrBrOnLo, 0.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 1.0f },
+        { kCrViolin, 1.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 1.0f }, { kCrCeLo, 0.9f }, { kCrCeHi, 0.7f },
+        { kCrViLo, 0.4f }, { kCrViHi, 0.7f }, { kCrSust, 0.7f }, { kCrVibDp, 0.3f }, { kCrVibSp, 0.45f },
+        { kCrMaster, 0.62f },
+        { -1, 0.0f } } },
+    // in the spirit of Tangerine Dream's Phaedra era: a dark, resonant brass drone that opens slowly
+    { kMultiman, 14, "Phaedra Drone", {
+        { kCrBrOnLo, 1.0f }, { kCrBrOnHi, 1.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 0.0f },
+        { kCrViolin, 0.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 0.0f }, { kCrAtk, 0.85f }, { kCrDec, 0.9f },
+        { kCrEmph, 0.65f }, { kCrCont, 0.2f }, { kCrBrLo, 0.95f }, { kCrBrHi, 0.8f }, { kCrSust, 0.8f },
+        { kCrMaster, 0.85f },
+        { -1, 0.0f } } },
+    // in the spirit of Tangerine Dream's Rubycon: low brass with emphasis, swelling under cellos
+    { kMultiman, 15, "Rubycon Brass", {
+        { kCrBrOnLo, 1.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 1.0f },
+        { kCrViolin, 0.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 0.0f }, { kCrAtk, 0.6f }, { kCrDec, 0.8f },
+        { kCrEmph, 0.55f }, { kCrCont, 0.28f }, { kCrBrLo, 0.95f }, { kCrCeLo, 0.6f }, { kCrCeHi, 0.4f },
+        { kCrSust, 0.75f }, { kCrMaster, 0.75f },
+        { -1, 0.0f } } },
+    // in the spirit of Tangerine Dream's Stratosfear: bright brass over violins, the contour opening on every chord
+    { kMultiman, 16, "Stratosfear", {
+        { kCrBrOnLo, 1.0f }, { kCrBrOnHi, 1.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 0.0f },
+        { kCrViolin, 1.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 1.0f }, { kCrAtk, 0.35f }, { kCrDec, 0.65f },
+        { kCrEmph, 0.35f }, { kCrCont, 0.4f }, { kCrBrLo, 0.6f }, { kCrBrHi, 0.7f }, { kCrViLo, 0.4f },
+        { kCrViHi, 0.65f }, { kCrSust, 0.6f }, { kCrVibDp, 0.2f }, { kCrVibSp, 0.5f }, { kCrMaster, 0.65f },
+        { -1, 0.0f } } },
+    // short, resonant brass blips for repeating Berlin School patterns: every key retriggers the filter
+    { kMultiman, 17, "Ostinato Brass", {
+        { kCrBrOnLo, 1.0f }, { kCrBrOnHi, 1.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 0.0f },
+        { kCrViolin, 0.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 0.0f }, { kCrAtk, 0.0f }, { kCrDec, 0.28f },
+        { kCrEmph, 0.6f }, { kCrCont, 0.22f }, { kCrBrLo, 0.95f }, { kCrBrHi, 0.95f }, { kCrSust, 0.3f },
+        { kCrMaster, 0.9f },
+        { -1, 0.0f } } },
+    // cellos and violins split low and high with deep, slow vibrato: a choir-like pad
+    { kMultiman, 18, "Cosmic Choir", {
+        { kCrBrOnLo, 0.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 1.0f },
+        { kCrViolin, 1.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 1.0f }, { kCrCeLo, 0.85f }, { kCrCeHi, 0.0f },
+        { kCrViLo, 0.0f }, { kCrViHi, 0.8f }, { kCrSust, 0.85f }, { kCrVibDp, 0.6f }, { kCrVibSp, 0.2f },
+        { kCrMaster, 0.65f },
+        { -1, 0.0f } } },
+    // the bass pedals as a low drone under a slow brass and string pad
+    { kMultiman, 19, "Bass Drone Pad", {
+        { kCrBrOnLo, 0.0f }, { kCrBrOnHi, 1.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 1.0f },
+        { kCrViolin, 1.0f }, { kCrBassOn, 1.0f }, { kCrVibOn, 0.0f }, { kCrBassV, 0.45f }, { kCrCeLo, 0.5f },
+        { kCrCeHi, 0.5f }, { kCrViLo, 0.4f }, { kCrViHi, 0.65f }, { kCrAtk, 0.7f }, { kCrDec, 0.85f },
+        { kCrEmph, 0.3f }, { kCrCont, 0.3f }, { kCrBrHi, 0.5f }, { kCrSust, 0.85f }, { kCrMaster, 0.58f },
+        { -1, 0.0f } } },
 };
 const int kNumFactoryPresets = (int) (sizeof (kFactoryPresets) / sizeof (kFactoryPresets[0]));
 
