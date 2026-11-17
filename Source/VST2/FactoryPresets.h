@@ -314,6 +314,162 @@ const FactoryPreset kFactoryPresets[] = {
         { kSkEgD, 0.82f }, { kSkPBril, 0.55f }, { kSkSlow, 1.0f }, { kSkPSus, 1.0f }, { kSkPSusT, 0.85f },
         { kSkPEns, 1.0f }, { kSkVibDl, 0.45f }, { kSkVibSp, 0.4f }, { kSkVibDp, 0.25f }, { kSkPolyV, 0.8f },
         { -1, 0.0f } } },
+    // ---- Minimoog Model D: leads from 1977-82 (Numan, Ultravox, Bowie, New Romantic); settings
+    // worked out from the records (estimates)
+    // Tubeway Army / Gary Numan, "Are 'Friends' Electric?" (1979): the lead line, two slightly detuned 8' saws, a touch of emphasis
+    { kMinimoog, 1, "Friends Electric", {
+        { kMgO1Rng, 0.6f }, { kMgO1Wave, 0.4f }, { kMgO2Rng, 0.6f }, { kMgO2Wave, 0.4f }, { kMgO2Freq, 0.52f },
+        { kMgO3On, 0.0f }, { kMgO3Rng, 0.4f }, { kMgO3Wave, 0.6f }, { kMgO3Freq, 0.494f }, { kMgO1Vol, 0.85f },
+        { kMgO2Vol, 0.8f }, { kMgO3Vol, 0.0f }, { kMgNzOn, 0.0f }, { kMgCutoff, 0.55f }, { kMgEmph, 0.3f },
+        { kMgContAm, 0.4f }, { kMgFAtk, 0.1f }, { kMgFDec, 0.5f }, { kMgFSus, 0.6f }, { kMgLAtk, 0.05f },
+        { kMgLDec, 0.5f }, { kMgLSus, 1.0f }, { kMgDecay, 1.0f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgGlideOn, 0.0f },
+        { -1, 0.0f } } },
+    // Gary Numan, "Cars" (1979): the riff, saw and square an octave apart, punchy filter
+    { kMinimoog, 2, "Cars Lead", {
+        { kMgO1Rng, 0.6f }, { kMgO1Wave, 0.4f }, { kMgO2Rng, 0.4f }, { kMgO2Wave, 0.6f }, { kMgO2Freq, 0.5f },
+        { kMgO3On, 0.0f }, { kMgO3Rng, 0.4f }, { kMgO3Wave, 0.6f }, { kMgO3Freq, 0.494f }, { kMgO1Vol, 0.85f },
+        { kMgO2Vol, 0.65f }, { kMgO3Vol, 0.0f }, { kMgNzOn, 0.0f }, { kMgCutoff, 0.5f }, { kMgEmph, 0.25f },
+        { kMgContAm, 0.45f }, { kMgFAtk, 0.03f }, { kMgFDec, 0.45f }, { kMgFSus, 0.5f }, { kMgLAtk, 0.02f },
+        { kMgLDec, 0.5f }, { kMgLSus, 1.0f }, { kMgDecay, 1.0f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgGlideOn, 0.0f },
+        { -1, 0.0f } } },
+    // Gary Numan, "Metal" (The Pleasure Principle, 1979): a hard, buzzing pulse lead with resonance
+    { kMinimoog, 3, "Metal", {
+        { kMgO1Rng, 0.6f }, { kMgO1Wave, 0.8f }, { kMgO2Rng, 0.6f }, { kMgO2Wave, 1.0f }, { kMgO2Freq, 0.51f },
+        { kMgO3On, 0.0f }, { kMgO3Rng, 0.4f }, { kMgO3Wave, 0.6f }, { kMgO3Freq, 0.494f }, { kMgO1Vol, 0.8f },
+        { kMgO2Vol, 0.7f }, { kMgO3Vol, 0.0f }, { kMgNzOn, 0.0f }, { kMgCutoff, 0.5f }, { kMgEmph, 0.55f },
+        { kMgContAm, 0.35f }, { kMgFAtk, 0.02f }, { kMgFDec, 0.4f }, { kMgFSus, 0.55f }, { kMgLAtk, 0.02f },
+        { kMgLDec, 0.5f }, { kMgLSus, 1.0f }, { kMgDecay, 1.0f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgGlideOn, 0.0f },
+        { -1, 0.0f } } },
+    // Ultravox, "Vienna" (1980, one of Moog's Model D anthems): a smooth, singing lead with slow glide
+    { kMinimoog, 4, "Vienna", {
+        { kMgO1Rng, 0.6f }, { kMgO1Wave, 0.2f }, { kMgO2Rng, 0.6f }, { kMgO2Wave, 0.4f }, { kMgO2Freq, 0.515f },
+        { kMgO3On, 0.0f }, { kMgO3Rng, 0.4f }, { kMgO3Wave, 0.6f }, { kMgO3Freq, 0.494f }, { kMgO1Vol, 0.8f },
+        { kMgO2Vol, 0.6f }, { kMgO3Vol, 0.0f }, { kMgNzOn, 0.0f }, { kMgCutoff, 0.5f }, { kMgEmph, 0.2f },
+        { kMgContAm, 0.35f }, { kMgFAtk, 0.12f }, { kMgFDec, 0.55f }, { kMgFSus, 0.7f }, { kMgLAtk, 0.08f },
+        { kMgLDec, 0.5f }, { kMgLSus, 1.0f }, { kMgDecay, 1.0f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgGlideOn, 1.0f }, { kMgGlide, 0.36f },
+        { -1, 0.0f } } },
+    // David Bowie, "Warszawa" (Low, 1977): a mournful, hollow square lead with long glide
+    { kMinimoog, 5, "Warszawa", {
+        { kMgO1Rng, 0.6f }, { kMgO1Wave, 0.6f }, { kMgO2Rng, 0.4f }, { kMgO2Wave, 0.0f }, { kMgO2Freq, 0.5f },
+        { kMgO3On, 0.0f }, { kMgO3Rng, 0.4f }, { kMgO3Wave, 0.6f }, { kMgO3Freq, 0.494f }, { kMgO1Vol, 0.8f },
+        { kMgO2Vol, 0.45f }, { kMgO3Vol, 0.0f }, { kMgNzOn, 0.0f }, { kMgCutoff, 0.45f }, { kMgEmph, 0.15f },
+        { kMgContAm, 0.3f }, { kMgFAtk, 0.2f }, { kMgFDec, 0.6f }, { kMgFSus, 0.7f }, { kMgLAtk, 0.12f },
+        { kMgLDec, 0.55f }, { kMgLSus, 1.0f }, { kMgDecay, 1.0f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgGlideOn, 1.0f }, { kMgGlide, 0.42f },
+        { -1, 0.0f } } },
+    // The Buggles, "Video Killed the Radio Star" (1979): the bright, chirpy lead
+    { kMinimoog, 6, "Video Killed", {
+        { kMgO1Rng, 0.8f }, { kMgO1Wave, 0.6f }, { kMgO2Rng, 0.8f }, { kMgO2Wave, 0.4f }, { kMgO2Freq, 0.506f },
+        { kMgO3On, 0.0f }, { kMgO3Rng, 0.4f }, { kMgO3Wave, 0.6f }, { kMgO3Freq, 0.494f }, { kMgO1Vol, 0.8f },
+        { kMgO2Vol, 0.6f }, { kMgO3Vol, 0.0f }, { kMgNzOn, 0.0f }, { kMgCutoff, 0.6f }, { kMgEmph, 0.3f },
+        { kMgContAm, 0.4f }, { kMgFAtk, 0.02f }, { kMgFDec, 0.4f }, { kMgFSus, 0.55f }, { kMgLAtk, 0.02f },
+        { kMgLDec, 0.45f }, { kMgLSus, 1.0f }, { kMgDecay, 1.0f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgGlideOn, 0.0f },
+        { -1, 0.0f } } },
+    // Steve Winwood, "While You See a Chance" (1980): the fat, brassy saw lead
+    { kMinimoog, 7, "While You See a Chance", {
+        { kMgO1Rng, 0.6f }, { kMgO1Wave, 0.4f }, { kMgO2Rng, 0.6f }, { kMgO2Wave, 0.4f }, { kMgO2Freq, 0.515f },
+        { kMgO3On, 1.0f }, { kMgO3Rng, 0.4f }, { kMgO3Wave, 0.4f }, { kMgO3Freq, 0.49f }, { kMgO1Vol, 0.8f },
+        { kMgO2Vol, 0.7f }, { kMgO3Vol, 0.5f }, { kMgNzOn, 0.0f }, { kMgCutoff, 0.47f }, { kMgEmph, 0.25f },
+        { kMgContAm, 0.55f }, { kMgFAtk, 0.2f }, { kMgFDec, 0.55f }, { kMgFSus, 0.6f }, { kMgLAtk, 0.08f },
+        { kMgLDec, 0.5f }, { kMgLSus, 1.0f }, { kMgDecay, 1.0f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgGlideOn, 1.0f }, { kMgGlide, 0.2f },
+        { -1, 0.0f } } },
+    // Giorgio Moroder, "Chase" (1978): the soaring lead over the sequence
+    { kMinimoog, 8, "Chase", {
+        { kMgO1Rng, 0.6f }, { kMgO1Wave, 0.4f }, { kMgO2Rng, 0.8f }, { kMgO2Wave, 0.4f }, { kMgO2Freq, 0.53f },
+        { kMgO3On, 0.0f }, { kMgO3Rng, 0.4f }, { kMgO3Wave, 0.6f }, { kMgO3Freq, 0.494f }, { kMgO1Vol, 0.85f },
+        { kMgO2Vol, 0.7f }, { kMgO3Vol, 0.0f }, { kMgNzOn, 0.0f }, { kMgCutoff, 0.58f }, { kMgEmph, 0.4f },
+        { kMgContAm, 0.45f }, { kMgFAtk, 0.05f }, { kMgFDec, 0.5f }, { kMgFSus, 0.65f }, { kMgLAtk, 0.03f },
+        { kMgLDec, 0.5f }, { kMgLSus, 1.0f }, { kMgDecay, 1.0f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgGlideOn, 1.0f }, { kMgGlide, 0.22f },
+        { -1, 0.0f } } },
+    // Rush, "Tom Sawyer" (1981): Geddy Lee's searing Minimoog lead
+    { kMinimoog, 9, "Tom Sawyer Lead", {
+        { kMgO1Rng, 0.6f }, { kMgO1Wave, 0.4f }, { kMgO2Rng, 0.8f }, { kMgO2Wave, 0.4f }, { kMgO2Freq, 0.506f },
+        { kMgO3On, 1.0f }, { kMgO3Rng, 0.6f }, { kMgO3Wave, 0.6f }, { kMgO3Freq, 0.494f }, { kMgO1Vol, 0.85f },
+        { kMgO2Vol, 0.7f }, { kMgO3Vol, 0.5f }, { kMgNzOn, 0.0f }, { kMgCutoff, 0.6f }, { kMgEmph, 0.45f },
+        { kMgContAm, 0.35f }, { kMgFAtk, 0.05f }, { kMgFDec, 0.5f }, { kMgFSus, 0.75f }, { kMgLAtk, 0.03f },
+        { kMgLDec, 0.5f }, { kMgLSus, 1.0f }, { kMgDecay, 1.0f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgGlideOn, 1.0f }, { kMgGlide, 0.25f },
+        { -1, 0.0f } } },
+    // a 1980-81 New Romantic lead: thin narrow pulse, a little glide, osc 3 as a vibrato LFO on the mod wheel
+    { kMinimoog, 10, "New Romantic Lead", {
+        { kMgO1Rng, 0.6f }, { kMgO1Wave, 1.0f }, { kMgO2Rng, 0.6f }, { kMgO2Wave, 0.8f }, { kMgO2Freq, 0.508f },
+        { kMgO3On, 0.0f }, { kMgO3Rng, 0.0f }, { kMgO3Wave, 0.0f }, { kMgO3Freq, 0.62f }, { kMgO1Vol, 0.8f },
+        { kMgO2Vol, 0.55f }, { kMgO3Vol, 0.0f }, { kMgNzOn, 0.0f }, { kMgCutoff, 0.55f }, { kMgEmph, 0.25f },
+        { kMgContAm, 0.3f }, { kMgFAtk, 0.05f }, { kMgFDec, 0.5f }, { kMgFSus, 0.7f }, { kMgLAtk, 0.05f },
+        { kMgLDec, 0.5f }, { kMgLSus, 1.0f }, { kMgDecay, 1.0f }, { kMgKbd1, 1.0f }, { kMgKbd2, 1.0f },
+        { kMgGlideOn, 1.0f }, { kMgGlide, 0.18f }, { kMgO3Ctrl, 0.0f }, { kMgModMix, 0.0f }, { kMgOscMod, 1.0f },
+        { -1, 0.0f } } },
+    // ---- Crumar Multiman: the instrument's main voices and combinations (no published
+    // settings exist for the records it's on; estimates)
+    // cellos and violins on both halves, vibrato, a medium sustain
+    { kMultiman, 0, "Full Strings", {
+        { kCrBrOnLo, 0.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 1.0f },
+        { kCrViolin, 1.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 1.0f }, { kCrCeLo, 0.8f }, { kCrCeHi, 0.5f },
+        { kCrViLo, 0.5f }, { kCrViHi, 0.8f }, { kCrSust, 0.55f }, { kCrVibDp, 0.2f }, { kCrVibSp, 0.5f },
+        { -1, 0.0f } } },
+    // violins alone, brighter up top
+    { kMultiman, 1, "Violins", {
+        { kCrBrOnLo, 0.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 0.0f },
+        { kCrViolin, 1.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 0.0f }, { kCrViLo, 0.6f }, { kCrViHi, 0.85f },
+        { kCrSust, 0.5f },
+        { -1, 0.0f } } },
+    // cellos alone, fuller down low
+    { kMultiman, 2, "Cellos", {
+        { kCrBrOnLo, 0.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 1.0f },
+        { kCrViolin, 0.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 0.0f }, { kCrCeLo, 0.85f }, { kCrCeHi, 0.6f },
+        { kCrSust, 0.5f },
+        { -1, 0.0f } } },
+    // the brass ladder opening slowly, both halves
+    { kMultiman, 3, "Brass Swell", {
+        { kCrBrOnLo, 1.0f }, { kCrBrOnHi, 1.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 0.0f },
+        { kCrViolin, 0.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 0.0f }, { kCrAtk, 0.6f }, { kCrDec, 0.75f },
+        { kCrEmph, 0.3f }, { kCrCont, 0.3f }, { kCrBrLo, 0.95f }, { kCrBrHi, 0.95f }, { kCrMaster, 0.9f },
+        { -1, 0.0f } } },
+    // short brass hits, every key retriggering the contour
+    { kMultiman, 4, "Brass Stabs", {
+        { kCrBrOnLo, 1.0f }, { kCrBrOnHi, 1.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 0.0f },
+        { kCrViolin, 0.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 0.0f }, { kCrAtk, 0.05f }, { kCrDec, 0.35f },
+        { kCrEmph, 0.45f }, { kCrCont, 0.25f }, { kCrBrLo, 0.95f }, { kCrBrHi, 0.95f }, { kCrMaster, 0.9f },
+        { -1, 0.0f } } },
+    // the piano voice, both halves
+    { kMultiman, 5, "Piano", {
+        { kCrBrOnLo, 0.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 1.0f }, { kCrClav, 0.0f }, { kCrCello, 0.0f },
+        { kCrViolin, 0.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 0.0f }, { kCrPnLo, 0.75f }, { kCrPnHi, 0.75f },
+        { kCrSust, 0.35f },
+        { -1, 0.0f } } },
+    // the clavichord voice
+    { kMultiman, 6, "Clavichord", {
+        { kCrBrOnLo, 0.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 0.0f }, { kCrClav, 1.0f }, { kCrCello, 0.0f },
+        { kCrViolin, 0.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 0.0f }, { kCrPnLo, 0.7f }, { kCrPnHi, 0.75f },
+        { kCrSust, 0.3f },
+        { -1, 0.0f } } },
+    // piano with violins over the upper half
+    { kMultiman, 7, "Piano and Strings", {
+        { kCrBrOnLo, 0.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 1.0f }, { kCrClav, 0.0f }, { kCrCello, 0.0f },
+        { kCrViolin, 1.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 0.0f }, { kCrPnLo, 0.7f }, { kCrPnHi, 0.65f },
+        { kCrViLo, 0.0f }, { kCrViHi, 0.6f }, { kCrSust, 0.45f },
+        { -1, 0.0f } } },
+    // the bass pedals on the lowest 13 keys under full strings
+    { kMultiman, 8, "Bass and Strings", {
+        { kCrBrOnLo, 0.0f }, { kCrBrOnHi, 0.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 1.0f },
+        { kCrViolin, 1.0f }, { kCrBassOn, 1.0f }, { kCrVibOn, 0.0f }, { kCrBassV, 0.45f }, { kCrCeLo, 0.6f },
+        { kCrCeHi, 0.5f }, { kCrViLo, 0.4f }, { kCrViHi, 0.75f }, { kCrSust, 0.5f }, { kCrMaster, 0.6f },
+        { -1, 0.0f } } },
+    // strings and a slow brass swell with vibrato and long sustain, in the spirit of Klaus Schulze and Tangerine Dream, who both used the Multiman
+    { kMultiman, 9, "Berlin School", {
+        { kCrBrOnLo, 1.0f }, { kCrBrOnHi, 1.0f }, { kCrPiano, 0.0f }, { kCrClav, 0.0f }, { kCrCello, 1.0f },
+        { kCrViolin, 1.0f }, { kCrBassOn, 0.0f }, { kCrVibOn, 1.0f }, { kCrCeLo, 0.7f }, { kCrCeHi, 0.5f },
+        { kCrViLo, 0.5f }, { kCrViHi, 0.7f }, { kCrAtk, 0.7f }, { kCrDec, 0.8f }, { kCrEmph, 0.35f },
+        { kCrCont, 0.28f }, { kCrBrLo, 0.5f }, { kCrBrHi, 0.5f }, { kCrSust, 0.75f }, { kCrVibDp, 0.3f },
+        { kCrVibSp, 0.35f }, { kCrMaster, 0.62f },
+        { -1, 0.0f } } },
 };
 const int kNumFactoryPresets = (int) (sizeof (kFactoryPresets) / sizeof (kFactoryPresets[0]));
 

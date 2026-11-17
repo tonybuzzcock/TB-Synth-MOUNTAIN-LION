@@ -374,7 +374,7 @@ int main (int argc, char** argv)
         click (win, panel, savePt);
         pump (0.2);
         m = [(id) panel presetMenu];
-        check ([m numberOfItems] == 1 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Strings"], "every instrument has its own menu, working the same way");
+        check ([m numberOfItems] == 11 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Full Strings"] && [[[m itemAtIndex: 10] title] isEqualToString: @"11   Strings"], "every instrument has its own menu, working the same way");
     }
     #undef PICK
     for (int i = 0; i < kNumParams; ++i) e->setParameter (e, i, kParams[i].def);

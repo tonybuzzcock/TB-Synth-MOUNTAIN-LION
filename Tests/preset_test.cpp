@@ -123,7 +123,7 @@ int main()
                "its B-3 presets go to the B-3 bank, in order");
         check (m.name (bankSlot (kWurlitzer, 0)) == "Supertramp" && m.name (bankSlot (kWurlitzer, 1)) == "My Wurli",
                "factory presets keep the first keys; earlier saves follow them");
-        check (m.name (0) == "Carlos" && ! m.has (1), "nothing of theirs is left in the Minimoog bank");
+        check (m.name (0) == "Carlos" && ! m.has (11), "nothing of theirs is left in the Minimoog bank");
     }
 
     // Factory keys are locked: always their preset, never saved over or renamed

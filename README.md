@@ -49,6 +49,16 @@ MASTER, and the tan readout. A LEVEL LED at top right lights amber while it play
 | Instrument | No. | Name | For |
 |---|---|---|---|
 | Minimoog Model D | 1 | Carlos | Wendy Carlos, Switched-On Bach (a Moog modular): a harpsichord voice, 8' + 4' narrow pulses, plucked contours |
+| Minimoog Model D | 2 | Friends Electric | Tubeway Army / Gary Numan, "Are 'Friends' Electric?" (1979): the lead line, two slightly detuned 8' saws, a touch of emphasis |
+| Minimoog Model D | 3 | Cars Lead | Gary Numan, "Cars" (1979): the riff, saw and square an octave apart, punchy filter |
+| Minimoog Model D | 4 | Metal | Gary Numan, "Metal" (The Pleasure Principle, 1979): a hard, buzzing pulse lead with resonance |
+| Minimoog Model D | 5 | Vienna | Ultravox, "Vienna" (1980, one of Moog's Model D anthems): a smooth, singing lead with slow glide |
+| Minimoog Model D | 6 | Warszawa | David Bowie, "Warszawa" (Low, 1977): a mournful, hollow square lead with long glide |
+| Minimoog Model D | 7 | Video Killed | The Buggles, "Video Killed the Radio Star" (1979): the bright, chirpy lead |
+| Minimoog Model D | 8 | While You See a Chance | Steve Winwood, "While You See a Chance" (1980): the fat, brassy saw lead |
+| Minimoog Model D | 9 | Chase | Giorgio Moroder, "Chase" (1978): the soaring lead over the sequence |
+| Minimoog Model D | 10 | Tom Sawyer Lead | Rush, "Tom Sawyer" (1981): Geddy Lee's searing Minimoog lead |
+| Minimoog Model D | 11 | New Romantic Lead | a 1980-81 New Romantic lead: thin narrow pulse, a little glide, osc 3 as a vibrato LFO on the mod wheel |
 | Oberheim OB-X | 1 | Queen | Flash Gordon: big detuned brass, the filter opening on each stab |
 | Oberheim OB-X | 2 | Japan | Tin Drum (Richard Barbieri): a dark pulse-wave pad, slow attack, slowly moving pulse width |
 | Oberheim OB-X | 3 | Foxx | John Foxx, The Garden: a lush shimmering pad, saw and pulse, gentle vibrato |
@@ -62,6 +72,16 @@ MASTER, and the tan readout. A LEVEL LED at top right lights amber while it play
 | Wurlitzer 200A | 1 | Supertramp | "Bloody Well Right" intro: dry, no vibrato, amp pushed to grit |
 | Hohner Clavinet D6 | 1 | Superstition | Stevie Wonder: BRILLIANT + TREBLE, both pickups in phase (D-A) |
 | Hohner Clavinet D6 | 2 | Quatro | Suzi Quatro's keyboard player: TREBLE + MEDIUM, bridge pickup, a little mute, preamp pushed |
+| Crumar Multiman | 1 | Full Strings | cellos and violins on both halves, vibrato, a medium sustain |
+| Crumar Multiman | 2 | Violins | violins alone, brighter up top |
+| Crumar Multiman | 3 | Cellos | cellos alone, fuller down low |
+| Crumar Multiman | 4 | Brass Swell | the brass ladder opening slowly, both halves |
+| Crumar Multiman | 5 | Brass Stabs | short brass hits, every key retriggering the contour |
+| Crumar Multiman | 6 | Piano | the piano voice, both halves |
+| Crumar Multiman | 7 | Clavichord | the clavichord voice |
+| Crumar Multiman | 8 | Piano and Strings | piano with violins over the upper half |
+| Crumar Multiman | 9 | Bass and Strings | the bass pedals on the lowest 13 keys under full strings |
+| Crumar Multiman | 10 | Berlin School | strings and a slow brass swell with vibrato and long sustain, in the spirit of Klaus Schulze and Tangerine Dream, who both used the Multiman |
 | ARP Omni | 1 | Joy Division | "Atmosphere" / Closer: violins, violas and cellos through the phasers, slow swell, long release |
 | ARP Omni | 2-10 | Brass, Brass Strings Bass, Shimmer Sweep, Phased Sweep, Sweep Enh Strings, Poly Wah, Harpsichord Bass, Lower Strings, Lucy in the Sky | the nine patches in ARP's Omni-2 owner's manual (1978), set from their names and the Omni's controls (the manual's slider charts weren't readable here) |
 | ARP Omni | 11 | Moving In Stereo | The Cars: Greg Hawkes said every keyboard on the track is the Omni; a dark hollow pad with a slow filter swell |
