@@ -267,9 +267,10 @@ int main (int argc, char** argv)
         e->setParameter (e, kInst, instValue (kOBX));
         pump (0.1);
         NSMenu* m = [(id) panel presetMenu];
-        check ([m numberOfItems] == 3 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Queen"]
-               && [[[m itemAtIndex: 1] title] isEqualToString: @"2   Japan"] && [[[m itemAtIndex: 2] title] isEqualToString: @"3   Foxx"],
-               "the OB-X menu lists 1 Queen, 2 Japan, 3 Foxx");
+        check ([m numberOfItems] == 10 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Queen"]
+               && [[[m itemAtIndex: 1] title] isEqualToString: @"2   Japan"] && [[[m itemAtIndex: 2] title] isEqualToString: @"3   Foxx"]
+               && [[[m itemAtIndex: 3] title] isEqualToString: @"4   Tom Sawyer"] && [[[m itemAtIndex: 9] title] isEqualToString: @"10   Jarre Brass"],
+               "the OB-X menu lists 1 Queen, 2 Japan, 3 Foxx ... 10 Jarre Brass");
         PICK (bankSlot (kOBX, 1));
         check (e->getParameter (e, kOxModPw) == 1.0f && e->getParameter (e, kOxO1Pls) == 1.0f, "choosing 'Japan' from the menu loads it");
         pump (0.1);
