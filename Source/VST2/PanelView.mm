@@ -409,7 +409,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
         nameField = nil;
         retiredField = nil;
         host->refreshPresets();
-        presetBank = paramStep (kInst, shown[kInst]);
+        presetBank = instIndex (shown[kInst]);
         for (int k = 0; k < kSlotsPerBank; ++k) presetUsed[k] = host->presetExists (bankSlot (presetBank, k));
         timer = [[NSTimer timerWithTimeInterval: 1.0 / 20.0 target: self selector: @selector (tick:) userInfo: nil repeats: YES] retain];
         [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSDefaultRunLoopMode];
@@ -445,7 +445,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 - (BOOL) isOpaque { return YES; }
 - (BOOL) acceptsFirstMouse: (NSEvent*) e { (void) e; return YES; }
 
-- (int) inst { return paramStep (kInst, shown[kInst]); }
+- (int) inst { return instIndex (shown[kInst]); }
 
 // The preset keys show the current instrument's bank
 - (void) refreshBank
@@ -1137,7 +1137,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     status[0] = 0;
     activePreset = -1;
     presetEdited = false;
-    [self clickParam: kInst value: stepValue (k, kNumInstruments)];
+    [self clickParam: kInst value: instValue (k)];
 }
 
 - (void) menuPicked: (id) sender

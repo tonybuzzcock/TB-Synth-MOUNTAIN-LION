@@ -14,7 +14,8 @@ namespace tbsyn
 
 namespace
 {
-    const char* const kHeader = "TBSYNTH-PRESETS 4";        // menus: slot = instrument * 99 + entry; 8 instruments
+    const char* const kHeader = "TBSYNTH-PRESETS 5";        // menus: slot = instrument * 99 + entry; INSTRUMENT as k / 15
+    const char* const kHeaderV4 = "TBSYNTH-PRESETS 4";      // menus of 99, INSTRUMENT as k / 7 (8 instruments)
     const char* const kHeaderV3 = "TBSYNTH-PRESETS 3";      // banks of 8 keys, 8 instruments
     const char* const kHeaderV2 = "TBSYNTH-PRESETS 2";      // banks, 7 instruments
     const char* const kHeaderV1 = "TBSYNTH-PRESETS 1";      // the first release: 8 shared slots
@@ -94,15 +95,17 @@ bool PresetStore::load()
     if (! f) { addFactory(); return false; }
 
     char line[4096];
-    bool headerOk = false, v1 = false, sevenInst = false, banksOf8 = false;
+    bool headerOk = false, v1 = false, banksOf8 = false;
+    int oldInstruments = 0;      // how the INSTRUMENT value was stored: k / (n - 1); 0 = today's 16-slot scale
     while (std::fgets (line, sizeof (line), f))
     {
         if (! headerOk)
         {
             headerOk = std::strncmp (line, kHeader, std::strlen (kHeader)) == 0;
-            if (! headerOk && std::strncmp (line, kHeaderV1, std::strlen (kHeaderV1)) == 0) { headerOk = true; v1 = true; sevenInst = true; }
-            if (! headerOk && std::strncmp (line, kHeaderV2, std::strlen (kHeaderV2)) == 0) { headerOk = true; sevenInst = true; banksOf8 = true; }
-            if (! headerOk && std::strncmp (line, kHeaderV3, std::strlen (kHeaderV3)) == 0) { headerOk = true; banksOf8 = true; }
+            if (! headerOk && std::strncmp (line, kHeaderV1, std::strlen (kHeaderV1)) == 0) { headerOk = true; v1 = true; oldInstruments = 7; }
+            if (! headerOk && std::strncmp (line, kHeaderV2, std::strlen (kHeaderV2)) == 0) { headerOk = true; oldInstruments = 7; banksOf8 = true; }
+            if (! headerOk && std::strncmp (line, kHeaderV3, std::strlen (kHeaderV3)) == 0) { headerOk = true; oldInstruments = 8; banksOf8 = true; }
+            if (! headerOk && std::strncmp (line, kHeaderV4, std::strlen (kHeaderV4)) == 0) { headerOk = true; oldInstruments = 8; }
             if (! headerOk) break;
             continue;
         }
@@ -138,10 +141,10 @@ bool PresetStore::load()
     }
     std::fclose (f);
 
-    // files from before the Multiman: the INSTRUMENT value was k / 6 (seven instruments)
-    if (headerOk && sevenInst)
+    // older files stored INSTRUMENT as k / (instruments - 1): put it on today's scale
+    if (headerOk && oldInstruments > 1)
         for (int s2 = 0; s2 < kNumPresetSlots; ++s2)
-            if (used[s2]) vals[s2][kInst] = stepValue (stepOf (vals[s2][kInst], 7), kNumInstruments);
+            if (used[s2]) vals[s2][kInst] = instValue (stepOf (vals[s2][kInst], oldInstruments));
 
     // a first-release file: its 8 shared slots go to the banks of the instruments they
     // were made on, after that bank's factory presets
@@ -160,7 +163,7 @@ bool PresetStore::load()
         for (int k = 0; k < kSlotsPerBank; ++k)
         {
             if (! oldUsed[k]) continue;
-            const int inst = paramStep (kInst, oldVals[k][kInst]);
+            const int inst = instIndex (oldVals[k][kInst]);
             for (int key = 0; key < kSlotsPerBank; ++key)
             {
                 const int dst = bankSlot (inst, key);
@@ -216,7 +219,7 @@ void PresetStore::addFactory()
         const int slot = bankSlot (fp.instrument, fp.key);
         if (slot < 0 || slot >= kNumPresetSlots || used[slot]) continue;
         for (int i = 0; i < kNumParams; ++i) vals[slot][i] = kParams[i].def;
-        vals[slot][kInst] = stepValue (fp.instrument, kNumInstruments);
+        vals[slot][kInst] = instValue (fp.instrument);
         for (int k = 0; k < 32 && fp.settings[k].param >= 0; ++k)
             if (fp.settings[k].param < kNumParams) vals[slot][fp.settings[k].param] = fp.settings[k].value;
         used[slot] = true;

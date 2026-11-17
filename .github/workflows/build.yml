@@ -11,7 +11,7 @@ permissions:
   contents: write   # lets tagged builds attach the .vst to a GitHub Release
 
 env:
-  DSP_SRC: Source/DSP/Synth.cpp Source/DSP/Moog.cpp Source/DSP/OBX.cpp Source/DSP/Solina.cpp Source/DSP/Reeds.cpp Source/DSP/Hammond.cpp Source/DSP/Clav.cpp Source/DSP/Multiman.cpp
+  DSP_SRC: Source/DSP/Synth.cpp Source/DSP/Moog.cpp Source/DSP/OBX.cpp Source/DSP/Solina.cpp Source/DSP/Reeds.cpp Source/DSP/Hammond.cpp Source/DSP/Clav.cpp Source/DSP/Multiman.cpp Source/DSP/Omni.cpp
   VST_NAME: TB Synth
   VST_ZIP: TB-Synth-mountain-lion-vst.zip
 

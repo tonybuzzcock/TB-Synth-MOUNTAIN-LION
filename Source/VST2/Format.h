@@ -56,6 +56,12 @@ inline double realValue (int p, double v)
         case kCrCont: return map::crContour (v);
         case kCrSust: return map::crSustain (v);
         case kCrVibSp: return map::crVibSpeed (v);
+        case kOmSAtk: return map::omStrAttack (v);
+        case kOmSRel: return map::omStrRelease (v);
+        case kOmVcfF: return map::omVcf (v);
+        case kOmLfo: return map::omLfo (v);
+        case kOmA: return map::omAttack (v);
+        case kOmD: case kOmR: return map::omDecay (v);
         default: return v;
     }
 }
@@ -70,7 +76,7 @@ inline void formatValue (int p, float v, char* out, size_t size, bool longForm)
     switch (pi.unit)
     {
         case kUInst:
-            std::snprintf (buf, sizeof (buf), "%s", longForm ? instrumentName (paramStep (p, v)) : instrumentShort (paramStep (p, v)));
+            std::snprintf (buf, sizeof (buf), "%s", longForm ? instrumentName (instIndex (v)) : instrumentShort (instIndex (v)));
             break;
         case kUMaster:
         {

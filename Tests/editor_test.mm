@@ -126,12 +126,12 @@ int main (int argc, char** argv)
     // ------------------------------------------------------------ the INSTRUMENT menu's arrows, every page
     std::printf ("\nInstrument pages\n");
     {
-        static const char* const file[kNumInstruments] = { "minimoog", "obx", "solina", "wurlitzer", "hammond", "cembalet", "clavinet", "multiman" };
+        static const char* const file[kNumInstruments] = { "minimoog", "obx", "solina", "wurlitzer", "hammond", "cembalet", "clavinet", "multiman", "omni" };
         bool stepped = true;
         std::vector<NSData*> pages;
         for (int k = 0; k < kNumInstruments; ++k)
         {
-            const int got = paramStep (kInst, e->getParameter (e, kInst));
+            const int got = instIndex (e->getParameter (e, kInst));
             if (got != k) { stepped = false; std::printf ("  expected page %d, on %d\n", k, got); }
             pump (0.06);
             NSData* png = renderPNG (panel, dir + "/panel_" + file[k] + ".png");
@@ -141,9 +141,9 @@ int main (int argc, char** argv)
             if (! (automateCalls == 1 && beginCalls == 1 && endCalls == 1)) stepped = false;
         }
         check (stepped, "the right arrow steps through all eight instruments, telling the host each time");
-        check (paramStep (kInst, e->getParameter (e, kInst)) == 0, "and wraps round to the first");
+        check (instIndex (e->getParameter (e, kInst)) == 0, "and wraps round to the first");
         click (win, panel, menuArrowLeft());
-        check (paramStep (kInst, e->getParameter (e, kInst)) == kNumInstruments - 1, "the left arrow steps back (wrapping)");
+        check (instIndex (e->getParameter (e, kInst)) == kNumInstruments - 1, "the left arrow steps back (wrapping)");
         bool differ = true;
         for (int a = 0; a < kNumInstruments; ++a)
             for (int b = a + 1; b < kNumInstruments; ++b) if ([pages[a] isEqualToData: pages[b]]) differ = false;
@@ -160,7 +160,7 @@ int main (int argc, char** argv)
         int tested = 0;
         for (int inst = 0; inst < kNumInstruments; ++inst)
         {
-            e->setParameter (e, kInst, stepValue (inst, kNumInstruments));
+            e->setParameter (e, kInst, instValue (inst));
             pump (0.06);
             for (int i = 0; i < kNumCtls; ++i)
             {
@@ -244,7 +244,7 @@ int main (int argc, char** argv)
     }
     {
         // Hammond: a registration, the Leslie on FAST, screenshot
-        e->setParameter (e, kInst, stepValue (kHammond, kNumInstruments));
+        e->setParameter (e, kInst, instValue (kHammond));
         const float reg[9] = { 8, 8, 8, 8, 0, 0, 0, 0, 0 };
         for (int b = 0; b < 9; ++b) e->setParameter (e, kB3Db1 + b, reg[b] / 8.0f);
         e->setParameter (e, kLsSpeed, 1.0f);
@@ -264,7 +264,7 @@ int main (int argc, char** argv)
     const NSPoint defaultPt = NSMakePoint (kDefaultX + kDefaultW * 0.5, kDefaultY + kDefaultH * 0.5);
     {
         // the menus list the factory presets first, numbered in the list only
-        e->setParameter (e, kInst, stepValue (kOBX, kNumInstruments));
+        e->setParameter (e, kInst, instValue (kOBX));
         pump (0.1);
         NSMenu* m = [(id) panel presetMenu];
         check ([m numberOfItems] == 3 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Queen"]
@@ -274,11 +274,11 @@ int main (int argc, char** argv)
         check (e->getParameter (e, kOxModPw) == 1.0f && e->getParameter (e, kOxO1Pls) == 1.0f, "choosing 'Japan' from the menu loads it");
         pump (0.1);
         renderPNG (panel, dir + "/panel_preset_menu.png");
-        e->setParameter (e, kInst, stepValue (kCembalet, kNumInstruments));
+        e->setParameter (e, kInst, instValue (kCembalet));
         pump (0.1);
         m = [(id) panel presetMenu];
         check ([m numberOfItems] == 1 && ! [[m itemAtIndex: 0] isEnabled], "an instrument with no presets says so");
-        e->setParameter (e, kInst, stepValue (kWurlitzer, kNumInstruments));
+        e->setParameter (e, kInst, instValue (kWurlitzer));
         pump (0.1);
         PICK (bankSlot (kWurlitzer, 0));
         check (std::fabs (e->getParameter (e, kWuVol) - 0.85f) < 1e-5f, "Wurlitzer 'Supertramp'");
@@ -293,7 +293,7 @@ int main (int argc, char** argv)
         click (win, panel, defaultPt);
         check (e->getParameter (e, kWuVib) == kParams[kWuVib].def && e->getParameter (e, kWuVol) == kParams[kWuVol].def,
                "DEFAULT puts this instrument's controls back to their defaults");
-        check (e->getParameter (e, kMgCutoff) == 0.9f && e->getParameter (e, kMaster) == 0.5f && paramStep (kInst, e->getParameter (e, kInst)) == kWurlitzer,
+        check (e->getParameter (e, kMgCutoff) == 0.9f && e->getParameter (e, kMaster) == 0.5f && instIndex (e->getParameter (e, kInst)) == kWurlitzer,
                "and leaves the other instruments, MASTER and the instrument alone");
         check (automateCalls == 2, "telling the host about each control it moved");
         pump (0.1);
@@ -364,7 +364,7 @@ int main (int argc, char** argv)
         check (automateCalls >= kNumParams, "recall tells the host about every parameter");
         renderPNG (panel, dir + "/panel_preset_loaded.png");
         // the same on every instrument: SAVE on the Multiman adds to the Multiman's menu
-        e->setParameter (e, kInst, stepValue (kMultiman, kNumInstruments));
+        e->setParameter (e, kInst, instValue (kMultiman));
         pump (0.1);
         click (win, panel, savePt);
         field = nil;
@@ -387,7 +387,7 @@ int main (int argc, char** argv)
     pump (0.3);
     NSData* pngAfter = renderPNG (panel, dir + "/panel_changed.png");
     check (! [pngAfter isEqualToData: pngBefore], "panel redraws after host changes");
-    e->setParameter (e, kInst, stepValue (kClavinet, kNumInstruments));
+    e->setParameter (e, kInst, instValue (kClavinet));
     pump (0.3);
     NSData* pngInst = renderPNG (panel, dir + "/panel_host_instrument.png");
     check (! [pngInst isEqualToData: pngAfter], "the page follows an instrument change from the host");

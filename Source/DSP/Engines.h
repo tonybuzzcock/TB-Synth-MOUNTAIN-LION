@@ -1,5 +1,5 @@
 // Engines.h
-// The seven instrument models in TB Synth. Each engine receives its own
+// The instrument models in TB Synth. Each engine receives its own
 // parameters (setParam with the global Param index), MIDI notes, and renders
 // mono audio. Plain C++98, no allocation after construction.
 //
@@ -21,6 +21,9 @@
 //                   in two halves; brass through a transistor ladder with its
 //                   own attack / decay, piano and clavichord, cello and violin
 //                   through a three-line ensemble, sustain, vibrato, bass pedals
+//   OmniEngine      ARP Omni: divide-down generator; violins, violas, cellos and
+//                   bass, the synthesizer through one shared ladder VCF / ADSR,
+//                   monophonic bass on the bottom 20 keys, string phasers
 
 #ifndef TBSYNTH_ENGINES_H
 #define TBSYNTH_ENGINES_H
@@ -334,6 +337,50 @@ private:
     OnePole ensLp1, ensLp2;
     double lfoSlow, lfoFast, vibPh;
     OnePole dcBlock;
+    Smooth masterS;
+};
+
+//==============================================================================
+class OmniEngine : public Engine
+{
+public:
+    enum { kLowKey = 36, kKeys = 49, kBassKeys = 20 };   // C2 .. C6; bass on C2 .. G3
+    OmniEngine();
+    void prepare (double sr);
+    void setParam (int p, float v);
+    void noteOn (int note, int vel);
+    void noteOff (int note);
+    void allNotesOff();
+    void silence();
+    void sustainPedal (bool down);
+    void render (float* out, int n);
+
+private:
+    void updateEnv();
+    void updateBass (bool newKey);
+    void releaseKey (int k);
+    int  lowestBassKey() const;
+    bool anyHeld() const;
+    double sr;
+    float pv[kNumParams];
+    double topCount[12];
+    bool down[kKeys], held[kKeys], pedal;
+    Envelope strEnv[kKeys];
+    double synGate[kKeys];
+    double gateUp;
+    Envelope adsr;
+    double lad[4];
+    int bassNote;
+    double bassLevel;
+    bool bassHeld;
+    double bassDecK, bassCutK, bassAtkK, bassTarget;
+    bool bassRestrike;
+    double synDown;
+    double lfoPh;
+    Biquad violinHp, violinPk, violinLp, violaLp, violaPk, celloLp, celloPk, sbassLp, synBassLp;
+    Delay<1024> ens, cho;
+    double ensPh[3], choPh[3];
+    OnePole ensLp, dcBlock;
     Smooth masterS;
 };
 

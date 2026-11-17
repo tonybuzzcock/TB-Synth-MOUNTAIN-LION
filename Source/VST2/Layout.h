@@ -206,6 +206,36 @@ const Ctl kCtls[] = {
     { kCrBassV,   kKnob,    1164, R2, 22, "BASS\nPEDAL", "0", "10", kGrey },
     { kCrBassOn,  kTab,     1164, R3, 0, "BASS", "ON", "", 0 },
 
+    // ------------------------------------------------------------ ARP Omni
+    // STRINGS
+    { kOmViolin,  kTab,       57, R1, 0, "VIOLINS\n4'", "", "", 0 },
+    { kOmViola,   kTab,      142, R1, 0, "VIOLAS\n8'", "", "", 0 },
+    { kOmCello,   kTab,      227, R1, 0, "CELLOS\n8'", "", "", 0 },
+    { kOmBass,    kTab,      312, R1, 0, "BASS\n16'", "", "", 0 },
+    { kOmSAtk,    kKnob,     102, R2 + 20, 22, "ATTACK", "0", "10", kGrey },
+    { kOmSRel,    kKnob,     267, R2 + 20, 22, "RELEASE", "0", "10", kGrey },
+    // SYNTHESIZER
+    { kOmSy4,     kTab,      425, R1, 0, "4'", "", "", 0 },
+    { kOmSy8,     kTab,      490, R1, 0, "8'", "", "", 0 },
+    { kOmSyB8,    kTab,      555, R1, 0, "BASS\n8'", "", "", 0 },
+    { kOmSyB16,   kTab,      620, R1, 0, "BASS\n16'", "", "", 0 },
+    { kOmWave,    kSlide,    735, R1, 0, "WAVEFORM", "", "", 0 },
+    { kOmEnh,     kTab,      845, R1, 0, "ENHANCE", "", "", 0 },
+    { kOmVcfF,    kKnob,     430, R2, 20, "FREQUENCY", "0", "10", kOrange },
+    { kOmVcfR,    kKnob,     510, R2, 20, "RESONANCE", "0", "10", kGrey },
+    { kOmVcfEnv,  kKnob,     590, R2, 20, "ADSR", "0", "10", kGrey },
+    { kOmVcfLfo,  kKnob,     670, R2, 20, "LFO", "0", "10", kGrey },
+    { kOmLfo,     kKnob,     760, R2, 20, "LFO\nSPEED", "0", "10", kGrey },
+    { kOmChorus,  kTab,      845, R2, 0, "CHORUS\nPHASER", "", "", 0 },
+    { kOmA,       kKnob,     430, R3, 20, "ATTACK", "0", "10", kGrey },
+    { kOmD,       kKnob,     510, R3, 20, "DECAY", "0", "10", kGrey },
+    { kOmS,       kKnob,     590, R3, 20, "SUSTAIN", "0", "10", kGrey },
+    { kOmR,       kKnob,     670, R3, 20, "RELEASE", "0", "10", kGrey },
+    // GENERAL
+    { kOmMix,     kKnob,    1068, R1, 22, "STRING / SYNTH\nMIX", "STR", "SYN", kOrange },
+    { kOmBassV,   kKnob,     998, R2 + 20, 22, "BASS\nVOLUME", "0", "10", kGrey },
+    { kOmMaster,  kKnob,    1138, R2 + 20, 22, "MASTER", "0", "10", kRed },
+
     // ------------------------------------------------------------ every page
     { kMaster,    kKnob,     714, 592, 17, "MASTER", "", "", kRed },
 };
@@ -241,6 +271,9 @@ const Section kSections[] = {
     { kMultiman,  568, 76, 334, 424, "STRINGS" },
     { kMultiman,  910, 76, 182, 424, "SUSTAIN  VIBRATO" },
     { kMultiman, 1100, 76, 128, 424, "OUTPUT" },
+    { kOmni,       12, 76, 360, 424, "STRINGS" },
+    { kOmni,      380, 76, 520, 424, "SYNTHESIZER" },
+    { kOmni,      908, 76, 320, 424, "GENERAL" },
 };
 const int kNumSections = (int) (sizeof (kSections) / sizeof (kSections[0]));
 
@@ -255,6 +288,8 @@ const Caption kCaptions[] = {
     { kOBX,      1070, R1 - 62, "FILTER ENVELOPE" },
     { kOBX,      1070, R2 - 62, "LOUDNESS ENVELOPE" },
     { kMultiman,  182, R1 - 62, "BRASS FILTER" },
+    { kOmni,      550, R2 - 58, "VCF" },
+    { kOmni,      550, R3 - 58, "ADSR" },
 };
 const int kNumCaptions = (int) (sizeof (kCaptions) / sizeof (kCaptions[0]));
 

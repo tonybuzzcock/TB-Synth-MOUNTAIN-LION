@@ -84,6 +84,71 @@ const FactoryPreset kFactoryPresets[] = {
         { kSoViolin, 1.0f }, { kSoViola, 1.0f }, { kSoTrump, 0.0f }, { kSoHorn, 0.0f },
         { kSoCello, 1.0f }, { kSoBass, 0.0f }, { kSoCresc, 0.48f }, { kSoSust, 0.55f }, { kSoVol, 0.7f },
         { -1, 0.0f } } },
+    // ---- ARP Omni. Names 2-10 are the patches in ARP's Omni-2 owner's manual (1978);
+    // the settings are worked out from the patch names and the Omni's controls, not
+    // copied from the manual's charts (estimates). "Joy Division" and "Moving In
+    // Stereo" follow records the Omni is documented on.
+    // Joy Division, "Atmosphere" / Closer: violins and violas through the phasers,
+    // slow swell, long release
+    { kOmni, 0, "Joy Division", {
+        { kOmViolin, 1.0f }, { kOmViola, 1.0f }, { kOmCello, 1.0f }, { kOmBass, 0.0f },
+        { kOmSAtk, 0.62f }, { kOmSRel, 0.82f }, { kOmMix, 0.0f }, { kOmBassV, 0.5f },
+        { -1, 0.0f } } },
+    { kOmni, 1, "Brass", {
+        { kOmViolin, 0.0f }, { kOmViola, 0.0f }, { kOmSy8, 1.0f }, { kOmSy4, 0.0f }, { kOmWave, 0.0f },
+        { kOmVcfF, 0.38f }, { kOmVcfR, 0.15f }, { kOmVcfEnv, 0.62f }, { kOmVcfLfo, 0.0f },
+        { kOmA, 0.5f }, { kOmD, 0.55f }, { kOmS, 0.65f }, { kOmR, 0.45f }, { kOmSRel, 0.35f }, { kOmMix, 1.0f },
+        { -1, 0.0f } } },
+    { kOmni, 2, "Brass Strings Bass", {
+        { kOmViolin, 1.0f }, { kOmViola, 1.0f }, { kOmCello, 1.0f }, { kOmBass, 1.0f }, { kOmSAtk, 0.4f }, { kOmSRel, 0.55f },
+        { kOmSy8, 1.0f }, { kOmWave, 0.0f },
+        { kOmVcfF, 0.4f }, { kOmVcfR, 0.15f }, { kOmVcfEnv, 0.6f }, { kOmA, 0.48f }, { kOmD, 0.55f }, { kOmS, 0.65f }, { kOmR, 0.45f },
+        { kOmMix, 0.55f }, { kOmBassV, 0.7f }, { kOmMaster, 0.6f },
+        { -1, 0.0f } } },
+    { kOmni, 3, "Shimmer Sweep", {
+        { kOmViolin, 0.0f }, { kOmViola, 0.0f }, { kOmSy8, 1.0f }, { kOmSy4, 1.0f }, { kOmWave, 0.0f },
+        { kOmVcfF, 0.42f }, { kOmVcfR, 0.62f }, { kOmVcfEnv, 0.0f }, { kOmVcfLfo, 0.7f }, { kOmLfo, 0.3f },
+        { kOmA, 0.3f }, { kOmD, 0.5f }, { kOmS, 1.0f }, { kOmR, 0.6f }, { kOmSRel, 0.6f }, { kOmMix, 1.0f },
+        { -1, 0.0f } } },
+    { kOmni, 4, "Phased Sweep", {
+        { kOmViolin, 0.0f }, { kOmViola, 0.0f }, { kOmSy8, 1.0f }, { kOmSy4, 0.0f }, { kOmWave, 0.0f }, { kOmChorus, 1.0f },
+        { kOmVcfF, 0.3f }, { kOmVcfR, 0.5f }, { kOmVcfEnv, 0.75f }, { kOmVcfLfo, 0.0f },
+        { kOmA, 0.72f }, { kOmD, 0.72f }, { kOmS, 0.35f }, { kOmR, 0.65f }, { kOmSRel, 0.65f }, { kOmMix, 1.0f },
+        { -1, 0.0f } } },
+    { kOmni, 5, "Sweep Enh Strings", {
+        { kOmViolin, 1.0f }, { kOmViola, 1.0f }, { kOmSAtk, 0.5f }, { kOmSRel, 0.7f },
+        { kOmSy8, 1.0f }, { kOmWave, 0.0f }, { kOmEnh, 1.0f },
+        { kOmVcfF, 0.35f }, { kOmVcfR, 0.45f }, { kOmVcfEnv, 0.0f }, { kOmVcfLfo, 0.6f }, { kOmLfo, 0.22f },
+        { kOmA, 0.55f }, { kOmD, 0.5f }, { kOmS, 1.0f }, { kOmR, 0.65f }, { kOmMix, 0.5f },
+        { -1, 0.0f } } },
+    { kOmni, 6, "Poly Wah", {
+        { kOmViolin, 0.0f }, { kOmViola, 0.0f }, { kOmSy8, 1.0f }, { kOmSy4, 0.0f }, { kOmWave, 1.0f },
+        { kOmVcfF, 0.28f }, { kOmVcfR, 0.7f }, { kOmVcfEnv, 0.7f }, { kOmVcfLfo, 0.0f },
+        { kOmA, 0.38f }, { kOmD, 0.48f }, { kOmS, 0.15f }, { kOmR, 0.35f }, { kOmSRel, 0.3f }, { kOmMix, 1.0f },
+        { -1, 0.0f } } },
+    { kOmni, 7, "Harpsichord Bass", {
+        { kOmViolin, 0.0f }, { kOmViola, 1.0f }, { kOmCello, 1.0f }, { kOmBass, 0.0f }, { kOmSAtk, 0.35f }, { kOmSRel, 0.5f },
+        { kOmSy8, 1.0f }, { kOmSy4, 1.0f }, { kOmWave, 1.0f },
+        { kOmVcfF, 0.55f }, { kOmVcfR, 0.1f }, { kOmVcfEnv, 0.45f },
+        { kOmA, 0.0f }, { kOmD, 0.55f }, { kOmS, 0.0f }, { kOmR, 0.5f }, { kOmMix, 0.62f }, { kOmBassV, 0.6f },
+        { -1, 0.0f } } },
+    { kOmni, 8, "Lower Strings", {
+        { kOmViolin, 0.0f }, { kOmViola, 1.0f }, { kOmCello, 1.0f }, { kOmBass, 1.0f },
+        { kOmSAtk, 0.55f }, { kOmSRel, 0.72f }, { kOmMix, 0.0f }, { kOmBassV, 0.72f },
+        { -1, 0.0f } } },
+    { kOmni, 9, "Lucy in the Sky", {
+        { kOmViolin, 0.0f }, { kOmViola, 0.0f }, { kOmSy4, 1.0f }, { kOmSy8, 0.0f }, { kOmWave, 1.0f }, { kOmEnh, 1.0f },
+        { kOmChorus, 1.0f }, { kOmVcfF, 0.62f }, { kOmVcfR, 0.1f }, { kOmVcfEnv, 0.15f },
+        { kOmA, 0.05f }, { kOmD, 0.65f }, { kOmS, 0.55f }, { kOmR, 0.45f }, { kOmSRel, 0.4f }, { kOmMix, 1.0f },
+        { -1, 0.0f } } },
+    // The Cars, "Moving In Stereo" (Greg Hawkes: every keyboard on it is the Omni):
+    // the dark, hollow synthesizer pad with a slow filter swell
+    { kOmni, 10, "Moving In Stereo", {
+        { kOmViolin, 1.0f }, { kOmViola, 0.0f }, { kOmSAtk, 0.6f }, { kOmSRel, 0.7f },
+        { kOmSy8, 1.0f }, { kOmSy4, 0.0f }, { kOmSyB16, 1.0f }, { kOmWave, 1.0f }, { kOmEnh, 1.0f },
+        { kOmVcfF, 0.33f }, { kOmVcfR, 0.35f }, { kOmVcfEnv, 0.55f }, { kOmVcfLfo, 0.1f }, { kOmLfo, 0.25f },
+        { kOmA, 0.7f }, { kOmD, 0.7f }, { kOmS, 0.6f }, { kOmR, 0.65f }, { kOmMix, 0.7f }, { kOmBassV, 0.6f },
+        { -1, 0.0f } } },
 };
 const int kNumFactoryPresets = (int) (sizeof (kFactoryPresets) / sizeof (kFactoryPresets[0]));
 

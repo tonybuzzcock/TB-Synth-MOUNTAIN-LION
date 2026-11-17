@@ -49,7 +49,7 @@ int main()
                && a.name (bankSlot (kOBX, 0)) == "Queen" && a.name (bankSlot (kOBX, 1)) == "Japan" && a.name (bankSlot (kOBX, 2)) == "Foxx"
                && a.name (bankSlot (kMinimoog, 0)) == "Carlos",
                "factory presets: Supertramp, Superstition, Quatro, Moroder, Queen, Japan, Foxx, Carlos");
-        check (a.get (wurli, w) && paramStep (kInst, w[kInst]) == kWurlitzer && std::fabs (w[kWuVol] - 0.85f) < 1e-6f
+        check (a.get (wurli, w) && instIndex (w[kInst]) == kWurlitzer && std::fabs (w[kWuVol] - 0.85f) < 1e-6f
                && w[kWuVib] == 0.0f && w[kMgCutoff] == kParams[kMgCutoff].def,
                "a factory preset selects its instrument, sets what it lists and leaves the rest at defaults");
     }
@@ -139,7 +139,7 @@ int main()
         // a user preset found on a factory key (an older file) moves to the next free key
         f = std::fopen (file.c_str(), "w");
         const int oldFk = kOBX * 8 + 1;      // the OB-X's first key in a banks-of-8 file
-        std::fprintf (f, "TBSYNTH-PRESETS 3\nslot %d: %.6f 0.3\nname %d: My OB pad\n", oldFk, stepValue (kOBX, kNumInstruments), oldFk);
+        std::fprintf (f, "TBSYNTH-PRESETS 3\nslot %d: %.6f 0.3\nname %d: My OB pad\n", oldFk, stepValue (kOBX, 8), oldFk);
         std::fclose (f);
         PresetStore y; y.setPath (file); y.load();
         check (y.name (fk) == "Queen" && y.name (bankSlot (kOBX, 3)) == "My OB pad",
@@ -158,7 +158,7 @@ int main()
         std::fclose (f);
         PresetStore q; q.setPath (file); q.load();
         float w[kNumParams];
-        check (q.get (bankSlot (kClavinet, 4), w) && paramStep (kInst, w[kInst]) == kClavinet,
+        check (q.get (bankSlot (kClavinet, 4), w) && instIndex (w[kInst]) == kClavinet,
                "a Clavinet preset saved before the Multiman still selects the Clavinet");
     }
 
@@ -166,11 +166,21 @@ int main()
     {
         f = std::fopen (file.c_str(), "w");
         const int oldWurli3 = kWurlitzer * 8 + 2 + 1;
-        std::fprintf (f, "TBSYNTH-PRESETS 3\nslot %d: %.6f\nname %d: Wurli 3\n", oldWurli3, stepValue (kWurlitzer, kNumInstruments), oldWurli3);
+        std::fprintf (f, "TBSYNTH-PRESETS 3\nslot %d: %.6f\nname %d: Wurli 3\n", oldWurli3, stepValue (kWurlitzer, 8), oldWurli3);
         std::fclose (f);
         PresetStore q; q.setPath (file); q.load();
         check (q.name (bankSlot (kWurlitzer, 2)) == "Wurli 3" && q.name (bankSlot (kWurlitzer, 0)) == "Supertramp",
                "presets from the 8-key banks keep their places in the menus");
+    }
+
+    // A file from the 8-instrument build (menus of 99, INSTRUMENT as k / 7)
+    {
+        f = std::fopen (file.c_str(), "w");
+        std::fprintf (f, "TBSYNTH-PRESETS 4\nslot %d: %.6f\nname %d: Multi strings\n", bankSlot (kMultiman, 0) + 1, 1.0f, bankSlot (kMultiman, 0) + 1);
+        std::fclose (f);
+        PresetStore q; q.setPath (file); q.load();
+        float w[kNumParams];
+        check (q.get (bankSlot (kMultiman, 0), w) && instIndex (w[kInst]) == kMultiman, "a Multiman preset from the 8-instrument build still selects the Multiman");
     }
 
     std::printf ("  default location: %s\n", PresetStore::defaultPath().c_str());

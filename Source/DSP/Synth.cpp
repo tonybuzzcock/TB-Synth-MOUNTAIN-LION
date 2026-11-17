@@ -25,8 +25,9 @@ Synth::Synth()
     eng[kCembalet] = new CembaletEngine();
     eng[kClavinet] = new ClavEngine();
     eng[kMultiman] = new MultimanEngine();
+    eng[kOmni] = new OmniEngine();
     for (int i = 0; i < kNumParams; ++i) pv[i] = kParams[i].def;
-    cur = want = paramStep (kInst, pv[kInst]);
+    cur = want = instIndex (pv[kInst]);
     master = map::masterGain (pv[kMaster]);
 }
 
@@ -59,7 +60,7 @@ void Synth::setParam (int p, float v)
     if (! (v == v)) return;
     v = v < 0.0f ? 0.0f : (v > 1.0f ? 1.0f : v);
     pv[p] = v;
-    if (p == kInst) { want = paramStep (kInst, v); return; }
+    if (p == kInst) { want = instIndex (v); return; }
     const int i = kParams[p].inst;
     if (i >= 0 && i < kNumInstruments) eng[i]->setParam (p, v);
 }

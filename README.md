@@ -1,6 +1,6 @@
 # TB Synth (Mountain Lion VST)
 
-Eight classic keyboards in one VST 2.4 instrument, for **Mac OS X 10.8.5** (64-bit Intel), played in
+Nine classic keyboards in one VST 2.4 instrument, for **Mac OS X 10.8.5** (64-bit Intel), played in
 Pro Tools 11 through Blue Cat PatchWork. Pick the instrument from the **INSTRUMENT** menu at the top of the
 panel (click it for the list, or step with the arrows):
 
@@ -14,6 +14,7 @@ panel (click it for the list, or step with the arrows):
 | **Hohner Cembalet** | 61 plucked reeds with capacitive pickup, VOLUME |
 | **Hohner Clavinet D6** | 60 struck strings, two pickups (C/D, A/B), BRILLIANT / TREBLE / MEDIUM / SOFT, mute slider |
 | **Crumar Multiman (1975)** | 61 keys split LOWER / UPPER; BRASS (transistor ladder with ATTACK, DECAY, EMPHASIS, CONTOUR, retriggered by every key), PIANO / CLAVICHORD, CELLO / VIOLIN through the ensemble, SUSTAIN LENGTH, VIBRATO, MASTER, BASS PEDALS on the lowest 13 keys |
+| **ARP Omni (1975)** | 49 keys; STRINGS: VIOLINS 4' and VIOLAS 8' (polyphonic), CELLOS 8' and BASS 16' (monophonic, low-note priority, bottom 20 keys), ATTACK, RELEASE, the string phasers; SYNTHESIZER: 4' / 8' polyphonic and BASS 8' / 16', SAW or DYNAMIC PULSE, ENHANCEMENT, one 24 dB ladder VCF (FREQUENCY, RESONANCE, ADSR, LFO) and ADSR retriggered by every key, LFO 0.1 - 20 Hz, CHORUS PHASER; STRING / SYNTH MIX, BASS VOLUME, MASTER, sustain pedal |
 
 **Mono**, like the originals: the same signal on both outputs, so it works on a mono or stereo
 instrument track. Every control is a host parameter, so a session reopens exactly as it was left.
@@ -53,6 +54,9 @@ MASTER, and the tan readout. A LEVEL LED at top right lights amber while it play
 | Wurlitzer 200A | 1 | Supertramp | "Bloody Well Right" intro: dry, no vibrato, amp pushed to grit |
 | Hohner Clavinet D6 | 1 | Superstition | Stevie Wonder: BRILLIANT + TREBLE, both pickups in phase (D-A) |
 | Hohner Clavinet D6 | 2 | Quatro | Suzi Quatro's keyboard player: TREBLE + MEDIUM, bridge pickup, a little mute, preamp pushed |
+| ARP Omni | 1 | Joy Division | "Atmosphere" / Closer: violins, violas and cellos through the phasers, slow swell, long release |
+| ARP Omni | 2-10 | Brass, Brass Strings Bass, Shimmer Sweep, Phased Sweep, Sweep Enh Strings, Poly Wah, Harpsichord Bass, Lower Strings, Lucy in the Sky | the nine patches in ARP's Omni-2 owner's manual (1978), set from their names and the Omni's controls (the manual's slider charts weren't readable here) |
+| ARP Omni | 11 | Moving In Stereo | The Cars: Greg Hawkes said every keyboard on the track is the Omni; a dark hollow pad with a slow filter swell |
 | Solina String Ensemble | 1 | Moroder | "I Feel Love": the record's pad is Moog modular; this is the Solina's take on it |
 
 No published settings exist for these parts (the clavinet.com FAQ says of "Superstition" that it was a
@@ -72,6 +76,7 @@ first in their instrument's menu and can't be saved over or renamed. Presets sav
 | Solina String Ensemble | Eminent / ARP descriptions (divide-down, 49 keys, six voices, crescendo and sustain, ensemble chorus) |
 | Oberheim OB-X | OB-X owner's and service manual descriptions (8 voices, 2 oscillators, 2-pole filter, two envelopes) |
 | Crumar Multiman | Crumar *Multiman* schematic diagram, DWG 1-12, 7/4/75 (`Docs/Crumar_Multiman_1975_schematic.pdf`): block diagram, tone generator and dividers, gates and key contacts (split buses P1/P2, 8A/8B, D1/D2), brass ladder TR1-TR10 with 47 nF stages and its A/D envelope, piano / clavichord, strings, sustain and vibrato, delay lines, bass pedals, panel legends |
+| ARP Omni | ARP *Omni Model 2480 Service Manual* (Feb. 1977, doc. 90020000): product description and control functions, simplified block diagram (master top-octave generator, 49 divided lines, string 4' / 8' and bass voicing, 4075 24 dB VCF on the summed 4' / 8' polyphonic and 8' / 16' bass pitches, ADSR, LFO, phaser), trim procedures; patch names from the *Omni-2 Owner's Manual* (1978) |
 
 The PDFs themselves couldn't be downloaded into the build environment, so the values above were read from
 them online; no component-level schematic was transcribed. These are behavioural models built from
@@ -106,6 +111,13 @@ the documented behaviour and specifications, to be tuned by ear (as with the oth
   is laid out in TB Synth's style rather than copying the Crumar's, with every control the schematic
   shows. The real bass pedals were a separate pedal board: here the lowest 13 keys (F1 - F2) play them,
   one note at a time, an octave down.
+
+- **ARP Omni**: string attack 5 ms - 3 s, release 50 ms - 6 s; synthesizer key gate 3 ms; ADSR attack 2 ms -
+  5 s, decay and release 10 ms - 8 s; VCF 20 Hz - 16 kHz, ADSR sweep 6 octaves, LFO sweep 2 octaves;
+  DYNAMIC PULSE width following the ADSR; bass keying decay 2.5 s, cut 30 ms; phaser delays 0.12 - 0.72 ms
+  at 0.63 / 0.81 / 1.07 Hz, CHORUS PHASER at 0.45 x those rates and deeper; voicing filters. The synth
+  bass goes through the VCF with the polyphonic pitches, as the service manual describes. The LFO range and the 4075 ladder
+  are from the service manual.
 
 ## Install (Mac Pro, OS X 10.8.5)
 

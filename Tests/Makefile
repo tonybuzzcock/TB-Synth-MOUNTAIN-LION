@@ -8,7 +8,7 @@
 CXX      ?= c++
 CXXFLAGS ?= -O2 -std=c++98 -Wall -Wextra -pedantic -Wno-long-long
 DSP_SRC   = ../Source/DSP/Synth.cpp ../Source/DSP/Moog.cpp ../Source/DSP/OBX.cpp ../Source/DSP/Solina.cpp \
-            ../Source/DSP/Reeds.cpp ../Source/DSP/Hammond.cpp ../Source/DSP/Clav.cpp ../Source/DSP/Multiman.cpp
+            ../Source/DSP/Reeds.cpp ../Source/DSP/Hammond.cpp ../Source/DSP/Clav.cpp ../Source/DSP/Multiman.cpp ../Source/DSP/Omni.cpp
 HEADERS   = ../Source/DSP/*.h ../Source/VST2/*.h
 
 synth_test: $(DSP_SRC) synth_test.cpp $(HEADERS)

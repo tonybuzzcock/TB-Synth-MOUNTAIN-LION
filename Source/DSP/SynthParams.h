@@ -8,7 +8,7 @@
 // name starts with the instrument's two-letter prefix so they stay unique and
 // sort together in a host's generic list: Mg Minimoog Model D, Ox OB-X,
 // So Solina String Ensemble, Wu Wurlitzer 200A, B3 Hammond B-3 (Ls its Leslie
-// 122), Cb Hohner Cembalet, Cl Hohner Clavinet D6, Cr Crumar Multiman.
+// 122), Cb Hohner Cembalet, Cl Hohner Clavinet D6, Cr Crumar Multiman, Om ARP Omni.
 //
 // Plain C++98, header only.
 
@@ -20,7 +20,7 @@
 namespace tbsyn
 {
 
-enum Instrument { kMinimoog = 0, kOBX, kSolina, kWurlitzer, kHammond, kCembalet, kClavinet, kMultiman, kNumInstruments };
+enum Instrument { kMinimoog = 0, kOBX, kSolina, kWurlitzer, kHammond, kCembalet, kClavinet, kMultiman, kOmni, kNumInstruments };
 
 enum Param
 {
@@ -73,6 +73,13 @@ enum Param
     kCrSust, kCrVibSp, kCrVibDp, kCrVibOn,
     kCrMaster, kCrBassV, kCrBassOn,
 
+    // ARP Omni (model 2480): strings, synthesizer, bass, general
+    kOmViolin, kOmViola, kOmCello, kOmBass, kOmSAtk, kOmSRel,
+    kOmSy4, kOmSy8, kOmSyB8, kOmSyB16, kOmWave, kOmEnh, kOmChorus,
+    kOmVcfF, kOmVcfR, kOmVcfEnv, kOmVcfLfo, kOmLfo,
+    kOmA, kOmD, kOmS, kOmR,
+    kOmMix, kOmBassV, kOmMaster,
+
     kNumParams
 };
 
@@ -107,7 +114,7 @@ struct ParamInfo
 // Moog range switch: LO, 32', 16', 8', 4', 2'
 // Moog waveforms (osc 1 and 2; osc 3 has reverse saw in place of tri/saw)
 const ParamInfo kParams[kNumParams] = {
-    { "Instrmnt", "INSTRUMENT", -1, kNumInstruments, 0.0f, kUInst, 0 },
+    { "Instrmnt", "INSTRUMENT", -1, 16, 0.0f, kUInst, 0 },
     { "Master",   "MASTER", -1, 0, 0.75f, kUMaster, 0 },
 
     // Minimoog: a warm lead / bass to start from
@@ -259,20 +266,51 @@ const ParamInfo kParams[kNumParams] = {
     { "CrMaster", "MASTER VOLUME",  kMultiman, 0, 0.7f, kUDial, 0 },
     { "CrBassV",  "BASS PEDAL VOLUME", kMultiman, 0, 0.7f, kUDial, 0 },
     { "CrBassOn", "BASS",           kMultiman, 2, 0.0f, kUSwitch, 0 },
+
+    // ARP Omni: violins and violas on, synthesizer ready to bring in with MIX
+    { "OmViolin", "VIOLINS 4'",     kOmni, 2, 1.0f, kUSwitch, 0 },
+    { "OmViola",  "VIOLAS 8'",      kOmni, 2, 1.0f, kUSwitch, 0 },
+    { "OmCello",  "CELLOS 8'",      kOmni, 2, 0.0f, kUSwitch, 0 },
+    { "OmBass",   "BASS 16'",       kOmni, 2, 0.0f, kUSwitch, 0 },
+    { "OmSAtk",   "STRING ATTACK",  kOmni, 0, 0.25f, kUSecs, 0 },
+    { "OmSRel",   "STRING RELEASE", kOmni, 0, 0.45f, kUSecs, 0 },
+    { "OmSy4",    "SYNTHESIZER 4'", kOmni, 2, 0.0f, kUSwitch, 0 },
+    { "OmSy8",    "SYNTHESIZER 8'", kOmni, 2, 1.0f, kUSwitch, 0 },
+    { "OmSyB8",   "SYNTH BASS 8'",  kOmni, 2, 0.0f, kUSwitch, 0 },
+    { "OmSyB16",  "SYNTH BASS 16'", kOmni, 2, 0.0f, kUSwitch, 0 },
+    { "OmWave",   "WAVEFORM",       kOmni, 2, 0.0f, kUChoice, "SAW|PULSE" },
+    { "OmEnh",    "WAVEFORM ENHANCEMENT", kOmni, 2, 0.0f, kUSwitch, 0 },
+    { "OmChorus", "CHORUS PHASER",  kOmni, 2, 0.0f, kUSwitch, 0 },
+    { "OmVcfF",   "VCF FREQUENCY",  kOmni, 0, 0.45f, kUHz, 0 },
+    { "OmVcfR",   "VCF RESONANCE",  kOmni, 0, 0.2f, kUDial, 0 },
+    { "OmVcfEnv", "VCF ADSR",       kOmni, 0, 0.5f, kUDial, 0 },
+    { "OmVcfLfo", "VCF LFO",        kOmni, 0, 0.0f, kUDial, 0 },
+    { "OmLfo",    "LFO SPEED",      kOmni, 0, 0.4f, kUHz, 0 },
+    { "OmA",      "ATTACK",         kOmni, 0, 0.1f, kUSecs, 0 },
+    { "OmD",      "DECAY",          kOmni, 0, 0.45f, kUSecs, 0 },
+    { "OmS",      "SUSTAIN",        kOmni, 0, 0.6f, kUDial, 0 },
+    { "OmR",      "RELEASE",        kOmni, 0, 0.4f, kUSecs, 0 },
+    { "OmMix",    "STRING / SYNTH MIX", kOmni, 0, 0.35f, kUDial, 0 },
+    { "OmBassV",  "BASS VOLUME",    kOmni, 0, 0.7f, kUDial, 0 },
+    { "OmMaster", "MASTER VOLUME",  kOmni, 0, 0.7f, kUDial, 0 },
 };
 
 inline const char* instrumentName (int k)
 {
     static const char* const n[kNumInstruments] = {
         "MINIMOOG MODEL D", "OBERHEIM OB-X", "SOLINA STRING ENSEMBLE", "WURLITZER 200A",
-        "HAMMOND B-3", "HOHNER CEMBALET", "HOHNER CLAVINET D6", "CRUMAR MULTIMAN" };
+        "HAMMOND B-3", "HOHNER CEMBALET", "HOHNER CLAVINET D6", "CRUMAR MULTIMAN", "ARP OMNI" };
     return (k >= 0 && k < kNumInstruments) ? n[k] : "";
 }
 inline const char* instrumentShort (int k)    // <= 8 characters
 {
-    static const char* const n[kNumInstruments] = { "Minimoog", "OB-X", "Solina", "Wurli", "B-3", "Cembalet", "Clavinet", "Multiman" };
+    static const char* const n[kNumInstruments] = { "Minimoog", "OB-X", "Solina", "Wurli", "B-3", "Cembalet", "Clavinet", "Multiman", "Omni" };
     return (k >= 0 && k < kNumInstruments) ? n[k] : "";
 }
+
+// The INSTRUMENT value: a fixed scale with room for 16 instruments (k / 15), so adding
+// an instrument never moves the ones saved in sessions and presets
+const int kInstSlots = 16;
 
 // Value helpers
 inline bool  isOn (float v) { return v >= 0.5f; }
@@ -284,6 +322,8 @@ inline int   stepOf (float v, int steps)
 }
 inline float stepValue (int k, int steps) { return steps < 2 ? 0.0f : (float) k / (float) (steps - 1); }
 inline int   paramStep (int p, float v) { return stepOf (v, kParams[p].steps); }
+inline float instValue (int k) { return stepValue (k, kInstSlots); }
+inline int   instIndex (float v) { const int k = stepOf (v, kInstSlots); return k < kNumInstruments ? k : kNumInstruments - 1; }
 
 inline double expMap (double v, double lo, double hi) { return lo * std::pow (hi / lo, v); }
 
@@ -325,6 +365,14 @@ namespace map
     inline double crContour (double v)    { return expMap (v, 60.0, 12000.0); }
     inline double crSustain (double v)    { return expMap (v, 0.08, 5.0); }
     inline double crVibSpeed (double v)   { return expMap (v, 2.5, 9.0); }
+
+    // ARP Omni (LFO from the service manual; the rest estimates)
+    inline double omStrAttack (double v)  { return expMap (v, 0.005, 3.0); }
+    inline double omStrRelease (double v) { return expMap (v, 0.05, 6.0); }
+    inline double omVcf (double v)        { return expMap (v, 20.0, 16000.0); }
+    inline double omLfo (double v)        { return expMap (v, 0.1, 20.0); }      // about 0.1 - 20 Hz (spec)
+    inline double omAttack (double v)     { return expMap (v, 0.002, 5.0); }
+    inline double omDecay (double v)      { return expMap (v, 0.01, 8.0); }
 
     // Hammond drawbars: each step about 3 dB, 0 = off
     inline double drawbarGain (int k)     { return k <= 0 ? 0.0 : std::pow (10.0, -3.0 * (8 - k) / 20.0); }

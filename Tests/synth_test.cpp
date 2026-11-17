@@ -120,7 +120,7 @@ static void render (Synth& s, std::vector<float>& out, size_t from, size_t count
 
 static void selectInst (Synth& s, int inst)
 {
-    s.setParam (kInst, stepValue (inst, kNumInstruments));
+    s.setParam (kInst, instValue (inst));
     std::vector<float> tmp;
     render (s, tmp, 0, SR / 20);      // let the switch fade through
 }
@@ -254,8 +254,8 @@ int main (int argc, char** argv)
         check (std::fabs (c4 - 261.538) < 0.2, "B-3 C is the 85/104 gear's 261.54 Hz, a little flat of equal temperament");
     }
     {
-        const int insts[6] = { kOBX, kWurlitzer, kCembalet, kClavinet, kSolina, kMultiman };
-        for (int k = 0; k < 6; ++k)
+        const int insts[7] = { kOBX, kWurlitzer, kCembalet, kClavinet, kSolina, kMultiman, kOmni };
+        for (int k = 0; k < 7; ++k)
         {
             defaults (s);
             selectInst (s, insts[k]);
@@ -497,13 +497,72 @@ int main (int argc, char** argv)
         check (again > settled * 1.5, "Multiman brass: each key retriggers the filter contour");
     }
     {
+        // Omni: CELLOS / BASS are monophonic on the bottom 20 keys, low-note priority; BASS 16' an octave down
+        defaults (s);
+        selectInst (s, kOmni);
+        s.setParam (kOmViolin, 0.0f); s.setParam (kOmViola, 0.0f); s.setParam (kOmSy8, 0.0f); s.setParam (kOmBass, 1.0f);
+        std::vector<float> y;
+        s.midi (0x90, 45, 100);        // A2 -> BASS 16' at 55 Hz
+        s.midi (0x90, 52, 100);        // E3 held too: the lower key wins
+        render (s, y, 0, SR);
+        const double hz = pitchOf (y, SR / 4, SR / 2, 55.0);
+        const double early = rmsOf (y, SR / 10, SR / 5), late = rmsOf (y, SR * 4 / 5, SR);
+        s.midi (0x80, 45, 0); s.midi (0x80, 52, 0);
+        render (s, y, SR, SR / 2);
+        std::printf ("  Omni BASS 16' from A2 (+E3): %.2f Hz, decay while held %.1f dB\n", hz, db (late / early));
+        check (std::fabs (hz - 55.0) < 0.6, "Omni bass: low-note priority, 16' an octave down");
+        check (late < early * 0.9, "Omni bass keying decays while the key is held");
+        check (rmsOf (y, SR + SR / 5, SR + SR / 2) < 1e-4, "Omni bass stops quickly when the keys are up");
+        y.clear();
+        s.midi (0x90, 60, 100);        // above the bass keys
+        render (s, y, 0, SR / 2);
+        s.midi (0x80, 60, 0);
+        check (peakOf (y, 0, SR / 2) < 1e-6, "keys above G3 don't play the bass");
+        render (s, y, 0, SR * 2);
+        // the sustain pedal holds the strings
+        defaults (s);
+        selectInst (s, kOmni);
+        s.setParam (kOmSRel, 0.0f);
+        y.clear();
+        s.midi (0xB0, 64, 127);
+        s.midi (0x90, 69, 100);
+        render (s, y, 0, SR / 2);
+        s.midi (0x80, 69, 0);
+        render (s, y, SR / 2, SR / 2);
+        const double held = rmsOf (y, SR * 3 / 4, SR);
+        s.midi (0xB0, 64, 0);
+        render (s, y, SR, SR / 2);
+        const double after = rmsOf (y, SR + SR / 4, SR + SR / 2);
+        std::printf ("  Omni pedal held %.1f dB, released %.1f dB\n", db (held), db (after));
+        check (held > 1e-3 && after < held * 0.01, "Omni: the sustain pedal holds every note");
+        // the synthesizer: one VCF, opened by the ADSR (a closed filter gets brighter with ADSR depth)
+        double cent[2];
+        for (int c = 0; c < 2; ++c)
+        {
+            defaults (s);
+            selectInst (s, kOmni);
+            s.setParam (kOmMix, 1.0f); s.setParam (kOmVcfF, 0.2f); s.setParam (kOmVcfEnv, c ? 0.8f : 0.0f);
+            s.setParam (kOmS, 1.0f);
+            y.clear();
+            s.midi (0x90, 57, 100);
+            render (s, y, 0, SR / 2);
+            s.midi (0x80, 57, 0);
+            cent[c] = peakHz (y, SR / 4, SR / 2, 100.0, 8000.0);
+            double hi = 0.0; for (size_t i = SR / 4 + 1; i < (size_t) SR / 2; ++i) hi += (y[i] - y[i - 1]) * (y[i] - y[i - 1]);
+            cent[c] = hi / std::max (1e-12, rmsOf (y, SR / 4, SR / 2) * rmsOf (y, SR / 4, SR / 2) * (SR / 4));
+            render (s, y, 0, SR * 3);
+        }
+        std::printf ("  Omni VCF brightness: ADSR 0 %.4f, ADSR 8 %.4f\n", cent[0], cent[1]);
+        check (cent[1] > cent[0] * 2.0, "Omni VCF: the ADSR opens the filter");
+    }
+    {
         // instrument switch while a note sounds: no jump bigger than the signal itself
         defaults (s);
         selectInst (s, kOBX);
         std::vector<float> y;
         s.midi (0x90, 60, 100);
         render (s, y, 0, SR / 2);
-        s.setParam (kInst, stepValue (kHammond, kNumInstruments));
+        s.setParam (kInst, instValue (kHammond));
         render (s, y, SR / 2, SR / 2);
         s.midi (0x80, 60, 0);
         double jump = 0.0;
@@ -559,7 +618,7 @@ int main (int argc, char** argv)
             for (int inst = 0; inst < kNumInstruments; ++inst)
             {
                 defaults (s);
-                s.setParam (kInst, stepValue (inst, kNumInstruments));
+                s.setParam (kInst, instValue (inst));
                 std::vector<float> y;
                 render (s, y, 0, (size_t) (rates[r] / 20));
                 s.midi (0x90, 29, 120); s.midi (0x90, 60, 120); s.midi (0x90, 96, 120);

@@ -144,7 +144,7 @@ int main (int argc, char** argv)
         check (dispOk, "every display string 1 to 8 characters");
         check (defsOk, "defaults as the table");
         struct { int p; float v; const char* want; } shows[] = {
-            { kInst, 0.0f, "Minimoog" }, { kInst, 1.0f, "Multiman" }, { kInst, stepValue (kClavinet, kNumInstruments), "Clavinet" }, { kInst, stepValue (kHammond, kNumInstruments), "B-3" },
+            { kInst, 0.0f, "Minimoog" }, { kInst, instValue (kMultiman), "Multiman" }, { kInst, instValue (kClavinet), "Clavinet" }, { kInst, instValue (kHammond), "B-3" },
             { kMaster, 0.75f, "+0.0" }, { kMaster, 0.0f, "-inf" },
             { kMgCutoff, 1.0f, "20.00k" }, { kMgCutoff, 0.0f, "10.0" }, { kMgO1Rng, 0.0f, "LO" }, { kMgO1Rng, 1.0f, "2'" },
             { kMgO1Wave, 1.0f, "NARROW" }, { kMgFDec, 1.0f, "35.00s" }, { kMgFAtk, 0.0f, "1ms" },
@@ -224,7 +224,7 @@ int main (int argc, char** argv)
         bool ok = true;
         for (int inst = 0; inst < kNumInstruments; ++inst)
         {
-            e->setParameter (e, kInst, stepValue (inst, kNumInstruments));
+            e->setParameter (e, kInst, instValue (inst));
             std::vector<float> L, R;
             run (e, L, R, sr / 20, 256);
             midi.add (10, 0x90, 52, 100); midi.add (20, 0x90, 59, 100); midi.add (30, 0x90, 64, 100);
@@ -288,7 +288,7 @@ int main (int argc, char** argv)
         bool ok = true;
         for (int inst = 0; inst < kNumInstruments; ++inst)
         {
-            e->setParameter (e, kInst, stepValue (inst, kNumInstruments));
+            e->setParameter (e, kInst, instValue (inst));
             std::vector<float> L, R;
             midi.add (0, 0x90, 48, 100); midi.add (0, 0x90, 60, 100); midi.add (0, 0x90, 67, 100); midi.send (e);
             for (int blk = 0; blk < 150; ++blk)
