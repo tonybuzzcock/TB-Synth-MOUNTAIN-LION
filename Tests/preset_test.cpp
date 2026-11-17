@@ -138,7 +138,8 @@ int main()
         check (PresetStore::isFactory (fk) && ! PresetStore::isFactory (bankSlot (kOBX, 3)), "factory keys are known");
         // a user preset found on a factory key (an older file) moves to the next free key
         f = std::fopen (file.c_str(), "w");
-        std::fprintf (f, "TBSYNTH-PRESETS 2\nslot %d: 0.0 0.3\nname %d: My OB pad\n", fk + 1, fk + 1);
+        const int oldFk = kOBX * 8 + 1;      // the OB-X's first key in a banks-of-8 file
+        std::fprintf (f, "TBSYNTH-PRESETS 3\nslot %d: %.6f 0.3\nname %d: My OB pad\n", oldFk, stepValue (kOBX, kNumInstruments), oldFk);
         std::fclose (f);
         PresetStore y; y.setPath (file); y.load();
         check (y.name (fk) == "Queen" && y.name (bankSlot (kOBX, 3)) == "My OB pad",
@@ -152,12 +153,24 @@ int main()
     // A file from before the Multiman: its INSTRUMENT values (k / 6) are converted
     {
         f = std::fopen (file.c_str(), "w");
-        std::fprintf (f, "TBSYNTH-PRESETS 2\nslot %d: %.6f\nname %d: Old clav\n", bankSlot (kClavinet, 4) + 1, 1.0f, bankSlot (kClavinet, 4) + 1);
+        const int oldClav = kClavinet * 8 + 4 + 1;   // banks of 8, seven instruments
+        std::fprintf (f, "TBSYNTH-PRESETS 2\nslot %d: %.6f\nname %d: Old clav\n", oldClav, 1.0f, oldClav);
         std::fclose (f);
         PresetStore q; q.setPath (file); q.load();
         float w[kNumParams];
         check (q.get (bankSlot (kClavinet, 4), w) && paramStep (kInst, w[kInst]) == kClavinet,
                "a Clavinet preset saved before the Multiman still selects the Clavinet");
+    }
+
+    // A banks-of-8 file (before the preset menus): key k becomes entry k of the menu
+    {
+        f = std::fopen (file.c_str(), "w");
+        const int oldWurli3 = kWurlitzer * 8 + 2 + 1;
+        std::fprintf (f, "TBSYNTH-PRESETS 3\nslot %d: %.6f\nname %d: Wurli 3\n", oldWurli3, stepValue (kWurlitzer, kNumInstruments), oldWurli3);
+        std::fclose (f);
+        PresetStore q; q.setPath (file); q.load();
+        check (q.name (bankSlot (kWurlitzer, 2)) == "Wurli 3" && q.name (bankSlot (kWurlitzer, 0)) == "Supertramp",
+               "presets from the 8-key banks keep their places in the menus");
     }
 
     std::printf ("  default location: %s\n", PresetStore::defaultPath().c_str());

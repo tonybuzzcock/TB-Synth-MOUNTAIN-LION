@@ -207,7 +207,7 @@ const Ctl kCtls[] = {
     { kCrBassOn,  kTab,     1164, R3, 0, "BASS", "ON", "", 0 },
 
     // ------------------------------------------------------------ every page
-    { kMaster,    kKnob,     700, 592, 17, "MASTER", "", "", kRed },
+    { kMaster,    kKnob,     714, 592, 17, "MASTER", "", "", kRed },
 };
 const int kNumCtls = (int) (sizeof (kCtls) / sizeof (kCtls[0]));
 
@@ -269,8 +269,9 @@ inline double drawbarY (int step) { return kBarTop + 18.0 + step * kBarStep; }  
 // Plugin strip
 const double kStripTop = 530.0;
 const double kLogoX = 14.0, kLogoY = 548.0, kLogoW = 120.0, kLogoH = 70.0;
-const double kSaveX = 156.0, kSaveY = 576.0, kSaveW = 74.0, kSaveH = 32.0;
-const double kSlotX0 = 244.0, kSlotPitch = 46.0, kSlotW = 40.0, kSlotY = 576.0, kSlotH = 32.0;
+const double kDefaultX = 146.0, kDefaultY = 576.0, kDefaultW = 92.0, kDefaultH = 32.0;   // this instrument back to its defaults
+const double kSaveX = 246.0, kSaveY = 576.0, kSaveW = 74.0, kSaveH = 32.0;
+const double kPresetX = 330.0, kPresetY = 572.0, kPresetW = 340.0, kPresetH = 40.0;   // the preset menu
 const double kReadX = 760.0, kReadY = 556.0, kReadW = 466.0, kReadH = 62.0;
 
 // Slide switches: detent spacing

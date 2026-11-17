@@ -88,7 +88,6 @@ static void pump (double secs) { [[NSRunLoop currentRunLoop] runUntilDate: [NSDa
 
 static NSPoint menuArrowRight() { return NSMakePoint (kMenuX + kMenuW - kArrowW * 0.5, kMenuY + kMenuH * 0.5); }
 static NSPoint menuArrowLeft()  { return NSMakePoint (kMenuX + kArrowW * 0.5, kMenuY + kMenuH * 0.5); }
-static NSPoint slotPt (int k)   { return NSMakePoint (kSlotX0 + k * kSlotPitch + kSlotW * 0.5, kSlotY + kSlotH * 0.5); }
 
 int main (int argc, char** argv)
 {
@@ -259,114 +258,124 @@ int main (int argc, char** argv)
 
     // ------------------------------------------------------------ presets
     std::printf ("\nPresets\n");
-    // factory presets: the first key of the Wurlitzer, Clavinet and Solina banks
+    #define PICK(slot) do { NSMenuItem* it_ = [[[NSMenuItem alloc] initWithTitle: @"" action: nil keyEquivalent: @""] autorelease]; \
+                            [it_ setTag: (slot)]; [(id) panel presetPicked: it_]; } while (0)
+    const NSPoint savePt = NSMakePoint (kSaveX + kSaveW * 0.5, kSaveY + kSaveH * 0.5);
+    const NSPoint defaultPt = NSMakePoint (kDefaultX + kDefaultW * 0.5, kDefaultY + kDefaultH * 0.5);
     {
-        e->setParameter (e, kInst, stepValue (kWurlitzer, kNumInstruments));
-        pump (0.1);
-        automateCalls = 0;
-        click (win, panel, slotPt (0));
-        check (paramStep (kInst, e->getParameter (e, kInst)) == kWurlitzer && std::fabs (e->getParameter (e, kWuVol) - 0.85f) < 1e-5f
-               && e->getParameter (e, kWuVib) == 0.0f, "Wurlitzer key 1 is 'Supertramp'");
-        pump (0.1);
-        renderPNG (panel, dir + "/panel_factory_supertramp.png");
-        e->setParameter (e, kInst, stepValue (kClavinet, kNumInstruments));
-        pump (0.1);
-        click (win, panel, slotPt (0));
-        check (e->getParameter (e, kClBrill) == 1.0f && e->getParameter (e, kClTreb) == 1.0f && paramStep (kClCD, e->getParameter (e, kClCD)) == 1,
-               "Clavinet key 1 is 'Superstition'");
-        click (win, panel, slotPt (1));
-        check (e->getParameter (e, kClMed) == 1.0f && e->getParameter (e, kClBrill) == 0.0f && paramStep (kClAB, e->getParameter (e, kClAB)) == 1,
-               "Clavinet key 2 is 'Quatro'");
-        pump (0.1);
-        renderPNG (panel, dir + "/panel_factory_quatro.png");
-        e->setParameter (e, kInst, stepValue (kSolina, kNumInstruments));
-        pump (0.1);
-        click (win, panel, slotPt (0));
-        check (e->getParameter (e, kSoCello) == 1.0f && std::fabs (e->getParameter (e, kSoCresc) - 0.48f) < 1e-5f, "Solina key 1 is 'Moroder'");
+        // the menus list the factory presets first, numbered in the list only
         e->setParameter (e, kInst, stepValue (kOBX, kNumInstruments));
         pump (0.1);
-        click (win, panel, slotPt (1));
-        check (e->getParameter (e, kOxModPw) == 1.0f && e->getParameter (e, kOxO1Pls) == 1.0f, "OB-X key 2 is 'Japan'");
+        NSMenu* m = [(id) panel presetMenu];
+        check ([m numberOfItems] == 3 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Queen"]
+               && [[[m itemAtIndex: 1] title] isEqualToString: @"2   Japan"] && [[[m itemAtIndex: 2] title] isEqualToString: @"3   Foxx"],
+               "the OB-X menu lists 1 Queen, 2 Japan, 3 Foxx");
+        PICK (bankSlot (kOBX, 1));
+        check (e->getParameter (e, kOxModPw) == 1.0f && e->getParameter (e, kOxO1Pls) == 1.0f, "choosing 'Japan' from the menu loads it");
         pump (0.1);
-        renderPNG (panel, dir + "/panel_factory_japan.png");
-        e->setParameter (e, kInst, stepValue (kMinimoog, kNumInstruments));
-        pump (0.1);
-        click (win, panel, slotPt (0));
-        check (paramStep (kMgO2Rng, e->getParameter (e, kMgO2Rng)) == 4 && e->getParameter (e, kMgFSus) == 0.0f, "Minimoog key 1 is 'Carlos'");
+        renderPNG (panel, dir + "/panel_preset_menu.png");
         e->setParameter (e, kInst, stepValue (kCembalet, kNumInstruments));
         pump (0.1);
-        const float c0 = e->getParameter (e, kCbVol);
-        click (win, panel, slotPt (0));
-        check (e->getParameter (e, kCbVol) == c0, "each instrument has its own bank (the Cembalet's key 1 is empty)");
-        // SAVE onto a factory key: refused, the panel stays armed for another key
-        e->setParameter (e, kInst, stepValue (kOBX, kNumInstruments));
+        m = [(id) panel presetMenu];
+        check ([m numberOfItems] == 1 && ! [[m itemAtIndex: 0] isEnabled], "an instrument with no presets says so");
+        e->setParameter (e, kInst, stepValue (kWurlitzer, kNumInstruments));
         pump (0.1);
-        click (win, panel, NSMakePoint (kSaveX + kSaveW * 0.5, kSaveY + kSaveH * 0.5));
-        click (win, panel, slotPt (0));
-        bool noField = true;
-        for (NSView* sv in [panel subviews]) if ([sv isKindOfClass: [NSTextField class]]) noField = false;
-        check (noField, "SAVE onto a factory key doesn't save or ask for a name");
-        pump (0.1);
-        renderPNG (panel, dir + "/panel_factory_locked.png");
-        click (win, panel, NSMakePoint (kSaveX + kSaveW * 0.5, kSaveY + kSaveH * 0.5));     // disarm
-        for (int i = 0; i < kNumParams; ++i) e->setParameter (e, i, kParams[i].def);
+        PICK (bankSlot (kWurlitzer, 0));
+        check (std::fabs (e->getParameter (e, kWuVol) - 0.85f) < 1e-5f, "Wurlitzer 'Supertramp'");
     }
-    e->setParameter (e, kInst, stepValue (kWurlitzer, kNumInstruments));
-    e->setParameter (e, kWuVib, 0.8f);
-    pump (0.1);
-    click (win, panel, NSMakePoint (kSaveX + kSaveW * 0.5, kSaveY + kSaveH * 0.5));
-    click (win, panel, slotPt (2));
-    FILE* pf = std::fopen (presetFile.c_str(), "r");
-    check (pf != 0, "SAVE then a key writes the preset file");
-    if (pf) std::fclose (pf);
-    NSTextField* field = nil;
-    for (NSView* sv in [panel subviews]) if ([sv isKindOfClass: [NSTextField class]]) field = (NSTextField*) sv;
-    check (field != nil, "saving opens a box to name the preset");
-    renderPNG (panel, dir + "/panel_naming.png");
-    if (field)
     {
-        [field setStringValue: @"Wurli with the vibrato up"];
-        [field sendAction: [field action] to: [field target]];
+        // DEFAULT: this instrument back to its defaults, nothing else
+        e->setParameter (e, kWuVib, 0.9f);
+        e->setParameter (e, kMgCutoff, 0.9f);
+        e->setParameter (e, kMaster, 0.5f);
+        pump (0.1);
+        automateCalls = 0;
+        click (win, panel, defaultPt);
+        check (e->getParameter (e, kWuVib) == kParams[kWuVib].def && e->getParameter (e, kWuVol) == kParams[kWuVol].def,
+               "DEFAULT puts this instrument's controls back to their defaults");
+        check (e->getParameter (e, kMgCutoff) == 0.9f && e->getParameter (e, kMaster) == 0.5f && paramStep (kInst, e->getParameter (e, kInst)) == kWurlitzer,
+               "and leaves the other instruments, MASTER and the instrument alone");
+        check (automateCalls == 2, "telling the host about each control it moved");
+        pump (0.1);
+        renderPNG (panel, dir + "/panel_default.png");
+        e->setParameter (e, kMgCutoff, kParams[kMgCutoff].def);
+        e->setParameter (e, kMaster, kParams[kMaster].def);
+    }
+    {
+        // SAVE, name, SAVE: added to the end of this instrument's menu
+        e->setParameter (e, kWuVib, 0.8f);
+        pump (0.1);
+        click (win, panel, savePt);
+        NSTextField* field = nil;
+        for (NSView* sv in [panel subviews]) if ([sv isKindOfClass: [NSTextField class]]) field = (NSTextField*) sv;
+        check (field != nil, "SAVE makes the menu a name field");
+        renderPNG (panel, dir + "/panel_naming.png");
+        if (field) [field setStringValue: @"Wurli with the vibrato up"];
+        click (win, panel, savePt);
         pump (0.2);
-    }
-    bool named = false;
-    char wantLine[64];
-    std::snprintf (wantLine, sizeof (wantLine), "name %d: Wurli with the vibrato up", bankSlot (kWurlitzer, 2) + 1);
-    pf = std::fopen (presetFile.c_str(), "r");
-    if (pf) { char ln[4096]; while (std::fgets (ln, sizeof (ln), pf)) if (std::strstr (ln, wantLine)) named = true; std::fclose (pf); }
-    check (named, "Return saves the name with the preset, in the Wurlitzer's bank");
-    bool gone = true;
-    for (int tries = 0; tries < 10; ++tries)
-    {
-        gone = true;
-        for (NSView* sv in [panel subviews]) if ([sv isKindOfClass: [NSTextField class]]) gone = false;
-        if (gone) break;
-        pump (0.1);
-    }
-    check (gone, "and the name box goes away");
-    renderPNG (panel, dir + "/panel_preset_saved.png");
-    e->setParameter (e, kWuVib, 0.1f);
-    e->setParameter (e, kWuVol, 0.3f);
-    pump (0.1);
-    automateCalls = 0;
-    click (win, panel, slotPt (2));
-    check (std::fabs (e->getParameter (e, kWuVib) - 0.8f) < 1e-5f && e->getParameter (e, kWuVol) == kParams[kWuVol].def,
-           "the key brings the settings back");
-    check (automateCalls >= kNumParams, "recall tells the host about every parameter");
-    renderPNG (panel, dir + "/panel_preset_loaded.png");
-    click (win, panel, NSMakePoint (kReadX + kReadW * 0.5, kReadY + kReadH * 0.5));
-    field = nil;
-    for (NSView* sv in [panel subviews]) if ([sv isKindOfClass: [NSTextField class]]) field = (NSTextField*) sv;
-    check (field != nil && [[field stringValue] isEqualToString: @"Wurli with the vibrato up"], "clicking the readout opens the name to edit");
-    if (field)
-    {
-        [field setStringValue: @"Something else"];
-        [(id) panel control: field textView: nil doCommandBySelector: @selector (cancelOperation:)];
+        bool named = false;
+        char wantLine[96];
+        std::snprintf (wantLine, sizeof (wantLine), "name %d: Wurli with the vibrato up", bankSlot (kWurlitzer, 1) + 1);
+        FILE* pf = std::fopen (presetFile.c_str(), "r");
+        if (pf) { char ln[8192]; while (std::fgets (ln, sizeof (ln), pf)) if (std::strstr (ln, wantLine)) named = true; std::fclose (pf); }
+        check (named, "SAVE again adds it to the menu, after 'Supertramp'");
+        bool gone = true;
+        for (int tries = 0; tries < 10; ++tries)
+        {
+            gone = true;
+            for (NSView* sv in [panel subviews]) if ([sv isKindOfClass: [NSTextField class]]) gone = false;
+            if (gone) break;
+            pump (0.1);
+        }
+        check (gone, "and the name field goes away");
+        NSMenu* m = [(id) panel presetMenu];
+        check ([m numberOfItems] == 2 && [[[m itemAtIndex: 1] title] isEqualToString: @"2   Wurli with the vibrato up"], "the menu shows it as number 2");
+        renderPNG (panel, dir + "/panel_preset_saved.png");
+        // Return works as the second SAVE too
+        e->setParameter (e, kWuVol, 0.4f);
+        click (win, panel, savePt);
+        field = nil;
+        for (NSView* sv in [panel subviews]) if ([sv isKindOfClass: [NSTextField class]]) field = (NSTextField*) sv;
+        if (field) { [field setStringValue: @"Quiet one"]; [field sendAction: [field action] to: [field target]]; }
         pump (0.2);
+        m = [(id) panel presetMenu];
+        check ([m numberOfItems] == 3 && [[[m itemAtIndex: 2] title] isEqualToString: @"3   Quiet one"], "Return adds it too (number 3)");
+        // Esc, or a click elsewhere, cancels
+        click (win, panel, savePt);
+        field = nil;
+        for (NSView* sv in [panel subviews]) if ([sv isKindOfClass: [NSTextField class]]) field = (NSTextField*) sv;
+        if (field)
+        {
+            [field setStringValue: @"Not this"];
+            [(id) panel control: field textView: nil doCommandBySelector: @selector (cancelOperation:)];
+        }
+        pump (0.2);
+        click (win, panel, savePt);
+        click (win, panel, NSMakePoint (300, 300));
+        pump (0.2);
+        check ([[(id) panel presetMenu] numberOfItems] == 3, "Esc or a click elsewhere cancels: nothing added");
+        // recall
+        e->setParameter (e, kWuVib, 0.1f);
+        e->setParameter (e, kWuVol, 0.9f);
+        automateCalls = 0;
+        PICK (bankSlot (kWurlitzer, 1));
+        check (std::fabs (e->getParameter (e, kWuVib) - 0.8f) < 1e-5f && e->getParameter (e, kWuVol) == kParams[kWuVol].def,
+               "choosing it from the menu brings it back");
+        check (automateCalls >= kNumParams, "recall tells the host about every parameter");
+        renderPNG (panel, dir + "/panel_preset_loaded.png");
+        // the same on every instrument: SAVE on the Multiman adds to the Multiman's menu
+        e->setParameter (e, kInst, stepValue (kMultiman, kNumInstruments));
+        pump (0.1);
+        click (win, panel, savePt);
+        field = nil;
+        for (NSView* sv in [panel subviews]) if ([sv isKindOfClass: [NSTextField class]]) field = (NSTextField*) sv;
+        if (field) [field setStringValue: @"Strings"];
+        click (win, panel, savePt);
+        pump (0.2);
+        m = [(id) panel presetMenu];
+        check ([m numberOfItems] == 1 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Strings"], "every instrument has its own menu, working the same way");
     }
-    const float before = e->getParameter (e, kWuVib);
-    click (win, panel, slotPt (5));
-    check (e->getParameter (e, kWuVib) == before, "an empty key changes nothing");
+    #undef PICK
     for (int i = 0; i < kNumParams; ++i) e->setParameter (e, i, kParams[i].def);
 
     // ------------------------------------------------------------ host changes show

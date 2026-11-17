@@ -28,18 +28,23 @@ In the colours of the TASCAM M-50 and the TB M-50 strips: warm grey face, black 
 knurled knobs (red caps for levels, orange skirts for frequencies), switches that light amber in their
 engaged position, the red lip, the lacquered mahogany frame. Each instrument has its own page laid out
 like the original's front panel, with plain lettering and no manufacturer artwork. Along the bottom: the
-TB electronic logo, SAVE and 8 named preset keys (each instrument has its own bank of 8), MASTER,
-and the tan readout. A LEVEL LED at top right lights amber while it plays, red near full scale.
+TB electronic logo, DEFAULT, SAVE and the preset menu (each instrument has its own, up to 32 presets),
+MASTER, and the tan readout. A LEVEL LED at top right lights amber while it plays, red near full scale.
 
 - Knobs and sliders: drag up / down (Shift for fine), double-click for the default, scroll wheel.
 - Rotary switches: click a marked position to go there, or click the knob to step round; drag works too.
 - Drawbars: drag down to pull out, up to push in, a step at a time.
 - Right-click (or Control-click) any control to see its exact value without moving it.
-- Presets: SAVE, then a key; type a name and press Return. Click the readout to rename.
+- Presets: click the preset menu to choose one (they're numbered in the list; the box shows the name,
+  dimmed once you've moved a control). To keep a sound, press **SAVE**: the menu becomes a name field;
+  type a name and press **SAVE** again (or Return) and it's added to the end of this instrument's menu.
+  Esc or a click elsewhere cancels. It works the same on every instrument.
+- **DEFAULT** puts every control of the current instrument back to its default (other instruments and
+  MASTER are left alone), to start a new sound from scratch.
 
 ## Factory presets
 
-| Instrument | Key | Name | For |
+| Instrument | No. | Name | For |
 |---|---|---|---|
 | Minimoog Model D | 1 | Carlos | Wendy Carlos, Switched-On Bach (a Moog modular): a harpsichord voice, 8' + 4' narrow pulses, plucked contours |
 | Oberheim OB-X | 1 | Queen | Flash Gordon: big detuned brass, the filter opening on each stab |
@@ -51,10 +56,9 @@ and the tan readout. A LEVEL LED at top right lights amber while it plays, red n
 | Solina String Ensemble | 1 | Moroder | "I Feel Love": the record's pad is Moog modular; this is the Solina's take on it |
 
 No published settings exist for these parts (the clavinet.com FAQ says of "Superstition" that it was a
-Clavinet C, overdubbed); the presets are set by ear from the records. The factory presets always
-hold the first keys of their bank: they can't be saved over or renamed (SAVE stays armed for another
-key). Any of your presets found on one of those keys, or saved with the first release (8 shared
-keys), moves to the next free key of its instrument's bank.
+Clavinet C, overdubbed); the presets are set by ear from the records. The factory presets always come
+first in their instrument's menu and can't be saved over or renamed. Presets saved with earlier builds
+(8 shared keys, or a bank of 8 keys per instrument) keep their places in the menus.
 
 ## Sources
 

@@ -350,8 +350,9 @@ CGFloat vSliderY (const Ctl& c, CGFloat v) { return (CGFloat) (c.y + c.r - v * 2
 NSRect menuRect() { return NSMakeRect (kMenuX, kMenuY, kMenuW, kMenuH); }
 NSRect menuLeft() { return NSMakeRect (kMenuX, kMenuY, kArrowW, kMenuH); }
 NSRect menuRight() { return NSMakeRect (kMenuX + kMenuW - kArrowW, kMenuY, kArrowW, kMenuH); }
-NSRect slotRect (int k) { return NSMakeRect (kSlotX0 + k * kSlotPitch, kSlotY, kSlotW, kSlotH); }
 NSRect saveRect() { return NSMakeRect (kSaveX, kSaveY, kSaveW, kSaveH); }
+NSRect defaultRect() { return NSMakeRect (kDefaultX, kDefaultY, kDefaultW, kDefaultH); }
+NSRect presetRect() { return NSMakeRect (kPresetX, kPresetY, kPresetW, kPresetH); }
 NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 
 } // namespace
@@ -368,19 +369,23 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     bool dragMoved;
     int readoutParam;
     bool saveMode;
-    int activePreset;         // key 0..7 in the current instrument's bank, -1 = none
-    int presetBank;           // the bank presetUsed[] was read for
+    int activePreset;         // slot of the preset last chosen or saved, -1 = none
+    bool presetEdited;        // a control moved since: its name shows dimmed
+    int presetBank;           // the instrument presetUsed[] was read for
     bool presetUsed[kSlotsPerBank];
     char status[96];
     NSImage* backdrop[kNumInstruments];
     NSTextField* nameField;
     NSTextField* retiredField;
-    int namingSlot;
 }
 - (id) initWithFrame: (NSRect) frame host: (EditorHost*) h;
 - (void) shutdown;
 - (void) finishNaming: (BOOL) keep;
 - (void) refreshBank;
+- (void) startNaming;
+- (NSMenu*) presetMenu;
+- (void) presetPicked: (id) sender;
+- (void) defaultSound;
 @end
 
 @implementation TBSynthPanelView
@@ -398,11 +403,11 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
         readoutParam = -1;
         saveMode = false;
         activePreset = -1;
+        presetEdited = false;
         status[0] = 0;
         for (int i = 0; i < kNumInstruments; ++i) backdrop[i] = nil;
         nameField = nil;
         retiredField = nil;
-        namingSlot = -1;
         host->refreshPresets();
         presetBank = paramStep (kInst, shown[kInst]);
         for (int k = 0; k < kSlotsPerBank; ++k) presetUsed[k] = host->presetExists (bankSlot (presetBank, k));
@@ -416,7 +421,6 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 - (void) shutdown
 {
     [NSObject cancelPreviousPerformRequestsWithTarget: self];
-    namingSlot = -1;
     [self dropRetired];
     if (nameField)
     {
@@ -977,18 +981,40 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 
 - (void) drawPresets
 {
+    if (presetBank != [self inst]) [self refreshBank];
+    [self drawKey: defaultRect() state: 1];
+    drawText ("DEFAULT", boldFont (13.0), [NSColor whiteColor], NSMidX (defaultRect()), NSMidY (defaultRect()), 0.5);
     [self drawKey: saveRect() state: saveMode ? 3 : 1];
     drawText ("SAVE", boldFont (14.0), saveMode ? rgb (60, 10, 6) : [NSColor whiteColor], NSMidX (saveRect()), NSMidY (saveRect()));
-    if (presetBank != [self inst]) [self refreshBank];
-    for (int k = 0; k < kSlotsPerBank; ++k)
+
+    // the preset menu: tan like the INSTRUMENT menu; numbers only inside the list
+    const NSRect r = presetRect();
+    NSBezierPath* well = [NSBezierPath bezierPathWithRoundedRect: NSInsetRect (r, -2.0, -2.0) xRadius: 5.0 yRadius: 5.0];
+    [rgb (30, 29, 28) set];
+    [well fill];
+    NSBezierPath* face = [NSBezierPath bezierPathWithRoundedRect: r xRadius: 4.0 yRadius: 4.0];
+    NSGradient* g = saveMode
+        ? [[[NSGradient alloc] initWithStartingColor: rgb (246, 232, 196) endingColor: rgb (226, 204, 160)] autorelease]
+        : [[[NSGradient alloc] initWithStartingColor: rgb (232, 212, 170) endingColor: rgb (204, 178, 130)] autorelease];
+    [g drawInBezierPath: face angle: -90.0];
+    [rgb (40, 42, 38) set];
+    [face setLineWidth: saveMode ? 2.0 : 1.0];
+    if (saveMode) [rgb (214, 40, 24) set];
+    [face stroke];
+    if (! nameField)
     {
-        const NSRect r = slotRect (k);
-        const int state = (k == activePreset) ? 3 : (presetUsed[k] ? 1 : 0);
-        [self drawKey: r state: state];
-        NSColor* text = state == 1 ? [NSColor whiteColor] : (state == 3 ? rgb (60, 10, 6) : [NSColor blackColor]);
-        char num[4];
-        std::snprintf (num, sizeof (num), "%d", k + 1);
-        drawText (num, boldFont (15.0), text, NSMidX (r), NSMidY (r));
+        char name[kMaxPresetName + 8] = { 0 };
+        if (activePreset >= 0 && host) host->presetName (activePreset, name, (int) sizeof (name));
+        if (activePreset >= 0 && name[0])
+            drawText (name, boldFont (15.0), presetEdited ? rgb (120, 104, 76) : [NSColor blackColor], NSMidX (r) - 10.0, NSMidY (r) + 0.5, 0.4);
+        else
+            drawText ("PRESETS", boldFont (13.0), rgb (120, 104, 76), NSMidX (r) - 10.0, NSMidY (r) + 0.5, 1.5);
+        NSBezierPath* dm = [NSBezierPath bezierPath];
+        const CGFloat dx = NSMaxX (r) - 18.0, dy = NSMidY (r);
+        [dm moveToPoint: NSMakePoint (dx - 6, dy - 3)]; [dm lineToPoint: NSMakePoint (dx + 6, dy - 3)]; [dm lineToPoint: NSMakePoint (dx, dy + 5)];
+        [dm closePath];
+        [ink() set];
+        [dm fill];
     }
 }
 
@@ -1093,6 +1119,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     host->guiSetParam (param, v);
     shown[param] = host->getParam (param);
     readoutParam = param;
+    if (param != kInst) presetEdited = true;
     [self setNeedsDisplay: YES];
 }
 
@@ -1109,6 +1136,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     if (k >= kNumInstruments) k = 0;
     status[0] = 0;
     activePreset = -1;
+    presetEdited = false;
     [self clickParam: kInst value: stepValue (k, kNumInstruments)];
 }
 
@@ -1135,16 +1163,6 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     [m popUpMenuPositioningItem: [m itemAtIndex: cur] atLocation: NSMakePoint (NSMinX (r) + kArrowW, NSMinY (r) + 4.0) inView: self];
 }
 
-- (void) showPreset: (int) slot verb: (const char*) verb
-{
-    char name[kMaxPresetName + 8] = { 0 };
-    if (host) host->presetName (slot, name, (int) sizeof (name));
-    const int key = slot % kSlotsPerBank + 1;
-    if (name[0]) std::snprintf (status, sizeof (status), "%d   %s", key, name);
-    else         std::snprintf (status, sizeof (status), "PRESET %d %s", key, verb);
-    [self setNeedsDisplay: YES];
-}
-
 - (void) dropRetired
 {
     if (! retiredField) return;
@@ -1157,58 +1175,84 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     [self setNeedsDisplay: YES];
 }
 
-- (void) startNaming: (int) slot
+// SAVE, first press: the menu box becomes a name field
+- (void) startNaming
 {
-    if (! host || slot < 0) return;
-    if (nameField) [self finishNaming: YES];
-    namingSlot = slot;
-    char name[kMaxPresetName + 8] = { 0 };
-    host->presetName (slot, name, (int) sizeof (name));
-    nameField = [[NSTextField alloc] initWithFrame: faceToView (NSInsetRect (readRect(), 8.0, 16.0))];
+    if (! host) return;
+    if (nameField) return;
+    saveMode = true;
+    nameField = [[NSTextField alloc] initWithFrame: faceToView (NSInsetRect (presetRect(), 8.0, 8.0))];
     [nameField setBezeled: NO];
     [nameField setBordered: NO];
-    [nameField setDrawsBackground: YES];
-    [nameField setBackgroundColor: rgb (226, 204, 160)];
+    [nameField setDrawsBackground: NO];
     [nameField setTextColor: [NSColor blackColor]];
-    [nameField setFont: boldFont (16.0)];
+    [nameField setFont: boldFont (15.0)];
     [nameField setAlignment: NSCenterTextAlignment];
     [nameField setFocusRingType: NSFocusRingTypeNone];
-    [nameField setStringValue: [NSString stringWithUTF8String: name]];
-    char hint[64];
-    std::snprintf (hint, sizeof (hint), "NAME PRESET %d, THEN RETURN", slot % kSlotsPerBank + 1);
-    [[nameField cell] setPlaceholderString: [NSString stringWithUTF8String: hint]];
+    [nameField setStringValue: @""];
+    [[nameField cell] setPlaceholderString: @"TYPE A NAME, THEN SAVE"];
     [[nameField cell] setScrollable: YES];
     [nameField setTarget: self];
     [nameField setAction: @selector (nameEntered:)];
     [nameField setDelegate: self];
     [self addSubview: nameField];
-    status[0] = 0;
+    std::snprintf (status, sizeof (status), "NAME THE SOUND, THEN PRESS SAVE AGAIN");
     readoutParam = -1;
     [[self window] makeFirstResponder: nameField];
     [self setNeedsDisplay: YES];
 }
 
+// SAVE, second press (or Return): add it to the end of this instrument's menu
 - (void) finishNaming: (BOOL) keep
 {
-    const int slot = namingSlot;
-    if (slot < 0) return;
-    namingSlot = -1;
-    if (keep && host && nameField)
+    if (! nameField) return;
+    std::string name;
+    if (keep)
     {
         const char* utf8 = [[nameField stringValue] UTF8String];
-        host->renamePreset (slot, utf8 ? utf8 : "");
+        name = utf8 ? utf8 : "";
     }
-    [self showPreset: slot verb: "SAVED"];
+    saveMode = false;
     [self dropRetired];
     retiredField = nameField;
     nameField = nil;
     [retiredField setDelegate: nil];
     [retiredField setTarget: nil];
     [self performSelector: @selector (dropRetired) withObject: nil afterDelay: 0.0];
+    if (! keep || ! host) { status[0] = 0; [self setNeedsDisplay: YES]; return; }
+
+    const int inst = [self inst];
+    [self refreshBank];
+    int slot = -1, count = 0;
+    for (int k = 0; k < kSlotsPerBank; ++k)
+    {
+        if (presetUsed[k]) { ++count; continue; }
+        if (slot < 0 && ! host->presetIsFactory (bankSlot (inst, k))) slot = bankSlot (inst, k);
+    }
+    if (slot < 0)
+    {
+        std::snprintf (status, sizeof (status), "THE MENU IS FULL (%d PRESETS)", (int) kSlotsPerBank);
+        [self setNeedsDisplay: YES];
+        return;
+    }
+    char fallback[32];
+    std::snprintf (fallback, sizeof (fallback), "PRESET %d", count + 1);
+    size_t a = name.find_first_not_of (" \t");
+    if (a == std::string::npos) name = fallback;
+    if (host->savePreset (slot) && host->renamePreset (slot, name.c_str()))
+    {
+        [self refreshBank];
+        activePreset = slot;
+        presetEdited = false;
+        char shown2[kMaxPresetName + 8] = { 0 };
+        host->presetName (slot, shown2, (int) sizeof (shown2));
+        std::snprintf (status, sizeof (status), "SAVED: %s", shown2);
+    }
+    else std::snprintf (status, sizeof (status), "COULD NOT SAVE THE PRESET");
+    [self setNeedsDisplay: YES];
 }
 
 - (void) nameEntered: (id) sender { (void) sender; [self finishNaming: YES]; }
-- (void) controlTextDidEndEditing: (NSNotification*) n { (void) n; [self finishNaming: YES]; }
 - (BOOL) control: (NSControl*) c textView: (NSTextView*) tv doCommandBySelector: (SEL) sel
 {
     (void) c; (void) tv;
@@ -1216,55 +1260,94 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     return NO;
 }
 
-- (BOOL) presetClick: (NSPoint) p
+// The menu: this instrument's presets, numbered in the list only
+- (NSMenu*) presetMenu
 {
-    if (NSPointInRect (p, saveRect()))
-    {
-        saveMode = ! saveMode;
-        std::snprintf (status, sizeof (status), "%s", saveMode ? "SAVE: CLICK A PRESET KEY" : "");
-        [self setNeedsDisplay: YES];
-        return YES;
-    }
+    NSMenu* m = [[[NSMenu alloc] initWithTitle: @"Presets"] autorelease];
+    [m setAutoenablesItems: NO];
+    [self refreshBank];
+    const int inst = [self inst];
+    int number = 0;
     for (int k = 0; k < kSlotsPerBank; ++k)
     {
-        if (! NSPointInRect (p, slotRect (k))) continue;
-        const int slot = bankSlot ([self inst], k);
-        if (saveMode && host->presetIsFactory (slot))
-        {
-            // the factory presets always keep the first keys: stay armed for another key
-            char nm[kMaxPresetName + 8] = { 0 };
-            host->presetName (slot, nm, (int) sizeof (nm));
-            std::snprintf (status, sizeof (status), "%d IS '%s': SAVE TO ANOTHER KEY", k + 1, nm);
-            [self setNeedsDisplay: YES];
-            return YES;
-        }
-        if (saveMode)
-        {
-            const bool ok = host->savePreset (slot);
-            saveMode = false;
-            [self refreshBank];
-            if (ok)
-            {
-                activePreset = k;
-                std::snprintf (status, sizeof (status), "PRESET %d SAVED", k + 1);
-                [self setNeedsDisplay: YES];
-                [self startNaming: slot];
-                return YES;
-            }
-            std::snprintf (status, sizeof (status), "COULD NOT SAVE PRESET %d", k + 1);
-        }
-        else
-        {
-            [self refreshBank];
-            if (presetUsed[k] && host->loadPreset (slot))
-            {
-                for (int j = 0; j < kNumParams; ++j) shown[j] = host->getParam (j);
-                activePreset = k;
-                [self showPreset: slot verb: "LOADED"];
-            }
-            else std::snprintf (status, sizeof (status), "PRESET %d IS EMPTY", k + 1);
-        }
-        [self setNeedsDisplay: YES];
+        if (! presetUsed[k]) continue;
+        const int slot = bankSlot (inst, k);
+        char name[kMaxPresetName + 8] = { 0 }, title[kMaxPresetName + 16];
+        if (host) host->presetName (slot, name, (int) sizeof (name));
+        std::snprintf (title, sizeof (title), "%d   %s", ++number, name[0] ? name : "(no name)");
+        NSMenuItem* it = [[[NSMenuItem alloc] initWithTitle: [NSString stringWithUTF8String: title]
+                                                     action: @selector (presetPicked:) keyEquivalent: @""] autorelease];
+        [it setTarget: self];
+        [it setTag: slot];
+        [it setState: slot == activePreset ? NSOnState : NSOffState];
+        [m addItem: it];
+    }
+    if (number == 0)
+    {
+        NSMenuItem* it = [[[NSMenuItem alloc] initWithTitle: @"No presets yet: press SAVE to add one" action: nil keyEquivalent: @""] autorelease];
+        [it setEnabled: NO];
+        [m addItem: it];
+    }
+    return m;
+}
+
+- (void) presetPicked: (id) sender
+{
+    if (! host) return;
+    const int slot = (int) [sender tag];
+    host->refreshPresets();
+    if (host->presetExists (slot) && host->loadPreset (slot))
+    {
+        for (int j = 0; j < kNumParams; ++j) shown[j] = host->getParam (j);
+        activePreset = slot;
+        presetEdited = false;
+        char name[kMaxPresetName + 8] = { 0 };
+        host->presetName (slot, name, (int) sizeof (name));
+        std::snprintf (status, sizeof (status), "%s", name);
+        [self refreshBank];
+    }
+    [self setNeedsDisplay: YES];
+}
+
+// DEFAULT: every control of this instrument back to its default (other
+// instruments and MASTER are left alone), to start a new sound
+- (void) defaultSound
+{
+    if (! host) return;
+    if (nameField) [self finishNaming: NO];
+    const int inst = [self inst];
+    for (int p = 0; p < kNumParams; ++p)
+    {
+        if (kParams[p].inst != inst) continue;
+        host->guiBeginEdit (p);
+        host->guiSetParam (p, kParams[p].def);
+        host->guiEndEdit (p);
+        shown[p] = host->getParam (p);
+    }
+    activePreset = -1;
+    presetEdited = false;
+    readoutParam = -1;
+    std::snprintf (status, sizeof (status), "%s: DEFAULT", instrumentName (inst));
+    [self setNeedsDisplay: YES];
+}
+
+- (BOOL) presetClick: (NSPoint) p
+{
+    if (NSPointInRect (p, defaultRect())) { [self defaultSound]; return YES; }
+    if (NSPointInRect (p, saveRect()))
+    {
+        if (nameField) [self finishNaming: YES];
+        else [self startNaming];
+        return YES;
+    }
+    if (NSPointInRect (p, presetRect()))
+    {
+        if (nameField) return YES;          // typing the name: the field has the click
+        NSMenu* m = [self presetMenu];
+        const NSRect r = faceToView (presetRect());
+        NSMenuItem* cur = nil;
+        for (NSMenuItem* it in [m itemArray]) if ([it tag] == activePreset && [it action]) cur = it;
+        [m popUpMenuPositioningItem: cur atLocation: NSMakePoint (NSMinX (r) + 4.0, cur ? NSMinY (r) + 4.0 : NSMaxY (r) + 2.0) inView: self];
         return YES;
     }
     return NO;
@@ -1274,12 +1357,9 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 {
     const NSPoint p = viewToFace ([self convertPoint: [e locationInWindow] fromView: nil]);
     if (! host) return;
-    if (nameField) [self finishNaming: YES];
-    if (NSPointInRect (p, readRect()) && activePreset >= 0 && ! host->presetIsFactory (bankSlot ([self inst], activePreset)))
-    {
-        [self startNaming: bankSlot ([self inst], activePreset)];
-        return;
-    }
+    // while naming, SAVE adds the preset; a click anywhere else cancels
+    if (nameField && ! NSPointInRect (p, saveRect()) && ! NSPointInRect (p, presetRect()) && ! NSPointInRect (p, defaultRect()))
+        [self finishNaming: NO];
     if (([e modifierFlags] & NSControlKeyMask) != 0) { [self showValueAt: p]; return; }
     if ([self presetClick: p]) return;
 
@@ -1294,7 +1374,6 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     shown[c.param] = host->getParam (c.param);
     readoutParam = c.param;
     status[0] = 0;
-    activePreset = -1;
     const int n = stepsOf (c.param);
 
     switch (c.type)
@@ -1419,7 +1498,6 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     const CGFloat d = [e deltaY];
     if (d == 0.0) return;
     status[0] = 0;
-    activePreset = -1;
     const int n = stepsOf (c.param);
     float v = shown[c.param];
     if (n >= 2)

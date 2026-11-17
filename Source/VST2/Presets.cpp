@@ -14,7 +14,8 @@ namespace tbsyn
 
 namespace
 {
-    const char* const kHeader = "TBSYNTH-PRESETS 3";        // banks: slot = instrument * 8 + key; 8 instruments
+    const char* const kHeader = "TBSYNTH-PRESETS 4";        // menus: slot = instrument * 32 + entry; 8 instruments
+    const char* const kHeaderV3 = "TBSYNTH-PRESETS 3";      // banks of 8 keys, 8 instruments
     const char* const kHeaderV2 = "TBSYNTH-PRESETS 2";      // banks, 7 instruments
     const char* const kHeaderV1 = "TBSYNTH-PRESETS 1";      // the first release: 8 shared slots
 
@@ -76,6 +77,15 @@ std::string PresetStore::defaultPath()
 #endif
 }
 
+// Banks of 8 keys (files from before the preset menus): key k of instrument i
+// becomes entry k of its menu
+static int oldSlot (int oneBased)
+{
+    if (oneBased < 1) return -1;
+    const int inst = (oneBased - 1) / 8, key = (oneBased - 1) % 8;
+    return inst >= kNumInstruments ? -1 : bankSlot (inst, key) + 1;
+}
+
 bool PresetStore::load()
 {
     for (int s = 0; s < kNumPresetSlots; ++s) { used[s] = false; names[s].clear(); }
@@ -84,19 +94,21 @@ bool PresetStore::load()
     if (! f) { addFactory(); return false; }
 
     char line[4096];
-    bool headerOk = false, v1 = false, sevenInst = false;
+    bool headerOk = false, v1 = false, sevenInst = false, banksOf8 = false;
     while (std::fgets (line, sizeof (line), f))
     {
         if (! headerOk)
         {
             headerOk = std::strncmp (line, kHeader, std::strlen (kHeader)) == 0;
             if (! headerOk && std::strncmp (line, kHeaderV1, std::strlen (kHeaderV1)) == 0) { headerOk = true; v1 = true; sevenInst = true; }
-            if (! headerOk && std::strncmp (line, kHeaderV2, std::strlen (kHeaderV2)) == 0) { headerOk = true; sevenInst = true; }
+            if (! headerOk && std::strncmp (line, kHeaderV2, std::strlen (kHeaderV2)) == 0) { headerOk = true; sevenInst = true; banksOf8 = true; }
+            if (! headerOk && std::strncmp (line, kHeaderV3, std::strlen (kHeaderV3)) == 0) { headerOk = true; banksOf8 = true; }
             if (! headerOk) break;
             continue;
         }
         int slot = -1, used0 = 0;
-        if (std::sscanf (line, "name %d:%n", &slot, &used0) == 1 && slot >= 1 && slot <= kNumPresetSlots && used0 > 0)
+        if (std::sscanf (line, "name %d:%n", &slot, &used0) == 1 && banksOf8) slot = oldSlot (slot);
+        if (slot >= 1 && slot <= kNumPresetSlots && used0 > 0)
         {
             std::string n (line + used0);
             if (! n.empty() && n[0] == ' ') n.erase (0, 1);
@@ -104,8 +116,9 @@ bool PresetStore::load()
             continue;
         }
         slot = -1; used0 = 0;
-        if (std::sscanf (line, "slot %d:%n", &slot, &used0) != 1 || slot < 1 || slot > kNumPresetSlots)
-            continue;
+        if (std::sscanf (line, "slot %d:%n", &slot, &used0) != 1) continue;
+        if (banksOf8) slot = oldSlot (slot);
+        if (slot < 1 || slot > kNumPresetSlots) continue;
 
         float v[kNumParams];
         const char* p = line + used0;
@@ -218,8 +231,9 @@ bool PresetStore::save() const
     FILE* f = std::fopen (tmp.c_str(), "w");
     if (! f) return false;
     std::fprintf (f, "%s\n", kHeader);
-    std::fprintf (f, "# TB Synth presets. Slot = instrument x 8 + key (Minimoog 1-8, OB-X 9-16, Solina 17-24, Wurlitzer 25-32,\n");
-    std::fprintf (f, "# B-3 33-40, Cembalet 41-48, Clavinet 49-56, Multiman 57-64). Values 0..1 in parameter order; then its name.\n");
+    std::fprintf (f, "# TB Synth presets. Slot = instrument x 32 + menu entry (Minimoog 1-32, OB-X 33-64, Solina 65-96,\n");
+    std::fprintf (f, "# Wurlitzer 97-128, B-3 129-160, Cembalet 161-192, Clavinet 193-224, Multiman 225-256).\n");
+    std::fprintf (f, "# Values 0..1 in parameter order; then its name.\n");
     for (int s = 0; s < kNumPresetSlots; ++s)
     {
         if (! used[s]) continue;
