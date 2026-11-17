@@ -58,6 +58,69 @@ const FactoryPreset kFactoryPresets[] = {
         { kOxLA, 0.4f }, { kOxLS, 1.0f }, { kOxLR, 0.6f },
         { -1, 0.0f } } },
 
+    // Rush, "Tom Sawyer" (Moving Pictures, Geddy Lee's OB-X): the growl, two detuned saws through a resonant filter swept slowly by the LFO
+    { kOBX, 3, "Tom Sawyer", {
+        { kOxO1Saw, 1.0f }, { kOxO1Pls, 0.0f }, { kOxO2Saw, 1.0f }, { kOxO2Pls, 0.0f }, { kOxModDp, 0.55f },
+        { kOxModO1, 0.0f }, { kOxModO2, 0.0f }, { kOxModFl, 1.0f }, { kOxModPw, 0.0f }, { kOxO2Det, 0.63f },
+        { kOxCut, 0.3f }, { kOxRes, 0.72f }, { kOxEnvAm, 0.25f }, { kOxLfoRt, 0.15f }, { kOxLfoWv, 0.0f },
+        { kOxFA, 0.6f }, { kOxFD, 0.7f }, { kOxFS, 0.6f }, { kOxLA, 0.2f }, { kOxLS, 1.0f },
+        { kOxLR, 0.6f },
+        { -1, 0.0f } } },
+
+    // Rush, "Subdivisions" (Signals): lush, slowly opening chords with a little vibrato
+    { kOBX, 4, "Subdivisions", {
+        { kOxO1Saw, 1.0f }, { kOxO1Pls, 0.0f }, { kOxO2Saw, 1.0f }, { kOxO2Pls, 0.0f }, { kOxModDp, 0.06f },
+        { kOxModO1, 1.0f }, { kOxModO2, 1.0f }, { kOxModFl, 0.0f }, { kOxModPw, 0.0f }, { kOxO2Det, 0.64f },
+        { kOxCut, 0.48f }, { kOxRes, 0.15f }, { kOxEnvAm, 0.35f }, { kOxLfoRt, 0.62f }, { kOxFA, 0.55f },
+        { kOxFD, 0.65f }, { kOxFS, 0.6f }, { kOxFR, 0.6f }, { kOxLA, 0.45f }, { kOxLS, 1.0f },
+        { kOxLR, 0.6f },
+        { -1, 0.0f } } },
+
+    // Prince, "1999" (first recorded on an OB-X): wide detuned saws, the LFO gently moving the oscillators, punchy
+    { kOBX, 5, "1999", {
+        { kOxO1Saw, 1.0f }, { kOxO1Pls, 0.0f }, { kOxO2Saw, 1.0f }, { kOxO2Pls, 0.0f }, { kOxModDp, 0.1f },
+        { kOxModO1, 1.0f }, { kOxModO2, 1.0f }, { kOxModFl, 0.0f }, { kOxModPw, 0.0f }, { kOxO2Det, 0.67f },
+        { kOxCut, 0.52f }, { kOxRes, 0.2f }, { kOxEnvAm, 0.45f }, { kOxLfoRt, 0.6f }, { kOxFA, 0.2f },
+        { kOxFD, 0.55f }, { kOxFS, 0.5f }, { kOxFR, 0.45f }, { kOxLA, 0.05f }, { kOxLS, 0.9f },
+        { kOxLR, 0.4f },
+        { -1, 0.0f } } },
+
+    // Prince, "When You Were Mine" (Dirty Mind, the riff on the OB-X): thin, organ-like pulse, an octave apart
+    { kOBX, 6, "When You Were Mine", {
+        { kOxO1Saw, 0.0f }, { kOxO1Pls, 1.0f }, { kOxO2Saw, 0.0f }, { kOxO2Pls, 1.0f }, { kOxModDp, 0.0f },
+        { kOxModO1, 1.0f }, { kOxModO2, 1.0f }, { kOxModFl, 0.0f }, { kOxModPw, 0.0f }, { kOxPW, 0.35f },
+        { kOxO2Frq, 0.75f }, { kOxO2Det, 0.55f }, { kOxCut, 0.62f }, { kOxRes, 0.1f }, { kOxEnvAm, 0.15f },
+        { kOxFA, 0.0f }, { kOxFD, 0.5f }, { kOxFS, 0.8f }, { kOxLA, 0.0f }, { kOxLS, 1.0f },
+        { kOxLR, 0.25f },
+        { -1, 0.0f } } },
+
+    // Eurythmics, "Sweet Dreams (Are Made of This)": the soft, reedy pad, pulse and saw
+    { kOBX, 7, "Sweet Dreams", {
+        { kOxO1Saw, 0.0f }, { kOxO1Pls, 1.0f }, { kOxO2Saw, 1.0f }, { kOxO2Pls, 0.0f }, { kOxModDp, 0.0f },
+        { kOxModO1, 1.0f }, { kOxModO2, 1.0f }, { kOxModFl, 0.0f }, { kOxModPw, 0.0f }, { kOxPW, 0.2f },
+        { kOxO2Det, 0.6f }, { kOxCut, 0.45f }, { kOxRes, 0.3f }, { kOxEnvAm, 0.3f }, { kOxFA, 0.4f },
+        { kOxFD, 0.6f }, { kOxFS, 0.5f }, { kOxFR, 0.55f }, { kOxLA, 0.3f }, { kOxLS, 0.9f },
+        { kOxLR, 0.55f },
+        { -1, 0.0f } } },
+
+    // Nena, "99 Luftballons": bright synth stabs that fall back quickly
+    { kOBX, 8, "99 Luftballons", {
+        { kOxO1Saw, 1.0f }, { kOxO1Pls, 0.0f }, { kOxO2Saw, 1.0f }, { kOxO2Pls, 0.0f }, { kOxModDp, 0.0f },
+        { kOxModO1, 1.0f }, { kOxModO2, 1.0f }, { kOxModFl, 0.0f }, { kOxModPw, 0.0f }, { kOxO2Det, 0.6f },
+        { kOxCut, 0.45f }, { kOxRes, 0.25f }, { kOxEnvAm, 0.55f }, { kOxFA, 0.1f }, { kOxFD, 0.5f },
+        { kOxFS, 0.3f }, { kOxFR, 0.4f }, { kOxLA, 0.02f }, { kOxLD, 0.6f }, { kOxLS, 0.6f },
+        { kOxLR, 0.35f },
+        { -1, 0.0f } } },
+
+    // Jean-Michel Jarre, who used the OB-X for its brass: a slow-blooming brass section
+    { kOBX, 9, "Jarre Brass", {
+        { kOxO1Saw, 1.0f }, { kOxO1Pls, 0.0f }, { kOxO2Saw, 1.0f }, { kOxO2Pls, 0.0f }, { kOxModDp, 0.05f },
+        { kOxModO1, 1.0f }, { kOxModO2, 1.0f }, { kOxModFl, 0.0f }, { kOxModPw, 0.0f }, { kOxO2Det, 0.62f },
+        { kOxCut, 0.36f }, { kOxRes, 0.18f }, { kOxEnvAm, 0.62f }, { kOxLfoRt, 0.6f }, { kOxFA, 0.5f },
+        { kOxFD, 0.6f }, { kOxFS, 0.55f }, { kOxFR, 0.5f }, { kOxLA, 0.35f }, { kOxLS, 0.9f },
+        { kOxLR, 0.5f },
+        { -1, 0.0f } } },
+
     // Supertramp, "Bloody Well Right" (Rick Davies' intro): dry, no vibrato,
     // played hard into an amp that's starting to grit
     { kWurlitzer, 0, "Supertramp", {

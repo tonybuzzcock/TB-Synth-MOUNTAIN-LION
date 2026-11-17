@@ -51,6 +51,13 @@ MASTER, and the tan readout. A LEVEL LED at top right lights amber while it play
 | Oberheim OB-X | 1 | Queen | Flash Gordon: big detuned brass, the filter opening on each stab |
 | Oberheim OB-X | 2 | Japan | Tin Drum (Richard Barbieri): a dark pulse-wave pad, slow attack, slowly moving pulse width |
 | Oberheim OB-X | 3 | Foxx | John Foxx, The Garden: a lush shimmering pad, saw and pulse, gentle vibrato |
+| Oberheim OB-X | 4 | Tom Sawyer | Rush, "Tom Sawyer" (Moving Pictures, Geddy Lee's OB-X): the growl, two detuned saws through a resonant filter swept slowly by the LFO |
+| Oberheim OB-X | 5 | Subdivisions | Rush, "Subdivisions" (Signals): lush, slowly opening chords with a little vibrato |
+| Oberheim OB-X | 6 | 1999 | Prince, "1999" (first recorded on an OB-X): wide detuned saws, the LFO gently moving the oscillators, punchy |
+| Oberheim OB-X | 7 | When You Were Mine | Prince, "When You Were Mine" (Dirty Mind, the riff on the OB-X): thin, organ-like pulse, an octave apart |
+| Oberheim OB-X | 8 | Sweet Dreams | Eurythmics, "Sweet Dreams (Are Made of This)": the soft, reedy pad, pulse and saw |
+| Oberheim OB-X | 9 | 99 Luftballons | Nena, "99 Luftballons": bright synth stabs that fall back quickly |
+| Oberheim OB-X | 10 | Jarre Brass | Jean-Michel Jarre, who used the OB-X for its brass: a slow-blooming brass section |
 | Wurlitzer 200A | 1 | Supertramp | "Bloody Well Right" intro: dry, no vibrato, amp pushed to grit |
 | Hohner Clavinet D6 | 1 | Superstition | Stevie Wonder: BRILLIANT + TREBLE, both pickups in phase (D-A) |
 | Hohner Clavinet D6 | 2 | Quatro | Suzi Quatro's keyboard player: TREBLE + MEDIUM, bridge pickup, a little mute, preamp pushed |

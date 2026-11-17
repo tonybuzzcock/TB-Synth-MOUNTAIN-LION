@@ -135,18 +135,18 @@ int main()
         z.put (fk, w);
         z.setName (fk, "Mine");
         check (z.name (fk) == "Queen" && z.get (fk, w) && w[kOxO2Saw] == 1.0f, "a factory key can't be saved over or renamed");
-        check (PresetStore::isFactory (fk) && ! PresetStore::isFactory (bankSlot (kOBX, 3)), "factory keys are known");
+        check (PresetStore::isFactory (fk) && ! PresetStore::isFactory (bankSlot (kOBX, 10)), "factory keys are known");
         // a user preset found on a factory key (an older file) moves to the next free key
         f = std::fopen (file.c_str(), "w");
         const int oldFk = kOBX * 8 + 1;      // the OB-X's first key in a banks-of-8 file
         std::fprintf (f, "TBSYNTH-PRESETS 3\nslot %d: %.6f 0.3\nname %d: My OB pad\n", oldFk, stepValue (kOBX, 8), oldFk);
         std::fclose (f);
         PresetStore y; y.setPath (file); y.load();
-        check (y.name (fk) == "Queen" && y.name (bankSlot (kOBX, 3)) == "My OB pad",
-               "a user preset on a factory key moves after the factory presets (Queen, Japan, Foxx, then it)");
+        check (y.name (fk) == "Queen" && y.name (bankSlot (kOBX, 10)) == "My OB pad",
+               "a user preset on a factory key moves after the factory presets (the ten OB-X ones, then it)");
         y.save();
         PresetStore x; x.setPath (file); x.load();
-        check (x.name (bankSlot (kOBX, 3)) == "My OB pad" && x.name (fk) == "Queen" && ! x.has (bankSlot (kOBX, 4)),
+        check (x.name (bankSlot (kOBX, 10)) == "My OB pad" && x.name (fk) == "Queen" && ! x.has (bankSlot (kOBX, 11)),
                "and stays there (saved factory presets aren't moved again)");
     }
 
