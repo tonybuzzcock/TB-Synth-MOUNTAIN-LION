@@ -80,6 +80,12 @@ inline double realValue (int p, double v)
         case kSkSoGlide: return map::skGlide (v);
         case kRhDecCello: case kRhDecStr: return map::rhRelease (v);
         case kRhDecPno: return map::rhPianoDecay (v);
+        case kMdCut: return map::mdCutoff (v);
+        case kMdFA: case kMdFD: case kMdFR: case kMdA: case kMdD: case kMdR: return map::mdTime (v);
+        case kMdLfo: return map::mdLfo (v);
+        case kMdGlide: return map::mdGlide (v);
+        case kMdO2Tune: case kMdO3Tune: return map::mdTune (v);
+        case kMdPW: return map::mdPW (v) * 100.0;
         default: return v;
     }
 }

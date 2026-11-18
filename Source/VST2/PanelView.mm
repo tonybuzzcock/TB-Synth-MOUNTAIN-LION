@@ -329,7 +329,9 @@ int waveKind (int style, int pos)
     static const int moog3[6] = { 0, 6, 2, 3, 4, 5 };
     static const int obx[3] = { 7, 3, 8 };
     if (style == kWave) return moog[pos % 6];
+    static const int modular[4] = { 7, 0, 2, 4 };     // Moog Modular 921: sine, triangle, sawtooth, pulse
     if (style == kWave + 1) return moog3[pos % 6];
+    if (style == kWave + 3) return modular[pos % 4];
     return obx[pos % 3];
 }
 

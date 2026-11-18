@@ -20,7 +20,7 @@
 namespace tbsyn
 {
 
-enum Instrument { kMinimoog = 0, kOBX, kSolina, kWurlitzer, kHammond, kCembalet, kClavinet, kMultiman, kOmni, kSK30, kRhapsody, kNumInstruments };
+enum Instrument { kMinimoog = 0, kOBX, kSolina, kWurlitzer, kHammond, kCembalet, kClavinet, kMultiman, kOmni, kSK30, kRhapsody, kModular, kNumInstruments };
 
 enum Param
 {
@@ -94,6 +94,15 @@ enum Param
     kRhCello, kRhStrings, kRhPiano, kRhClav, kRhSplit,
     kRhVolStrLo, kRhVolStrHi, kRhVolPnLo, kRhVolPnHi,
     kRhDecCello, kRhDecStr, kRhDecPno, kRhMaster,
+
+    // Moog Modular (3P-style, a fixed patch): three 921 oscillators, mixer, 904A ladder,
+    // two 911 envelopes, an LFO, glide, MONO / POLY
+    kMdO1Rng, kMdO1Wave, kMdPW, kMdO2Rng, kMdO2Wave, kMdO2Tune, kMdO3Rng, kMdO3Wave, kMdO3Tune,
+    kMdO1Lvl, kMdO2Lvl, kMdO3Lvl, kMdNoise, kMdDrift,
+    kMdCut, kMdRegen, kMdContour, kMdKbd,
+    kMdFA, kMdFD, kMdFS, kMdFR, kMdA, kMdD, kMdS, kMdR,
+    kMdLfo, kMdVib, kMdLfoFlt,
+    kMdPoly, kMdGlide, kMdVol,
 
     kNumParams
 };
@@ -388,18 +397,52 @@ const ParamInfo kParams[kNumParams] = {
     { "RhDStr",   "STRINGS DECAY",  kRhapsody, 0, 0.4f, kUSecs, 0 },
     { "RhDPno",   "PIANO / CLAV DECAY",   kRhapsody, 0, 0.45f, kUSecs, 0 },
     { "RhMaster", "VOLUME PEDAL",   kRhapsody, 0, 0.7f, kUDial, 0 },
+
+    // Moog Modular: two sawtooths a little apart, filter half open, POLY off
+    { "MdO1Rng",  "OSC 1 RANGE",    kModular, 5, 0.5f, kUChoice, "32'|16'|8'|4'|2'" },
+    { "MdO1Wave", "OSC 1 WAVEFORM", kModular, 4, 2.0f / 3.0f, kUChoice, "SINE|TRI|SAW|PULSE" },
+    { "MdPW",     "PULSE WIDTH",    kModular, 0, 0.0f, kUPct, 0 },
+    { "MdO2Rng",  "OSC 2 RANGE",    kModular, 5, 0.5f, kUChoice, "32'|16'|8'|4'|2'" },
+    { "MdO2Wave", "OSC 2 WAVEFORM", kModular, 4, 2.0f / 3.0f, kUChoice, "SINE|TRI|SAW|PULSE" },
+    { "MdO2Tune", "OSC 2 TUNE",     kModular, 0, 0.51f, kUSemis, 0 },
+    { "MdO3Rng",  "OSC 3 RANGE",    kModular, 5, 0.25f, kUChoice, "32'|16'|8'|4'|2'" },
+    { "MdO3Wave", "OSC 3 WAVEFORM", kModular, 4, 1.0f, kUChoice, "SINE|TRI|SAW|PULSE" },
+    { "MdO3Tune", "OSC 3 TUNE",     kModular, 0, 0.5f, kUSemis, 0 },
+    { "MdO1Lvl",  "MIXER OSC 1",    kModular, 0, 0.8f, kUDial, 0 },
+    { "MdO2Lvl",  "MIXER OSC 2",    kModular, 0, 0.7f, kUDial, 0 },
+    { "MdO3Lvl",  "MIXER OSC 3",    kModular, 0, 0.0f, kUDial, 0 },
+    { "MdNoise",  "MIXER NOISE",    kModular, 0, 0.0f, kUDial, 0 },
+    { "MdDrift",  "DRIFT",          kModular, 0, 0.2f, kUDial, 0 },
+    { "MdCut",    "FILTER FREQUENCY", kModular, 0, 0.5f, kUHz, 0 },
+    { "MdRegen",  "REGENERATION",   kModular, 0, 0.15f, kUDial, 0 },
+    { "MdCont",   "FILTER CONTOUR", kModular, 0, 0.4f, kUDial, 0 },
+    { "MdKbd",    "KEYBOARD TRACKING", kModular, 0, 0.5f, kUDial, 0 },
+    { "MdFA",     "FILTER ATTACK",  kModular, 0, 0.2f, kUSecs, 0 },
+    { "MdFD",     "FILTER DECAY",   kModular, 0, 0.5f, kUSecs, 0 },
+    { "MdFS",     "FILTER SUSTAIN", kModular, 0, 0.5f, kUDial, 0 },
+    { "MdFR",     "FILTER RELEASE", kModular, 0, 0.4f, kUSecs, 0 },
+    { "MdA",      "ATTACK",         kModular, 0, 0.05f, kUSecs, 0 },
+    { "MdD",      "DECAY",          kModular, 0, 0.5f, kUSecs, 0 },
+    { "MdS",      "SUSTAIN",        kModular, 0, 0.8f, kUDial, 0 },
+    { "MdR",      "RELEASE",        kModular, 0, 0.35f, kUSecs, 0 },
+    { "MdLfo",    "LFO RATE",       kModular, 0, 0.45f, kUHz, 0 },
+    { "MdVib",    "LFO TO PITCH",   kModular, 0, 0.0f, kUDial, 0 },
+    { "MdLfoFlt", "LFO TO FILTER",  kModular, 0, 0.0f, kUDial, 0 },
+    { "MdPoly",   "MONO / POLY",    kModular, 2, 0.0f, kUChoice, "MONO|POLY" },
+    { "MdGlide",  "GLIDE",          kModular, 0, 0.0f, kUSecs, 0 },
+    { "MdVol",    "VOLUME",         kModular, 0, 0.7f, kUDial, 0 },
 };
 
 inline const char* instrumentName (int k)
 {
     static const char* const n[kNumInstruments] = {
         "MINIMOOG MODEL D", "OBERHEIM OB-X", "SOLINA STRING ENSEMBLE", "WURLITZER 200A",
-        "HAMMOND B-3", "HOHNER CEMBALET", "HOHNER CLAVINET D6", "CRUMAR MULTIMAN", "ARP OMNI", "YAMAHA SK-30", "ELKA RHAPSODY 610" };
+        "HAMMOND B-3", "HOHNER CEMBALET", "HOHNER CLAVINET D6", "CRUMAR MULTIMAN", "ARP OMNI", "YAMAHA SK-30", "ELKA RHAPSODY 610", "MOOG MODULAR" };
     return (k >= 0 && k < kNumInstruments) ? n[k] : "";
 }
 inline const char* instrumentShort (int k)    // <= 8 characters
 {
-    static const char* const n[kNumInstruments] = { "Minimoog", "OB-X", "Solina", "Wurli", "B-3", "Cembalet", "Clavinet", "Multiman", "Omni", "SK-30", "Rhapsody" };
+    static const char* const n[kNumInstruments] = { "Minimoog", "OB-X", "Solina", "Wurli", "B-3", "Cembalet", "Clavinet", "Multiman", "Omni", "SK-30", "Rhapsody", "Modular" };
     return (k >= 0 && k < kNumInstruments) ? n[k] : "";
 }
 
@@ -490,6 +533,14 @@ namespace map
     // Elka Rhapsody 610 (estimates: the panel's sliders are unmarked)
     inline double rhRelease (double v)    { return expMap (v, 0.05, 6.0); }      // strings / cello DECAY (release)
     inline double rhPianoDecay (double v) { return expMap (v, 0.25, 8.0); }      // piano / clavichord DECAY
+
+    // Moog Modular (estimates: 921 / 904A / 911 ranges as panel-friendly sweeps)
+    inline double mdCutoff (double v)    { return expMap (v, 20.0, 18000.0); }
+    inline double mdTime (double v)      { return expMap (v, 0.002, 10.0); }     // 911 T1 / T2 / T3
+    inline double mdLfo (double v)       { return expMap (v, 0.05, 30.0); }
+    inline double mdGlide (double v)     { return v < 0.01 ? 0.0 : expMap (v, 0.01, 4.0); }
+    inline double mdTune (double v)      { return (v - 0.5) * 14.0; }            // +/- 7 semitones
+    inline double mdPW (double v)        { return 0.5 - 0.45 * v; }              // 50 % .. 5 %
 
     // Hammond drawbars: each step about 3 dB, 0 = off
     inline double drawbarGain (int k)     { return k <= 0 ? 0.0 : std::pow (10.0, -3.0 * (8 - k) / 20.0); }

@@ -33,7 +33,7 @@ xcrun clang++ -arch x86_64 -mmacosx-version-min=$MIN_OS \
     -Wl,-exported_symbol,_VSTPluginMain -Wl,-exported_symbol,_main_macho \
     Source/VST2/SynthVST.cpp Source/VST2/Presets.cpp Source/VST2/PanelView.mm \
     Source/DSP/Synth.cpp Source/DSP/Moog.cpp Source/DSP/OBX.cpp Source/DSP/Solina.cpp \
-    Source/DSP/Reeds.cpp Source/DSP/Hammond.cpp Source/DSP/Clav.cpp Source/DSP/Multiman.cpp Source/DSP/Omni.cpp Source/DSP/SK30.cpp Source/DSP/Rhapsody.cpp \
+    Source/DSP/Reeds.cpp Source/DSP/Hammond.cpp Source/DSP/Clav.cpp Source/DSP/Multiman.cpp Source/DSP/Omni.cpp Source/DSP/SK30.cpp Source/DSP/Rhapsody.cpp Source/DSP/Modular.cpp \
     -o "$BUNDLE/Contents/MacOS/$EXE"
 
 BIN="$BUNDLE/Contents/MacOS/$EXE"

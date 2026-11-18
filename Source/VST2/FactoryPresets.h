@@ -688,6 +688,16 @@ const FactoryPreset kFactoryPresets[] = {
         { kRhCello, 1.0f }, { kRhStrings, 1.0f }, { kRhPiano, 0.0f }, { kRhClav, 0.0f }, { kRhSplit, 1.0f },
         { kRhVolStrLo, 0.85f }, { kRhVolStrHi, 0.5f }, { kRhDecCello, 0.85f }, { kRhDecStr, 0.85f }, { kRhMaster, 0.64f },
         { -1, 0.0f } } },
+    // ---- Moog Modular
+    // Donna Summer / Giorgio Moroder, "I Feel Love" (1977, a Moog Modular 3P): the string pad, sawtooths a little apart, a slow swell, drifting oscillators; POLY so it plays as chords (estimates)
+    { kModular, 0, "I Feel Love", {
+        { kMdO1Rng, 0.5f }, { kMdO1Wave, 0.6667f }, { kMdO2Rng, 0.5f }, { kMdO2Wave, 0.6667f }, { kMdO2Tune, 0.506f },
+        { kMdO3Rng, 0.25f }, { kMdO3Wave, 0.6667f }, { kMdO3Tune, 0.494f }, { kMdO1Lvl, 0.8f }, { kMdO2Lvl, 0.75f },
+        { kMdO3Lvl, 0.35f }, { kMdNoise, 0.0f }, { kMdDrift, 0.45f }, { kMdCut, 0.45f }, { kMdRegen, 0.2f },
+        { kMdContour, 0.35f }, { kMdKbd, 0.6f }, { kMdFA, 0.55f }, { kMdFD, 0.7f }, { kMdFS, 0.6f },
+        { kMdFR, 0.6f }, { kMdA, 0.55f }, { kMdD, 0.6f }, { kMdS, 0.9f }, { kMdR, 0.68f },
+        { kMdLfo, 0.5f }, { kMdVib, 0.04f }, { kMdPoly, 1.0f }, { kMdVol, 0.7f },
+        { -1, 0.0f } } },
 };
 const int kNumFactoryPresets = (int) (sizeof (kFactoryPresets) / sizeof (kFactoryPresets[0]));
 

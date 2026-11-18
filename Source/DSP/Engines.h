@@ -30,6 +30,8 @@
 //   RhapsodyEngine  Elka Rhapsody 610: divide-down violoncello, strings, piano
 //                   and clavichord, split with volumes for each half, two
 //                   chorus stages
+//   ModularEngine   Moog Modular (3P-style fixed patch): three oscillators,
+//                   ladder filter, two envelopes, LFO, glide, MONO / POLY
 
 #ifndef TBSYNTH_ENGINES_H
 #define TBSYNTH_ENGINES_H
@@ -467,6 +469,47 @@ private:
     Delay<4096> bbd1, bbd2;
     double ph1, ph2;
     OnePole bbdLp, dcBlock;
+};
+
+//==============================================================================
+class ModularEngine : public Engine
+{
+public:
+    enum { kVoices = 8 };
+    ModularEngine();
+    void prepare (double sr);
+    void setParam (int p, float v);
+    void noteOn (int note, int vel);
+    void noteOff (int note);
+    void allNotesOff();
+    void silence();
+    void pitchBend (double b) { bend = b; }
+    void modWheel (double m) { wheel = m; }
+    void render (float* out, int n);
+
+private:
+    struct Voice
+    {
+        int note;
+        bool gate;
+        unsigned age;
+        double pitch, target;
+        double ph[3], doff[3], dph[3], drate[3];
+        double lad[4];
+        Envelope fenv, lenv;
+    };
+    void updateEnv();
+    int lowestHeld() const;
+    double wave (int w, double ph, double dt, double pw) const;
+    double sr;
+    float pv[kNumParams];
+    bool held[128];
+    Voice vo[kVoices];
+    unsigned clock;
+    double lfoPh, bend, wheel;
+    int monoLast;
+    Noise noise;
+    OnePole dcBlock;
 };
 
 } // namespace tbsyn

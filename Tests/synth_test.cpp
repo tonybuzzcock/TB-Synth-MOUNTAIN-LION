@@ -653,6 +653,32 @@ int main (int argc, char** argv)
         check (lowHalf < 1e-5 && highHalf > 1e-3, "Rhapsody split: each half has its own volume");
     }
     {
+        // Moog Modular: MONO plays the lowest key held; POLY plays every key
+        defaults (s);
+        selectInst (s, kModular);
+        s.setParam (kMdO2Lvl, 0.0f); s.setParam (kMdDrift, 0.0f); s.setParam (kMdCut, 0.8f); s.setParam (kMdO1Wave, 0.0f);   // one sine
+        std::vector<float> y;
+        s.midi (0x90, 69, 100); s.midi (0x90, 57, 100);
+        render (s, y, 0, SR / 2);
+        const double mono = pitchOf (y, SR / 4, SR / 2, 220.0);
+        s.midi (0x80, 69, 0); s.midi (0x80, 57, 0);
+        render (s, y, 0, SR);
+        std::printf ("  Modular MONO with A3 + A4 held: %.1f Hz\n", mono);
+        check (std::fabs (mono - 220.0) < 1.5, "Modular MONO: the lowest key sounds");
+        s.setParam (kMdPoly, 1.0f);
+        y.clear();
+        s.midi (0x90, 57, 100);
+        render (s, y, 0, SR / 2);
+        const double one = rmsOf (y, SR / 4, SR / 2);
+        s.midi (0x90, 69, 100);
+        render (s, y, SR / 2, SR / 2);
+        const double two = rmsOf (y, SR * 3 / 4, SR);
+        s.midi (0x80, 57, 0); s.midi (0x80, 69, 0);
+        render (s, y, 0, SR);
+        std::printf ("  Modular POLY: one key %.1f dB, two keys %.1f dB\n", db (one), db (two));
+        check (two > one * 1.25, "Modular POLY: a second key adds a second voice");
+    }
+    {
         // instrument switch while a note sounds: no jump bigger than the signal itself
         defaults (s);
         selectInst (s, kOBX);

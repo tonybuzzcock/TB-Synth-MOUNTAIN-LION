@@ -321,6 +321,45 @@ const Ctl kCtls[] = {
     { kRhVolPnHi,  kVSlider, 1059, 290, 105, "PIANO\nUPPER", "", "", 0 },
     { kRhMaster,   kKnob,    1166, 290, 26, "VOLUME\nPEDAL", "0", "10", kRed },
 
+    // ------------------------------------------------------------ Moog Modular
+    // 921 OSCILLATORS
+    { kMdO1Rng,   kSelector,  82, R1, 18, "OSC 1\nRANGE", "", "", 0 },
+    { kMdO2Rng,   kSelector, 222, R1, 18, "OSC 2\nRANGE", "", "", 0 },
+    { kMdO3Rng,   kSelector, 362, R1, 18, "OSC 3\nRANGE", "", "", 0 },
+    { kMdO1Wave,  kSelector,  82, R2, 18, "WAVEFORM", "", "", kWave + 3 },
+    { kMdO2Wave,  kSelector, 222, R2, 18, "WAVEFORM", "", "", kWave + 3 },
+    { kMdO3Wave,  kSelector, 362, R2, 18, "WAVEFORM", "", "", kWave + 3 },
+    { kMdPW,      kKnob,      82, R3, 20, "PULSE\nWIDTH", "50", "5", kGrey },
+    { kMdO2Tune,  kKnob,     222, R3, 20, "OSC 2\nTUNE", "-", "+", kGrey },
+    { kMdO3Tune,  kKnob,     362, R3, 20, "OSC 3\nTUNE", "-", "+", kGrey },
+    // MIXER
+    { kMdO1Lvl,   kKnob,     482, R1, 20, "OSC 1", "0", "10", kGrey },
+    { kMdO2Lvl,   kKnob,     558, R1, 20, "OSC 2", "0", "10", kGrey },
+    { kMdO3Lvl,   kKnob,     482, R2, 20, "OSC 3", "0", "10", kGrey },
+    { kMdNoise,   kKnob,     558, R2, 20, "NOISE", "0", "10", kGrey },
+    { kMdDrift,   kKnob,     520, R3, 20, "DRIFT", "0", "10", kGrey },
+    // 904A FILTER
+    { kMdCut,     kKnob,     660, R1, 22, "FREQUENCY", "0", "10", kOrange },
+    { kMdRegen,   kKnob,     756, R1, 20, "REGEN-\nERATION", "0", "10", kGrey },
+    { kMdContour, kKnob,     660, R2, 20, "CONTOUR", "0", "10", kGrey },
+    { kMdKbd,     kKnob,     756, R2, 20, "KEYBOARD", "0", "10", kGrey },
+    { kMdLfoFlt,  kKnob,     660, R3, 20, "LFO TO\nFILTER", "0", "10", kGrey },
+    { kMdVib,     kKnob,     756, R3, 20, "LFO TO\nPITCH", "0", "10", kGrey },
+    // 911 ENVELOPES
+    { kMdFA,      kKnob,     858, R1, 20, "ATTACK", "0", "10", kGrey },
+    { kMdFD,      kKnob,     933, R1, 20, "DECAY", "0", "10", kGrey },
+    { kMdFS,      kKnob,    1008, R1, 20, "SUSTAIN", "0", "10", kGrey },
+    { kMdFR,      kKnob,    1083, R1, 20, "RELEASE", "0", "10", kGrey },
+    { kMdA,       kKnob,     858, R2, 20, "ATTACK", "0", "10", kGrey },
+    { kMdD,       kKnob,     933, R2, 20, "DECAY", "0", "10", kGrey },
+    { kMdS,       kKnob,    1008, R2, 20, "SUSTAIN", "0", "10", kGrey },
+    { kMdR,       kKnob,    1083, R2, 20, "RELEASE", "0", "10", kGrey },
+    { kMdLfo,     kKnob,     858, R3, 20, "LFO\nRATE", "0", "10", kGrey },
+    { kMdGlide,   kKnob,     970, R3, 20, "GLIDE", "0", "10", kGrey },
+    // OUTPUT
+    { kMdPoly,    kTab,     1191, R1, 0, "POLY", "", "", 0 },
+    { kMdVol,     kKnob,    1191, R3, 22, "VOLUME", "0", "10", kRed },
+
     // ------------------------------------------------------------ every page
     { kMaster,    kKnob,     714, 592, 17, "MASTER", "", "", kRed },
 };
@@ -367,6 +406,11 @@ const Section kSections[] = {
     { kRhapsody,  498, 120, 300, 330, "DECAY" },
     { kRhapsody,  806, 120, 290, 330, "VOLUME" },
     { kRhapsody, 1104, 120, 124, 330, "OUTPUT" },
+    { kModular,    12, 76, 420, 424, "921 OSCILLATORS" },
+    { kModular,   440, 76, 160, 424, "MIXER" },
+    { kModular,   608, 76, 200, 424, "904A FILTER" },
+    { kModular,   816, 76, 330, 424, "911 ENVELOPES" },
+    { kModular,  1154, 76, 74, 424, "OUTPUT" },
 };
 const int kNumSections = (int) (sizeof (kSections) / sizeof (kSections[0]));
 
@@ -384,6 +428,8 @@ const Caption kCaptions[] = {
     { kOmni,      550, R2 - 58, "VCF" },
     { kOmni,      550, R3 - 58, "ADSR" },
     { kSK30,      192, S2 - 55, "TONE LEVERS" },
+    { kModular,   970, R1 - 62, "FILTER CONTOUR" },
+    { kModular,   970, R2 - 62, "LOUDNESS CONTOUR" },
     { kSK30,       97, S3 - 52, "PERCUSSIVE" },
     { kSK30,      528, S2 - 55, "MANUAL VOICE" },
     { kSK30,      490, S3 - 52, "VIBRATO" },

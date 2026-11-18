@@ -1,6 +1,6 @@
 # TB Synth (Mountain Lion VST)
 
-Eleven classic keyboards in one VST 2.4 instrument, for **Mac OS X 10.8.5** (64-bit Intel), played in
+Twelve classic keyboards in one VST 2.4 instrument, for **Mac OS X 10.8.5** (64-bit Intel), played in
 Pro Tools 11 through Blue Cat PatchWork. Pick the instrument from the **INSTRUMENT** menu at the top of the
 panel (click it for the list, or step with the arrows):
 
@@ -17,6 +17,7 @@ panel (click it for the list, or step with the arrows):
 | **ARP Omni (1975)** | 49 keys; STRINGS: VIOLINS 4' and VIOLAS 8' (polyphonic), CELLOS 8' and BASS 16' (monophonic, low-note priority, bottom 20 keys), ATTACK, RELEASE, the string phasers; SYNTHESIZER: 4' / 8' polyphonic and BASS 8' / 16', SAW or DYNAMIC PULSE, ENHANCEMENT, one 24 dB ladder VCF (FREQUENCY, RESONANCE, ADSR, LFO) and ADSR retriggered by every key, LFO 0.1 - 20 Hz, CHORUS PHASER; STRING / SYNTH MIX, BASS VOLUME, MASTER, sustain pedal |
 | **Yamaha SK-30 Symphonic Ensemble (1980)** | 61 keys, 7-note ORGAN / POLY-SYNTH / STRINGS from one divide-down generator; ORGAN presets 1-3 or MANUAL with nine tone levers, PERCUSSIVE 2nd / 3rd / 5th, DECAY / SUSTAIN, BRILLIANCE; POLY-SYNTH presets 1-3 or MANUAL (wave, cutoff, resonance, EG), FEET, MODE I / II with DETUNE, SLOW ATTACK, SUSTAIN; STRINGS 1-3 (cello / viola / violin); VIBRATO with delay; SOLO SYNTHESIZER (64' - 4', saw to square, PW and PWM, VCF, HOLD / GATE / EG, ADSR, LFO, portamento, glide, NORMAL / MANUAL BASS); TREMOLO / ENSEMBLE; four section volumes, sustain pedal |
 | **Elka Rhapsody 610 (1974)** | 61 keys from one divide-down generator; VIOLONCELLO (an octave below), STRINGS, PIANO, CLAVICHORD, each with its CANCEL; split at 2 or 3 octaves with VOLUME for each half; DECAY for violoncello, strings, and piano / clavichord; two chorus stages (fast and slow); volume pedal |
+| **Moog Modular (3P-style)** | a fixed patch: three 921 oscillators (RANGE 32' - 2', sine / triangle / sawtooth / pulse, pulse width, tune), mixer with noise and DRIFT, 904A ladder (FREQUENCY, REGENERATION, CONTOUR, KEYBOARD), two 911 envelopes, LFO to pitch and filter, GLIDE, MONO (lowest note, like the real one) or POLY (8 voices) |
 
 **Mono**, like the originals: the same signal on both outputs, so it works on a mono or stereo
 instrument track. Every control is a host parameter, so a session reopens exactly as it was left.
@@ -117,6 +118,7 @@ MASTER, and the tan readout. A LEVEL LED at top right lights amber while it play
 | Elka Rhapsody 610 | 8 | Body Love | Klaus Schulze, Body Love (1977): strings and violoncello with a very long release, for slow chords |
 | Elka Rhapsody 610 | 9 | Mirage Ice | Klaus Schulze, Mirage (1977): thin, icy strings high up, very long release |
 | Elka Rhapsody 610 | 10 | Dune | Klaus Schulze, Dune (1979): split at 3 octaves, heavy violoncello and strings below, lighter strings above |
+| Moog Modular | 1 | I Feel Love | Donna Summer / Giorgio Moroder (1977, a Moog Modular 3P): the string pad, sawtooths a little apart, slow swell, drifting oscillators; POLY so it plays as chords |
 | Minimoog Model D | 12 | Profondo Rosso | Goblin, Profondo Rosso (1975, Minimoog among the gear): the driving, biting Moog bass line |
 | Minimoog Model D | 13 | Suspiria Moog | Goblin, Suspiria (1977, Minimoog and a big Moog): a dark, detuned, resonant growl with a breath of noise |
 | Minimoog Model D | 14 | Giallo Lead | a late-70s giallo lead: a wailing square with emphasis, slow glide |
@@ -159,6 +161,7 @@ first in their instrument's menu and can't be saved over or renamed. Presets sav
 | ARP Omni | ARP *Omni Model 2480 Service Manual* (Feb. 1977, doc. 90020000): product description and control functions, simplified block diagram (master top-octave generator, 49 divided lines, string 4' / 8' and bass voicing, 4075 24 dB VCF on the summed 4' / 8' polyphonic and 8' / 16' bass pitches, ADSR, LFO, phaser), trim procedures; patch names from the *Omni-2 Owner's Manual* (1978) |
 | Yamaha SK-30 | Yamaha *SK30 Owner's Manual*: sections and controls, keyboard modes, 7-note polyphony, ranges (organ decay 0.8 s max, decay / sustain 0.03 - 1.6 s, slow attack 3 / 80 ms, vibrato delay 0 - 3.2 s and 30 cents, poly DETUNE +/- 59 cents, solo feet 64' - 4', PW 50 - 85 %, ADSR 3 ms - 3 s / 30 ms - 30 s, LFO 0.1 - 100 Hz, SOLO TUNE -500 .. +700 cents); the 1981 review (synthforbreakfast.nl) for the presets' character |
 | Elka Rhapsody 610 | Till Kopper's description of his 1975 Rhapsody 610 (till-kopper.de: panel, divider and voice boards, the two-stage BBD chorus); the 1975 *International Musician* string-machine round-up (split into 25 and 36 keys) |
+| Moog Modular | the published accounts of "I Feel Love" (Sound On Sound *Classic Tracks*, 2009; Moroder and Bellotte interviews): a Moog Modular 3P borrowed from Eberhard Schoener, patched by Robby Wedel |
 
 The PDFs themselves couldn't be downloaded into the build environment, so the values above were read from
 them online; no component-level schematic was transcribed. These are behavioural models built from
@@ -212,6 +215,10 @@ the documented behaviour and specifications, to be tuned by ear (as with the oth
   voicing), string attack 60 ms, decay ranges (strings 50 ms - 6 s, piano / clavichord 0.25 - 8 s),
   the piano and clavichord waveforms, the chorus timings (fast 5.8 Hz, slow 0.45 Hz), how the four
   volume sliders divide between sounds and halves. The bass pedal socket isn't modelled.
+
+- **Moog Modular**: all ranges (filter 20 Hz - 18 kHz, 911 times 2 ms - 10 s, LFO 0.05 - 30 Hz, glide up to
+  4 s, tune +/- 7 semitones), regeneration law, contour and modulation depths, drift (up to 18 cents),
+  POLY voice count (8). It is one fixed patch rather than a patchable system.
 
 ## Install (Mac Pro, OS X 10.8.5)
 
