@@ -289,6 +289,39 @@ int main (int argc, char** argv)
         check (NEAR (kOxO2Det, 0.6f) && NEAR (kOxEnvAm, 0.62f), "next from the last wraps to the first");
         pump (0.1);
         renderPNG (panel, dir + "/panel_preset_arrows.png");
+        // right-click the name: delete it (a factory one is hidden), then restore
+        PICK (bankSlot (kOBX, 0));
+        NSMenu* acts = [(id) panel presetActions];
+        check ([acts numberOfItems] == 4 && [[[acts itemAtIndex: 0] title] isEqualToString: @"Rename \"Queen\"..."]
+               && [[[acts itemAtIndex: 1] title] isEqualToString: @"Delete \"Queen\""] && [[acts itemAtIndex: 1] isEnabled]
+               && ! [[acts itemAtIndex: 3] isEnabled], "right-click offers Rename and Delete \"Queen\"; nothing to restore yet");
+        [(id) panel deleteActivePreset: nil];
+        m = [(id) panel presetMenu];
+        check ([m numberOfItems] == 12 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Japan"], "deleting Queen takes it out of the menu, which renumbers");
+        acts = [(id) panel presetActions];
+        check (! [[acts itemAtIndex: 1] isEnabled] && [[acts itemAtIndex: 3] isEnabled], "then nothing is chosen, and the factory presets can be restored");
+        pump (0.1);
+        renderPNG (panel, dir + "/panel_preset_deleted.png");
+        [(id) panel restoreFactory: nil];
+        m = [(id) panel presetMenu];
+        check ([m numberOfItems] == 13 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Queen"], "Restore brings Queen back");
+        // Rename: a factory preset becomes your own copy under the new name, at the end
+        PICK (bankSlot (kOBX, 1));
+        [(id) panel renameActivePreset: nil];
+        pump (0.1);
+        renderPNG (panel, dir + "/panel_preset_renaming.png");
+        [(id) panel renameSlot: bankSlot (kOBX, 1) to: std::string ("Ghosts")];
+        m = [(id) panel presetMenu];
+        check ([m numberOfItems] == 13 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Queen"] && [[[m itemAtIndex: 1] title] isEqualToString: @"2   Foxx"]
+               && [[[m itemAtIndex: 12] title] isEqualToString: @"13   Ghosts"], "renaming factory 'Japan' to 'Ghosts' moves it to the end as your own");
+        check (NEAR (kOxModPw, 1.0f), "and keeps its sound");
+        [(id) panel renameSlot: bankSlot (kOBX, 13) to: std::string ("Ghosts 2")];
+        m = [(id) panel presetMenu];
+        check ([[[m itemAtIndex: 12] title] isEqualToString: @"13   Ghosts 2"], "renaming your own preset keeps its place");
+        [(id) panel deleteActivePreset: nil];
+        [(id) panel restoreFactory: nil];
+        m = [(id) panel presetMenu];
+        check ([m numberOfItems] == 13 && [[[m itemAtIndex: 1] title] isEqualToString: @"2   Japan"], "deleting it and restoring puts the menu back as it was");
         PICK (bankSlot (kOBX, 1));
         pump (0.1);
         renderPNG (panel, dir + "/panel_preset_menu.png");

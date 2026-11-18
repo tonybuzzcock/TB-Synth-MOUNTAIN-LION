@@ -371,6 +371,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     bool dragMoved;
     int readoutParam;
     bool saveMode;
+    int renameSlot;           // while the name field renames this preset (-1: naming a new one)
     int activePreset;         // slot of the preset last chosen or saved, -1 = none
     bool presetEdited;        // a control moved since: its name shows dimmed
     int presetBank;           // the instrument presetUsed[] was read for
@@ -388,6 +389,12 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 - (NSMenu*) presetMenu;
 - (void) presetPicked: (id) sender;
 - (void) stepPreset: (int) dir;
+- (NSMenu*) presetActions;
+- (void) presetContextMenu;
+- (void) deleteActivePreset: (id) sender;
+- (void) renameActivePreset: (id) sender;
+- (void) renameSlot: (int) slot to: (const std::string&) typed;
+- (void) restoreFactory: (id) sender;
 - (void) defaultSound;
 @end
 
@@ -405,6 +412,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
         dragMoved = false;
         readoutParam = -1;
         saveMode = false;
+        renameSlot = -1;
         activePreset = -1;
         presetEdited = false;
         status[0] = 0;
@@ -1226,14 +1234,16 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     [nameField setFont: boldFont (15.0)];
     [nameField setAlignment: NSCenterTextAlignment];
     [nameField setFocusRingType: NSFocusRingTypeNone];
-    [nameField setStringValue: @""];
-    [[nameField cell] setPlaceholderString: @"TYPE A NAME, THEN SAVE"];
+    char cur[kMaxPresetName + 8] = { 0 };
+    if (renameSlot >= 0) host->presetName (renameSlot, cur, (int) sizeof (cur));
+    [nameField setStringValue: renameSlot >= 0 ? [NSString stringWithUTF8String: cur] : @""];
+    [[nameField cell] setPlaceholderString: renameSlot >= 0 ? @"TYPE THE NEW NAME, THEN RETURN" : @"TYPE A NAME, THEN SAVE"];
     [[nameField cell] setScrollable: YES];
     [nameField setTarget: self];
     [nameField setAction: @selector (nameEntered:)];
     [nameField setDelegate: self];
     [self addSubview: nameField];
-    std::snprintf (status, sizeof (status), "NAME THE SOUND, THEN PRESS SAVE AGAIN");
+    std::snprintf (status, sizeof (status), renameSlot >= 0 ? "RENAME IT, THEN PRESS RETURN OR SAVE" : "NAME THE SOUND, THEN PRESS SAVE AGAIN");
     readoutParam = -1;
     [[self window] makeFirstResponder: nameField];
     [self setNeedsDisplay: YES];
@@ -1256,7 +1266,10 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     [retiredField setDelegate: nil];
     [retiredField setTarget: nil];
     [self performSelector: @selector (dropRetired) withObject: nil afterDelay: 0.0];
+    const int renaming = renameSlot;
+    renameSlot = -1;
     if (! keep || ! host) { status[0] = 0; [self setNeedsDisplay: YES]; return; }
+    if (renaming >= 0) { [self renameSlot: renaming to: name]; return; }
 
     const int inst = [self inst];
     [self refreshBank];
@@ -1287,6 +1300,50 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     }
     else std::snprintf (status, sizeof (status), "COULD NOT SAVE THE PRESET");
     [self setNeedsDisplay: YES];
+}
+
+// Rename: a user preset keeps its place; a factory preset becomes your own copy under
+// the new name (at the end of the menu) and the factory one is hidden
+- (void) renameSlot: (int) slot to: (const std::string&) typed
+{
+    std::string name = typed;
+    if (name.find_first_not_of (" \t") == std::string::npos) { status[0] = 0; [self setNeedsDisplay: YES]; return; }
+    host->refreshPresets();
+    int target = slot;
+    if (host->presetIsFactory (slot))
+    {
+        const int inst = slot / kSlotsPerBank;
+        target = -1;
+        for (int k = 0; k < kSlotsPerBank && target < 0; ++k)
+        {
+            const int s2 = bankSlot (inst, k);
+            if (! host->presetExists (s2) && ! host->presetIsFactory (s2)) target = s2;
+        }
+        if (target < 0 || ! host->copyPreset (slot, target) || ! host->deletePreset (slot))
+        {
+            std::snprintf (status, sizeof (status), target < 0 ? "THE MENU IS FULL (%d PRESETS)" : "COULD NOT RENAME", (int) kSlotsPerBank);
+            [self setNeedsDisplay: YES];
+            return;
+        }
+    }
+    if (host->renamePreset (target, name.c_str()))
+    {
+        activePreset = target;
+        char shown2[kMaxPresetName + 8] = { 0 };
+        host->presetName (target, shown2, (int) sizeof (shown2));
+        std::snprintf (status, sizeof (status), "RENAMED: %s", shown2);
+    }
+    else std::snprintf (status, sizeof (status), "COULD NOT RENAME");
+    [self refreshBank];
+    [self setNeedsDisplay: YES];
+}
+
+- (void) renameActivePreset: (id) sender
+{
+    (void) sender;
+    if (! host || activePreset < 0 || nameField) return;
+    renameSlot = activePreset;
+    [self startNaming];
 }
 
 - (void) nameEntered: (id) sender { (void) sender; [self finishNaming: YES]; }
@@ -1423,7 +1480,12 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     // while naming, SAVE adds the preset; a click anywhere else cancels
     if (nameField && ! NSPointInRect (p, saveRect()) && ! NSPointInRect (p, presetRect()) && ! NSPointInRect (p, defaultRect()))
         [self finishNaming: NO];
-    if (([e modifierFlags] & NSControlKeyMask) != 0) { [self showValueAt: p]; return; }
+    if (([e modifierFlags] & NSControlKeyMask) != 0)
+    {
+        if (NSPointInRect (p, presetRect())) [self presetContextMenu];
+        else [self showValueAt: p];
+        return;
+    }
     if ([self presetClick: p]) return;
 
     // the INSTRUMENT menu
@@ -1503,7 +1565,69 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 
 - (void) rightMouseDown: (NSEvent*) e
 {
-    [self showValueAt: viewToFace ([self convertPoint: [e locationInWindow] fromView: nil])];
+    const NSPoint p = viewToFace ([self convertPoint: [e locationInWindow] fromView: nil]);
+    if (NSPointInRect (p, presetRect())) { [self presetContextMenu]; return; }
+    [self showValueAt: p];
+}
+
+// right-click (or Control-click) the preset name: delete it, or bring back deleted factory presets
+- (NSMenu*) presetActions
+{
+    NSMenu* m = [[[NSMenu alloc] initWithTitle: @"Preset"] autorelease];
+    [m setAutoenablesItems: NO];
+    char name[kMaxPresetName + 8] = { 0 }, title[kMaxPresetName + 32];
+    if (host && activePreset >= 0) { host->refreshPresets(); host->presetName (activePreset, name, (int) sizeof (name)); }
+    const bool have = host && activePreset >= 0 && host->presetExists (activePreset);
+    std::snprintf (title, sizeof (title), have ? "Delete \"%s\"" : "Delete (choose a preset first)", name);
+    NSMenuItem* del = [[[NSMenuItem alloc] initWithTitle: [NSString stringWithUTF8String: title]
+                                                  action: @selector (deleteActivePreset:) keyEquivalent: @""] autorelease];
+    [del setTarget: self];
+    [del setEnabled: have];
+    NSMenuItem* ren = [[[NSMenuItem alloc] initWithTitle: have ? [NSString stringWithFormat: @"Rename \"%s\"...", name] : @"Rename (choose a preset first)"
+                                                  action: @selector (renameActivePreset:) keyEquivalent: @""] autorelease];
+    [ren setTarget: self];
+    [ren setEnabled: have];
+    [m addItem: ren];
+    [m addItem: del];
+    [m addItem: [NSMenuItem separatorItem]];
+    NSMenuItem* res = [[[NSMenuItem alloc] initWithTitle: @"Restore deleted factory presets"
+                                                  action: @selector (restoreFactory:) keyEquivalent: @""] autorelease];
+    [res setTarget: self];
+    [res setEnabled: host && host->factoryHidden ([self inst])];
+    [m addItem: res];
+    return m;
+}
+
+- (void) presetContextMenu
+{
+    if (nameField) return;
+    const NSRect r = faceToView (presetRect());
+    [[self presetActions] popUpMenuPositioningItem: nil atLocation: NSMakePoint (NSMinX (r) + 4.0, NSMinY (r) - 2.0) inView: self];
+}
+
+- (void) deleteActivePreset: (id) sender
+{
+    (void) sender;
+    if (! host || activePreset < 0) return;
+    char name[kMaxPresetName + 8] = { 0 };
+    host->presetName (activePreset, name, (int) sizeof (name));
+    if (host->deletePreset (activePreset))
+        std::snprintf (status, sizeof (status), "%s DELETED", name);
+    else
+        std::snprintf (status, sizeof (status), "COULDN'T DELETE");
+    activePreset = -1;
+    presetEdited = false;
+    [self refreshBank];
+    [self setNeedsDisplay: YES];
+}
+
+- (void) restoreFactory: (id) sender
+{
+    (void) sender;
+    if (! host) return;
+    if (host->restoreFactoryPresets ([self inst])) std::snprintf (status, sizeof (status), "FACTORY PRESETS RESTORED");
+    [self refreshBank];
+    [self setNeedsDisplay: YES];
 }
 
 - (void) mouseDragged: (NSEvent*) e

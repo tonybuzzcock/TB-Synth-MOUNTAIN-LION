@@ -130,6 +130,33 @@ public:
         presets.setName (slot, name ? name : "");
         return presets.save();
     }
+    bool deletePreset (int slot)
+    {
+        presets.load();
+        if (! presets.has (slot)) return false;
+        presets.remove (slot);
+        return presets.save();
+    }
+    bool restoreFactoryPresets (int instrument)
+    {
+        presets.load();
+        return presets.restoreFactory (instrument) && presets.save();
+    }
+    bool copyPreset (int from, int to)
+    {
+        presets.load();
+        float v[kNumParams];
+        if (PresetStore::isFactory (to) || ! presets.get (from, v)) return false;
+        const std::string n = presets.name (from);
+        presets.put (to, v);
+        presets.setName (to, n);
+        return presets.save();
+    }
+    bool factoryHidden (int instrument)
+    {
+        presets.load();
+        return presets.anyHidden (instrument);
+    }
     // A preset brings back every control of every instrument, and which instrument
     bool loadPreset (int slot)
     {

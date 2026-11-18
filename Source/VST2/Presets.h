@@ -7,7 +7,8 @@
 // The TBSYNTH_PRESET_FILE environment variable overrides the location (tests).
 // Factory presets (FactoryPresets.h) always hold their keys, the first of each bank:
 // they can't be saved over or renamed, and a user preset found on one moves to the
-// next free key.
+// next free key. A deleted factory preset is only hidden ("hidden" lines in the file)
+// and comes back with restoreFactory().
 // A file from the first release (8 shared slots) is moved into the banks of the
 // instruments its presets were made on.
 // Plain C++98. File access happens only on the editor's thread, never in audio.
@@ -49,11 +50,17 @@ public:
     std::string name (int slot) const;
     void setName (int slot, const std::string& n);
 
+    // Deleting: a user preset is removed; a factory preset is hidden until restored
+    void remove (int slot);
+    bool restoreFactory (int instrument);      // false when none of that bank's were hidden
+    bool anyHidden (int instrument) const;
+
 private:
     void addFactory();
     void placeFactory();
     std::string path;
     bool used[kNumPresetSlots];
+    bool hidden[kNumPresetSlots];   // factory presets the user deleted
     std::string names[kNumPresetSlots];
     float (*vals)[kNumParams];      // on the heap: about 1.3 MB, too big for a thread's stack
     PresetStore (const PresetStore&);

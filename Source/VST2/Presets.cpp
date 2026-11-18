@@ -61,6 +61,7 @@ PresetStore::PresetStore()
     for (int s = 0; s < kNumPresetSlots; ++s)
     {
         used[s] = false;
+        hidden[s] = false;
         for (int i = 0; i < kNumParams; ++i) vals[s][i] = kParams[i].def;
     }
 }
@@ -89,7 +90,7 @@ static int oldSlot (int oneBased)
 
 bool PresetStore::load()
 {
-    for (int s = 0; s < kNumPresetSlots; ++s) { used[s] = false; names[s].clear(); }
+    for (int s = 0; s < kNumPresetSlots; ++s) { used[s] = false; hidden[s] = false; names[s].clear(); }
 
     FILE* f = std::fopen (path.c_str(), "r");
     if (! f) { addFactory(); return false; }
@@ -110,6 +111,12 @@ bool PresetStore::load()
             continue;
         }
         int slot = -1, used0 = 0;
+        if (std::sscanf (line, "hidden %d", &slot) == 1)
+        {
+            if (slot >= 1 && slot <= kNumPresetSlots && isFactory (slot - 1)) hidden[slot - 1] = true;
+            continue;
+        }
+        slot = -1;
         if (std::sscanf (line, "name %d:%n", &slot, &used0) == 1 && banksOf8) slot = oldSlot (slot);
         if (slot >= 1 && slot <= kNumPresetSlots && used0 > 0)
         {
@@ -222,7 +229,7 @@ void PresetStore::addFactory()
     {
         const FactoryPreset& fp = kFactoryPresets[f];
         const int slot = bankSlot (fp.instrument, fp.key);
-        if (slot < 0 || slot >= kNumPresetSlots || used[slot]) continue;
+        if (slot < 0 || slot >= kNumPresetSlots || used[slot] || hidden[slot]) continue;
         for (int i = 0; i < kNumParams; ++i) vals[slot][i] = kParams[i].def;
         vals[slot][kInst] = instValue (fp.instrument);
         for (int k = 0; k < 32 && fp.settings[k].param >= 0; ++k)
@@ -240,8 +247,11 @@ bool PresetStore::save() const
     if (! f) return false;
     std::fprintf (f, "%s\n", kHeader);
     std::fprintf (f, "# TB Synth presets. Slot = instrument x 99 + menu entry (Minimoog 1-99, OB-X 100-198, Solina 199-297,\n");
-    std::fprintf (f, "# Wurlitzer 298-396, B-3 397-495, Cembalet 496-594, Clavinet 595-693, Multiman 694-792).\n");
-    std::fprintf (f, "# Values 0..1 in parameter order; then its name.\n");
+    std::fprintf (f, "# Wurlitzer 298-396, B-3 397-495, Cembalet 496-594, Clavinet 595-693, Multiman 694-792, Omni 793-891,\n");
+    std::fprintf (f, "# SK-30 892-990).\n");
+    std::fprintf (f, "# Values 0..1 in parameter order; then its name. \"hidden\" = a factory preset deleted from its menu.\n");
+    for (int s = 0; s < kNumPresetSlots; ++s)
+        if (hidden[s]) std::fprintf (f, "hidden %d\n", s + 1);
     for (int s = 0; s < kNumPresetSlots; ++s)
     {
         if (! used[s]) continue;
@@ -253,6 +263,36 @@ bool PresetStore::save() const
     const bool ok = std::fclose (f) == 0;
     if (! ok) { std::remove (tmp.c_str()); return false; }
     return std::rename (tmp.c_str(), path.c_str()) == 0;
+}
+
+void PresetStore::remove (int slot)
+{
+    if (slot < 0 || slot >= kNumPresetSlots) return;
+    used[slot] = false;
+    names[slot].clear();
+    if (isFactory (slot)) hidden[slot] = true;
+}
+
+bool PresetStore::restoreFactory (int instrument)
+{
+    bool any = false;
+    for (int k = 0; k < kSlotsPerBank; ++k)
+    {
+        const int s = bankSlot (instrument, k);
+        if (s >= 0 && s < kNumPresetSlots && hidden[s]) { hidden[s] = false; any = true; }
+    }
+    if (any) addFactory();
+    return any;
+}
+
+bool PresetStore::anyHidden (int instrument) const
+{
+    for (int k = 0; k < kSlotsPerBank; ++k)
+    {
+        const int s = bankSlot (instrument, k);
+        if (s >= 0 && s < kNumPresetSlots && hidden[s]) return true;
+    }
+    return false;
 }
 
 bool PresetStore::has (int slot) const

@@ -187,6 +187,28 @@ int main()
     std::string cmd = std::string ("rm -rf '") + dir + "'";
     if (std::system (cmd.c_str()) != 0) std::printf ("  (could not remove %s)\n", dir);
 
+    {
+        // deleting: a user preset goes; a factory preset is hidden, stays hidden after a reload, and can be restored
+        const std::string f2 = std::string (dir) + "/delete/Presets.txt";
+        PresetStore d;
+        d.setPath (f2);
+        d.load();
+        float v[kNumParams];
+        for (int i = 0; i < kNumParams; ++i) v[i] = kParams[i].def;
+        v[kInst] = instValue (kSolina);
+        const int mine = bankSlot (kSolina, 20), fac = bankSlot (kSolina, 0);
+        d.put (mine, v); d.setName (mine, "Mine");
+        d.remove (mine); d.remove (fac);
+        check (d.save(), "saved after deleting");
+        PresetStore e2;
+        e2.setPath (f2);
+        e2.load();
+        check (! e2.has (mine) && ! e2.has (fac) && e2.anyHidden (kSolina) && e2.has (bankSlot (kSolina, 1)),
+               "a deleted user preset is gone; a deleted factory preset stays hidden; the rest are kept");
+        check (! e2.anyHidden (kOBX), "only that instrument's bank is affected");
+        check (e2.restoreFactory (kSolina) && e2.has (fac) && e2.name (fac) == "Moroder" && ! e2.anyHidden (kSolina), "restoring brings the factory preset back");
+        check (! e2.restoreFactory (kSolina), "restoring again does nothing");
+    }
     std::printf ("\n%s (%d failure%s)\n", failures ? "FAILED" : "ALL PRESET CHECKS PASSED", failures, failures == 1 ? "" : "s");
     return failures ? 1 : 0;
 }
