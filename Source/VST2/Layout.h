@@ -315,10 +315,10 @@ const Ctl kCtls[] = {
     { kRhDecCello, kVSlider,  553, 290, 105, "VIOLONCELLO", "", "", 0 },
     { kRhDecStr,   kVSlider,  648, 290, 105, "STRINGS", "", "", 0 },
     { kRhDecPno,   kVSlider,  743, 290, 105, "PIANO / CLAV", "", "", 0 },
-    { kRhVolStrLo, kVSlider,  843, 290, 105, "STRINGS\nLOWER", "", "", 0 },
-    { kRhVolStrHi, kVSlider,  913, 290, 105, "STRINGS\nUPPER", "", "", 0 },
-    { kRhVolPnLo,  kVSlider,  983, 290, 105, "PIANO\nLOWER", "", "", 0 },
-    { kRhVolPnHi,  kVSlider, 1053, 290, 105, "PIANO\nUPPER", "", "", 0 },
+    { kRhVolStrLo, kVSlider,  849, 290, 105, "STRINGS\nLOWER", "", "", 0 },
+    { kRhVolStrHi, kVSlider,  919, 290, 105, "STRINGS\nUPPER", "", "", 0 },
+    { kRhVolPnLo,  kVSlider,  989, 290, 105, "PIANO\nLOWER", "", "", 0 },
+    { kRhVolPnHi,  kVSlider, 1059, 290, 105, "PIANO\nUPPER", "", "", 0 },
     { kRhMaster,   kKnob,    1166, 290, 26, "VOLUME\nPEDAL", "0", "10", kRed },
 
     // ------------------------------------------------------------ every page

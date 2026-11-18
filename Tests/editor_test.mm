@@ -266,6 +266,7 @@ int main (int argc, char** argv)
         // the menus list the factory presets first, numbered in the list only
         e->setParameter (e, kInst, instValue (kOBX));
         pump (0.1);
+        pump (0.1);
         NSMenu* m = [(id) panel presetMenu];
         for (int q = 0; q < [m numberOfItems]; ++q) std::printf ("    menu %d: %s\n", q, [[[m itemAtIndex: q] title] UTF8String]);
         check ([m numberOfItems] == 13 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Queen"]
