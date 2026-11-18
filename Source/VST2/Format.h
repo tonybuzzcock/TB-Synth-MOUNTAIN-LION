@@ -78,6 +78,8 @@ inline double realValue (int p, double v)
         case kSkSoPW: return map::skSoPW (v) * 100.0;
         case kSkSoPorta: return map::skPorta (v);
         case kSkSoGlide: return map::skGlide (v);
+        case kRhDecCello: case kRhDecStr: return map::rhRelease (v);
+        case kRhDecPno: return map::rhPianoDecay (v);
         default: return v;
     }
 }

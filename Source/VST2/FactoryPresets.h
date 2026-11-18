@@ -633,6 +633,61 @@ const FactoryPreset kFactoryPresets[] = {
         { kSkOrgBril, 0.75f }, { kSkOrgEns, 1.0f }, { kSkOrgV, 0.65f }, { kSkPolyV, 0.0f }, { kSkStrV, 0.0f },
         { kSkSoloV, 0.0f },
         { -1, 0.0f } } },
+    // ---- Elka Rhapsody 610: Billy Currie (Ultravox), Vangelis, Klaus Schulze; settings worked
+    // out from the records (estimates)
+    // Ultravox (Billy Currie), "Vienna" era: strings and violoncello together, a long, sweeping release
+    { kRhapsody, 0, "Vienna Strings", {
+        { kRhCello, 1.0f }, { kRhStrings, 1.0f }, { kRhPiano, 0.0f }, { kRhClav, 0.0f }, { kRhSplit, 0.0f },
+        { kRhDecCello, 0.8f }, { kRhDecStr, 0.8f }, { kRhVolStrLo, 0.7f }, { kRhVolStrHi, 0.75f }, { kRhMaster, 0.68f },
+        { -1, 0.0f } } },
+    // Ultravox!, "Hiroshima Mon Amour" (1977): a cold, plain string line through the chorus
+    { kRhapsody, 1, "Hiroshima Mon Amour", {
+        { kRhCello, 0.0f }, { kRhStrings, 1.0f }, { kRhPiano, 0.0f }, { kRhClav, 0.0f }, { kRhSplit, 0.0f },
+        { kRhDecStr, 0.72f }, { kRhVolStrHi, 0.75f }, { kRhMaster, 0.7f },
+        { -1, 0.0f } } },
+    // Ultravox, "Slow Motion" (1978): split at 2 octaves, piano below, strings above
+    { kRhapsody, 2, "Slow Motion", {
+        { kRhCello, 0.0f }, { kRhStrings, 1.0f }, { kRhPiano, 1.0f }, { kRhClav, 0.0f }, { kRhSplit, 0.5f },
+        { kRhVolStrLo, 0.0f }, { kRhVolStrHi, 0.8f }, { kRhVolPnLo, 0.8f }, { kRhVolPnHi, 0.0f }, { kRhDecStr, 0.65f },
+        { kRhDecPno, 0.55f }, { kRhMaster, 0.7f },
+        { -1, 0.0f } } },
+    // Ultravox, Rage in Eden (1981): dark violoncello under quieter strings, long release
+    { kRhapsody, 3, "Rage in Eden", {
+        { kRhCello, 1.0f }, { kRhStrings, 1.0f }, { kRhPiano, 0.0f }, { kRhClav, 0.0f }, { kRhSplit, 0.0f },
+        { kRhVolStrLo, 0.8f }, { kRhVolStrHi, 0.6f }, { kRhDecCello, 0.88f }, { kRhDecStr, 0.85f }, { kRhMaster, 0.66f },
+        { -1, 0.0f } } },
+    // Vangelis (a Rhapsody 610 player), Heaven and Hell (1975): the full section, ringing on for seconds
+    { kRhapsody, 4, "Heaven and Hell", {
+        { kRhCello, 1.0f }, { kRhStrings, 1.0f }, { kRhPiano, 0.0f }, { kRhClav, 0.0f }, { kRhSplit, 0.0f },
+        { kRhVolStrLo, 0.8f }, { kRhVolStrHi, 0.8f }, { kRhDecCello, 0.92f }, { kRhDecStr, 0.92f }, { kRhMaster, 0.62f },
+        { -1, 0.0f } } },
+    // Vangelis, Albedo 0.39 (1976): clavichord with a long decay over soft strings
+    { kRhapsody, 5, "Albedo", {
+        { kRhCello, 0.0f }, { kRhStrings, 1.0f }, { kRhPiano, 0.0f }, { kRhClav, 1.0f }, { kRhSplit, 0.0f },
+        { kRhVolStrHi, 0.5f }, { kRhVolStrLo, 0.5f }, { kRhVolPnLo, 0.8f }, { kRhVolPnHi, 0.8f }, { kRhDecStr, 0.8f },
+        { kRhDecPno, 0.7f }, { kRhMaster, 0.7f },
+        { -1, 0.0f } } },
+    // Vangelis, Spiral (1977): short, bright clavichord for running patterns, a little string behind
+    { kRhapsody, 6, "Spiral", {
+        { kRhCello, 0.0f }, { kRhStrings, 1.0f }, { kRhPiano, 0.0f }, { kRhClav, 1.0f }, { kRhSplit, 0.0f },
+        { kRhVolStrHi, 0.4f }, { kRhVolStrLo, 0.4f }, { kRhVolPnLo, 0.85f }, { kRhVolPnHi, 0.85f }, { kRhDecStr, 0.6f },
+        { kRhDecPno, 0.3f }, { kRhMaster, 0.72f },
+        { -1, 0.0f } } },
+    // Klaus Schulze, Body Love (1977): strings and violoncello with a very long release, for slow chords
+    { kRhapsody, 7, "Body Love", {
+        { kRhCello, 1.0f }, { kRhStrings, 1.0f }, { kRhPiano, 0.0f }, { kRhClav, 0.0f }, { kRhSplit, 0.0f },
+        { kRhVolStrLo, 0.75f }, { kRhVolStrHi, 0.7f }, { kRhDecCello, 0.95f }, { kRhDecStr, 0.95f }, { kRhMaster, 0.62f },
+        { -1, 0.0f } } },
+    // Klaus Schulze, Mirage (1977): thin, icy strings high up, very long release
+    { kRhapsody, 8, "Mirage Ice", {
+        { kRhCello, 0.0f }, { kRhStrings, 1.0f }, { kRhPiano, 0.0f }, { kRhClav, 0.0f }, { kRhSplit, 0.5f },
+        { kRhVolStrLo, 0.35f }, { kRhVolStrHi, 0.8f }, { kRhDecStr, 0.9f }, { kRhMaster, 0.7f },
+        { -1, 0.0f } } },
+    // Klaus Schulze, Dune (1979): split at 3 octaves, heavy violoncello and strings below, lighter strings above
+    { kRhapsody, 9, "Dune", {
+        { kRhCello, 1.0f }, { kRhStrings, 1.0f }, { kRhPiano, 0.0f }, { kRhClav, 0.0f }, { kRhSplit, 1.0f },
+        { kRhVolStrLo, 0.85f }, { kRhVolStrHi, 0.5f }, { kRhDecCello, 0.85f }, { kRhDecStr, 0.85f }, { kRhMaster, 0.64f },
+        { -1, 0.0f } } },
 };
 const int kNumFactoryPresets = (int) (sizeof (kFactoryPresets) / sizeof (kFactoryPresets[0]));
 

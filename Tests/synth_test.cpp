@@ -617,6 +617,42 @@ int main (int argc, char** argv)
         check (low < 1e-6 && std::fabs (solo - 440.0) < 2.0, "SK-30 solo: the upper three octaves, high-note priority");
     }
     {
+        // Rhapsody 610: the violoncello sounds an octave below the strings; the split gives each half its own volume
+        double hz[2];
+        std::vector<float> y;
+        for (int k = 0; k < 2; ++k)
+        {
+            defaults (s);
+            selectInst (s, kRhapsody);
+            s.setParam (kRhStrings, k ? 1.0f : 0.0f); s.setParam (kRhCello, k ? 0.0f : 1.0f);
+            y.clear();
+            s.midi (0x90, 57, 100);
+            render (s, y, 0, SR / 2);
+            s.midi (0x80, 57, 0);
+            hz[k] = pitchOf (y, SR / 4, SR / 2, k ? 220.0 : 110.0);
+            render (s, y, 0, SR * 2);
+        }
+        std::printf ("  Rhapsody A3: violoncello %.1f Hz, strings %.1f Hz\n", hz[0], hz[1]);
+        check (std::fabs (hz[0] - 110.0) < 1.5 && std::fabs (hz[1] - 220.0) < 2.0, "Rhapsody: violoncello an octave below the strings");
+        defaults (s);
+        selectInst (s, kRhapsody);
+        s.setParam (kRhSplit, 0.5f); s.setParam (kRhVolStrLo, 0.0f); s.setParam (kRhVolStrHi, 0.8f);
+        y.clear();
+        s.midi (0x90, 48, 100);            // C3: below the 2-octave split
+        render (s, y, 0, SR / 2);
+        s.midi (0x80, 48, 0);
+        const double lowHalf = rmsOf (y, SR / 4, SR / 2);
+        render (s, y, 0, SR * 2);
+        y.clear();
+        s.midi (0x90, 72, 100);            // C5: above it
+        render (s, y, 0, SR / 2);
+        s.midi (0x80, 72, 0);
+        const double highHalf = rmsOf (y, SR / 4, SR / 2);
+        render (s, y, 0, SR * 2);
+        std::printf ("  Rhapsody split: lower %.1f dB, upper %.1f dB\n", db (lowHalf), db (highHalf));
+        check (lowHalf < 1e-5 && highHalf > 1e-3, "Rhapsody split: each half has its own volume");
+    }
+    {
         // instrument switch while a note sounds: no jump bigger than the signal itself
         defaults (s);
         selectInst (s, kOBX);

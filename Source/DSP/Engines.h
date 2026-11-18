@@ -27,6 +27,9 @@
 //   SK30Engine      Yamaha SK-30: 7-note organ (nine tone levers, percussion),
 //                   poly-synth and strings with vibrato, a solo synthesizer,
 //                   tremolo / ensemble
+//   RhapsodyEngine  Elka Rhapsody 610: divide-down violoncello, strings, piano
+//                   and clavichord, split with volumes for each half, two
+//                   chorus stages
 
 #ifndef TBSYNTH_ENGINES_H
 #define TBSYNTH_ENGINES_H
@@ -437,6 +440,33 @@ private:
     Biquad celloLp, celloPk, violaLp, violaPk, violinHp, violinPk, violinLp, clickBp, orgShelf;
     OnePole orgLp, polyLp, strLp, dcBlock;
     Noise noise;
+};
+
+//==============================================================================
+class RhapsodyEngine : public Engine
+{
+public:
+    enum { kLowKey = 36, kKeys = 61 };   // C2 .. C7
+    RhapsodyEngine();
+    void prepare (double sr);
+    void setParam (int p, float v);
+    void noteOn (int note, int vel);
+    void noteOff (int note);
+    void allNotesOff();
+    void silence();
+    void render (float* out, int n);
+
+private:
+    void updateEnv();
+    double sr;
+    float pv[kNumParams];
+    double topCount[12];
+    bool down[kKeys];
+    Envelope strEnv[kKeys], celEnv[kKeys], pnoEnv[kKeys];
+    Biquad strHp, strPk, strLp, celLp, celPk, pnoLp, pnoPk, clvHp, clvPk;
+    Delay<4096> bbd1, bbd2;
+    double ph1, ph2;
+    OnePole bbdLp, dcBlock;
 };
 
 } // namespace tbsyn

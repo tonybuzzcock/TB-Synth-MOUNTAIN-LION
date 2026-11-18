@@ -1,6 +1,6 @@
 # TB Synth (Mountain Lion VST)
 
-Ten classic keyboards in one VST 2.4 instrument, for **Mac OS X 10.8.5** (64-bit Intel), played in
+Eleven classic keyboards in one VST 2.4 instrument, for **Mac OS X 10.8.5** (64-bit Intel), played in
 Pro Tools 11 through Blue Cat PatchWork. Pick the instrument from the **INSTRUMENT** menu at the top of the
 panel (click it for the list, or step with the arrows):
 
@@ -16,6 +16,7 @@ panel (click it for the list, or step with the arrows):
 | **Crumar Multiman (1975)** | 61 keys split LOWER / UPPER; BRASS (transistor ladder with ATTACK, DECAY, EMPHASIS, CONTOUR, retriggered by every key), PIANO / CLAVICHORD, CELLO / VIOLIN through the ensemble, SUSTAIN LENGTH, VIBRATO, MASTER, BASS PEDALS on the lowest 13 keys |
 | **ARP Omni (1975)** | 49 keys; STRINGS: VIOLINS 4' and VIOLAS 8' (polyphonic), CELLOS 8' and BASS 16' (monophonic, low-note priority, bottom 20 keys), ATTACK, RELEASE, the string phasers; SYNTHESIZER: 4' / 8' polyphonic and BASS 8' / 16', SAW or DYNAMIC PULSE, ENHANCEMENT, one 24 dB ladder VCF (FREQUENCY, RESONANCE, ADSR, LFO) and ADSR retriggered by every key, LFO 0.1 - 20 Hz, CHORUS PHASER; STRING / SYNTH MIX, BASS VOLUME, MASTER, sustain pedal |
 | **Yamaha SK-30 Symphonic Ensemble (1980)** | 61 keys, 7-note ORGAN / POLY-SYNTH / STRINGS from one divide-down generator; ORGAN presets 1-3 or MANUAL with nine tone levers, PERCUSSIVE 2nd / 3rd / 5th, DECAY / SUSTAIN, BRILLIANCE; POLY-SYNTH presets 1-3 or MANUAL (wave, cutoff, resonance, EG), FEET, MODE I / II with DETUNE, SLOW ATTACK, SUSTAIN; STRINGS 1-3 (cello / viola / violin); VIBRATO with delay; SOLO SYNTHESIZER (64' - 4', saw to square, PW and PWM, VCF, HOLD / GATE / EG, ADSR, LFO, portamento, glide, NORMAL / MANUAL BASS); TREMOLO / ENSEMBLE; four section volumes, sustain pedal |
+| **Elka Rhapsody 610 (1974)** | 61 keys from one divide-down generator; VIOLONCELLO (an octave below), STRINGS, PIANO, CLAVICHORD, each with its CANCEL; split at 2 or 3 octaves with VOLUME for each half; DECAY for violoncello, strings, and piano / clavichord; two chorus stages (fast and slow); volume pedal |
 
 **Mono**, like the originals: the same signal on both outputs, so it works on a mono or stereo
 instrument track. Every control is a host parameter, so a session reopens exactly as it was left.
@@ -106,6 +107,16 @@ MASTER, and the tan readout. A LEVEL LED at top right lights amber while it play
 | Yamaha SK-30 | 9 | Bass and Strings | MANUAL BASS: a 16' solo bass on the lowest 19 keys under STRING 3 (violins) |
 | Yamaha SK-30 | 10 | Big Strings | violas with a 4' poly-synth layer through the ensemble (an owner's SS-30-style stack) |
 | Yamaha SK-30 | 11 | Vangel Blade | Vangelis, "Main Titles" (played on a Yamaha CS-80): two detuned saws, resonant low-pass, slow attack, long release, delayed vibrato. Add a big reverb, as on the record |
+| Elka Rhapsody 610 | 1 | Vienna Strings | Ultravox (Billy Currie), "Vienna" era: strings and violoncello together, a long, sweeping release |
+| Elka Rhapsody 610 | 2 | Hiroshima Mon Amour | Ultravox!, "Hiroshima Mon Amour" (1977): a cold, plain string line through the chorus |
+| Elka Rhapsody 610 | 3 | Slow Motion | Ultravox, "Slow Motion" (1978): split at 2 octaves, piano below, strings above |
+| Elka Rhapsody 610 | 4 | Rage in Eden | Ultravox, Rage in Eden (1981): dark violoncello under quieter strings, long release |
+| Elka Rhapsody 610 | 5 | Heaven and Hell | Vangelis (a Rhapsody 610 player), Heaven and Hell (1975): the full section, ringing on for seconds |
+| Elka Rhapsody 610 | 6 | Albedo | Vangelis, Albedo 0.39 (1976): clavichord with a long decay over soft strings |
+| Elka Rhapsody 610 | 7 | Spiral | Vangelis, Spiral (1977): short, bright clavichord for running patterns, a little string behind |
+| Elka Rhapsody 610 | 8 | Body Love | Klaus Schulze, Body Love (1977): strings and violoncello with a very long release, for slow chords |
+| Elka Rhapsody 610 | 9 | Mirage Ice | Klaus Schulze, Mirage (1977): thin, icy strings high up, very long release |
+| Elka Rhapsody 610 | 10 | Dune | Klaus Schulze, Dune (1979): split at 3 octaves, heavy violoncello and strings below, lighter strings above |
 | Minimoog Model D | 12 | Profondo Rosso | Goblin, Profondo Rosso (1975, Minimoog among the gear): the driving, biting Moog bass line |
 | Minimoog Model D | 13 | Suspiria Moog | Goblin, Suspiria (1977, Minimoog and a big Moog): a dark, detuned, resonant growl with a breath of noise |
 | Minimoog Model D | 14 | Giallo Lead | a late-70s giallo lead: a wailing square with emphasis, slow glide |
@@ -147,6 +158,7 @@ first in their instrument's menu and can't be saved over or renamed. Presets sav
 | Crumar Multiman | Crumar *Multiman* schematic diagram, DWG 1-12, 7/4/75 (`Docs/Crumar_Multiman_1975_schematic.pdf`): block diagram, tone generator and dividers, gates and key contacts (split buses P1/P2, 8A/8B, D1/D2), brass ladder TR1-TR10 with 47 nF stages and its A/D envelope, piano / clavichord, strings, sustain and vibrato, delay lines, bass pedals, panel legends |
 | ARP Omni | ARP *Omni Model 2480 Service Manual* (Feb. 1977, doc. 90020000): product description and control functions, simplified block diagram (master top-octave generator, 49 divided lines, string 4' / 8' and bass voicing, 4075 24 dB VCF on the summed 4' / 8' polyphonic and 8' / 16' bass pitches, ADSR, LFO, phaser), trim procedures; patch names from the *Omni-2 Owner's Manual* (1978) |
 | Yamaha SK-30 | Yamaha *SK30 Owner's Manual*: sections and controls, keyboard modes, 7-note polyphony, ranges (organ decay 0.8 s max, decay / sustain 0.03 - 1.6 s, slow attack 3 / 80 ms, vibrato delay 0 - 3.2 s and 30 cents, poly DETUNE +/- 59 cents, solo feet 64' - 4', PW 50 - 85 %, ADSR 3 ms - 3 s / 30 ms - 30 s, LFO 0.1 - 100 Hz, SOLO TUNE -500 .. +700 cents); the 1981 review (synthforbreakfast.nl) for the presets' character |
+| Elka Rhapsody 610 | Till Kopper's description of his 1975 Rhapsody 610 (till-kopper.de: panel, divider and voice boards, the two-stage BBD chorus); the 1975 *International Musician* string-machine round-up (split into 25 and 36 keys) |
 
 The PDFs themselves couldn't be downloaded into the build environment, so the values above were read from
 them online; no component-level schematic was transcribed. These are behavioural models built from
@@ -195,6 +207,11 @@ the documented behaviour and specifications, to be tuned by ear (as with the oth
   attack 90 ms, tremolo 0.8 / 6.7 Hz, the ensembles' delays. Touch response (aftertouch) and the
   keyboard split aren't modelled. The panel uses TB Synth's knobs, tabs and compact levers rather
   than copying Yamaha's.
+
+- **Elka Rhapsody 610**: voicing filters (one fixed filter set per voice rather than per-board
+  voicing), string attack 60 ms, decay ranges (strings 50 ms - 6 s, piano / clavichord 0.25 - 8 s),
+  the piano and clavichord waveforms, the chorus timings (fast 5.8 Hz, slow 0.45 Hz), how the four
+  volume sliders divide between sounds and halves. The bass pedal socket isn't modelled.
 
 ## Install (Mac Pro, OS X 10.8.5)
 

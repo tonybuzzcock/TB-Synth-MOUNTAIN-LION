@@ -20,7 +20,7 @@
 namespace tbsyn
 {
 
-enum Instrument { kMinimoog = 0, kOBX, kSolina, kWurlitzer, kHammond, kCembalet, kClavinet, kMultiman, kOmni, kSK30, kNumInstruments };
+enum Instrument { kMinimoog = 0, kOBX, kSolina, kWurlitzer, kHammond, kCembalet, kClavinet, kMultiman, kOmni, kSK30, kRhapsody, kNumInstruments };
 
 enum Param
 {
@@ -89,6 +89,11 @@ enum Param
     kSkSoMode, kSkSoFeet, kSkSoWave, kSkSoPW, kSkSoPwm, kSkSoCut, kSkSoRes, kSkSoMod, kSkSoEgDp,
     kSkSoVca, kSkSoA, kSkSoD, kSkSoS, kSkSoR, kSkSoLfo, kSkSoTune, kSkSoPorta, kSkSoGlide,
     kSkOrgV, kSkPolyV, kSkStrV, kSkSoloV,
+
+    // Elka Rhapsody 610: voices (the CANCELS), split, volumes for each half, decays, volume pedal
+    kRhCello, kRhStrings, kRhPiano, kRhClav, kRhSplit,
+    kRhVolStrLo, kRhVolStrHi, kRhVolPnLo, kRhVolPnHi,
+    kRhDecCello, kRhDecStr, kRhDecPno, kRhMaster,
 
     kNumParams
 };
@@ -368,18 +373,33 @@ const ParamInfo kParams[kNumParams] = {
     { "SkPolyV",  "POLY-SYNTH VOLUME", kSK30, 0, 0.0f, kUDial, 0 },
     { "SkStrV",   "STRINGS VOLUME", kSK30, 0, 0.0f, kUDial, 0 },
     { "SkSoloV",  "SOLO VOLUME",    kSK30, 0, 0.0f, kUDial, 0 },
+
+    // Elka Rhapsody 610: strings on, no split
+    { "RhCello",  "VIOLONCELLO",    kRhapsody, 2, 0.0f, kUSwitch, 0 },
+    { "RhString", "STRINGS",        kRhapsody, 2, 1.0f, kUSwitch, 0 },
+    { "RhPiano",  "PIANO",          kRhapsody, 2, 0.0f, kUSwitch, 0 },
+    { "RhClav",   "CLAVICHORD",     kRhapsody, 2, 0.0f, kUSwitch, 0 },
+    { "RhSplit",  "KEYBOARD SPLIT", kRhapsody, 3, 0.0f, kUChoice, "OFF|2 OCT|3 OCT" },
+    { "RhVStrLo", "STRINGS VOLUME LOWER", kRhapsody, 0, 0.7f, kUDial, 0 },
+    { "RhVStrHi", "STRINGS VOLUME UPPER", kRhapsody, 0, 0.7f, kUDial, 0 },
+    { "RhVPnLo",  "PIANO VOLUME LOWER",   kRhapsody, 0, 0.7f, kUDial, 0 },
+    { "RhVPnHi",  "PIANO VOLUME UPPER",   kRhapsody, 0, 0.7f, kUDial, 0 },
+    { "RhDCello", "VIOLONCELLO DECAY",    kRhapsody, 0, 0.4f, kUSecs, 0 },
+    { "RhDStr",   "STRINGS DECAY",  kRhapsody, 0, 0.4f, kUSecs, 0 },
+    { "RhDPno",   "PIANO / CLAV DECAY",   kRhapsody, 0, 0.45f, kUSecs, 0 },
+    { "RhMaster", "VOLUME PEDAL",   kRhapsody, 0, 0.7f, kUDial, 0 },
 };
 
 inline const char* instrumentName (int k)
 {
     static const char* const n[kNumInstruments] = {
         "MINIMOOG MODEL D", "OBERHEIM OB-X", "SOLINA STRING ENSEMBLE", "WURLITZER 200A",
-        "HAMMOND B-3", "HOHNER CEMBALET", "HOHNER CLAVINET D6", "CRUMAR MULTIMAN", "ARP OMNI", "YAMAHA SK-30" };
+        "HAMMOND B-3", "HOHNER CEMBALET", "HOHNER CLAVINET D6", "CRUMAR MULTIMAN", "ARP OMNI", "YAMAHA SK-30", "ELKA RHAPSODY 610" };
     return (k >= 0 && k < kNumInstruments) ? n[k] : "";
 }
 inline const char* instrumentShort (int k)    // <= 8 characters
 {
-    static const char* const n[kNumInstruments] = { "Minimoog", "OB-X", "Solina", "Wurli", "B-3", "Cembalet", "Clavinet", "Multiman", "Omni", "SK-30" };
+    static const char* const n[kNumInstruments] = { "Minimoog", "OB-X", "Solina", "Wurli", "B-3", "Cembalet", "Clavinet", "Multiman", "Omni", "SK-30", "Rhapsody" };
     return (k >= 0 && k < kNumInstruments) ? n[k] : "";
 }
 
@@ -466,6 +486,10 @@ namespace map
     inline double skSoPW (double v)       { return 0.5 + 0.35 * v; }             // 50 - 85 % (spec)
     inline double skPorta (double v)      { return v < 0.01 ? 0.0 : expMap (v, 0.01, 3.0); }
     inline double skGlide (double v)      { return (v - 0.5) * 24.0; }           // semitones from above / below
+
+    // Elka Rhapsody 610 (estimates: the panel's sliders are unmarked)
+    inline double rhRelease (double v)    { return expMap (v, 0.05, 6.0); }      // strings / cello DECAY (release)
+    inline double rhPianoDecay (double v) { return expMap (v, 0.25, 8.0); }      // piano / clavichord DECAY
 
     // Hammond drawbars: each step about 3 dB, 0 = off
     inline double drawbarGain (int k)     { return k <= 0 ? 0.0 : std::pow (10.0, -3.0 * (8 - k) / 20.0); }

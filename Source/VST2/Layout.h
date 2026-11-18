@@ -306,6 +306,21 @@ const Ctl kCtls[] = {
     { kSkStrV, kVSlider, 1173, S3, kLevR, "STRINGS", "", "", kLever },
     { kSkSoloV, kVSlider, 1211, S3, kLevR, "SOLO", "", "", kLever },
 
+    // ------------------------------------------------------------ Elka Rhapsody 610
+    { kRhCello,    kTab,       92, 215, 0, "VIOLON-\nCELLO", "", "", 0 },
+    { kRhStrings,  kTab,      232, 215, 0, "STRINGS", "", "", 0 },
+    { kRhPiano,    kTab,       92, 375, 0, "PIANO", "", "", 0 },
+    { kRhClav,     kTab,      232, 375, 0, "CLAVI-\nCHORD", "", "", 0 },
+    { kRhSplit,    kSelector, 405, 290, 22, "SPLIT", "", "", 0 },
+    { kRhDecCello, kVSlider,  553, 290, 105, "VIOLONCELLO", "", "", 0 },
+    { kRhDecStr,   kVSlider,  648, 290, 105, "STRINGS", "", "", 0 },
+    { kRhDecPno,   kVSlider,  743, 290, 105, "PIANO / CLAV", "", "", 0 },
+    { kRhVolStrLo, kVSlider,  843, 290, 105, "STRINGS\nLOWER", "", "", 0 },
+    { kRhVolStrHi, kVSlider,  913, 290, 105, "STRINGS\nUPPER", "", "", 0 },
+    { kRhVolPnLo,  kVSlider,  983, 290, 105, "PIANO\nLOWER", "", "", 0 },
+    { kRhVolPnHi,  kVSlider, 1053, 290, 105, "PIANO\nUPPER", "", "", 0 },
+    { kRhMaster,   kKnob,    1166, 290, 26, "VOLUME\nPEDAL", "0", "10", kRed },
+
     // ------------------------------------------------------------ every page
     { kMaster,    kKnob,     714, 592, 17, "MASTER", "", "", kRed },
 };
@@ -347,6 +362,11 @@ const Section kSections[] = {
     { kSK30,       12, 76, 400, 424, "ORGAN" },
     { kSK30,      420, 76, 440, 424, "POLY-SYNTH / STRINGS" },
     { kSK30,      868, 76, 360, 424, "SOLO SYNTHESIZER" },
+    { kRhapsody,   12, 120, 300, 330, "SOUNDS" },
+    { kRhapsody,  320, 120, 170, 330, "KEYBOARD" },
+    { kRhapsody,  498, 120, 300, 330, "DECAY" },
+    { kRhapsody,  806, 120, 290, 330, "VOLUME" },
+    { kRhapsody, 1104, 120, 124, 330, "OUTPUT" },
 };
 const int kNumSections = (int) (sizeof (kSections) / sizeof (kSections[0]));
 
