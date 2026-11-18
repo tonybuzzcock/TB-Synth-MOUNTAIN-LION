@@ -267,6 +267,7 @@ int main (int argc, char** argv)
         e->setParameter (e, kInst, instValue (kOBX));
         pump (0.1);
         NSMenu* m = [(id) panel presetMenu];
+        for (int q = 0; q < [m numberOfItems]; ++q) std::printf ("    menu %d: %s\n", q, [[[m itemAtIndex: q] title] UTF8String]);
         check ([m numberOfItems] == 13 && [[[m itemAtIndex: 0] title] isEqualToString: @"1   Queen"]
                && [[[m itemAtIndex: 1] title] isEqualToString: @"2   Japan"] && [[[m itemAtIndex: 2] title] isEqualToString: @"3   Foxx"]
                && [[[m itemAtIndex: 3] title] isEqualToString: @"4   Tom Sawyer"] && [[[m itemAtIndex: 9] title] isEqualToString: @"10   Jarre Brass"],
