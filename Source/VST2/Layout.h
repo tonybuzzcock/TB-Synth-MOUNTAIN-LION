@@ -386,7 +386,8 @@ const double kStripTop = 530.0;
 const double kLogoX = 14.0, kLogoY = 548.0, kLogoW = 120.0, kLogoH = 70.0;
 const double kDefaultX = 146.0, kDefaultY = 576.0, kDefaultW = 92.0, kDefaultH = 32.0;   // this instrument back to its defaults
 const double kSaveX = 246.0, kSaveY = 576.0, kSaveW = 74.0, kSaveH = 32.0;
-const double kPresetX = 330.0, kPresetY = 572.0, kPresetW = 340.0, kPresetH = 40.0;   // the preset menu
+const double kPresetX = 368.0, kPresetY = 572.0, kPresetW = 264.0, kPresetH = 40.0;   // the preset menu
+const double kPrevX = 330.0, kNextX = 640.0, kStepY = 576.0, kStepW = 32.0, kStepH = 32.0;   // previous / next preset arrows
 const double kReadX = 760.0, kReadY = 556.0, kReadW = 466.0, kReadH = 62.0;
 
 // Slide switches: detent spacing

@@ -353,6 +353,8 @@ NSRect menuRight() { return NSMakeRect (kMenuX + kMenuW - kArrowW, kMenuY, kArro
 NSRect saveRect() { return NSMakeRect (kSaveX, kSaveY, kSaveW, kSaveH); }
 NSRect defaultRect() { return NSMakeRect (kDefaultX, kDefaultY, kDefaultW, kDefaultH); }
 NSRect presetRect() { return NSMakeRect (kPresetX, kPresetY, kPresetW, kPresetH); }
+NSRect prevRect() { return NSMakeRect (kPrevX, kStepY, kStepW, kStepH); }
+NSRect nextRect() { return NSMakeRect (kNextX, kStepY, kStepW, kStepH); }
 NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 
 } // namespace
@@ -385,6 +387,7 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 - (void) startNaming;
 - (NSMenu*) presetMenu;
 - (void) presetPicked: (id) sender;
+- (void) stepPreset: (int) dir;
 - (void) defaultSound;
 @end
 
@@ -1006,6 +1009,21 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     [self drawKey: saveRect() state: saveMode ? 3 : 1];
     drawText ("SAVE", boldFont (14.0), saveMode ? rgb (60, 10, 6) : [NSColor whiteColor], NSMidX (saveRect()), NSMidY (saveRect()));
 
+    // previous / next arrows either side of the menu
+    for (int a = 0; a < 2; ++a)
+    {
+        const NSRect k = a ? nextRect() : prevRect();
+        [self drawKey: k state: 1];
+        NSBezierPath* tri = [NSBezierPath bezierPath];
+        const CGFloat cx = NSMidX (k), cy = NSMidY (k), d = a ? 1.0 : -1.0;
+        [tri moveToPoint: NSMakePoint (cx + 6.0 * d, cy)];
+        [tri lineToPoint: NSMakePoint (cx - 5.0 * d, cy - 7.0)];
+        [tri lineToPoint: NSMakePoint (cx - 5.0 * d, cy + 7.0)];
+        [tri closePath];
+        [[NSColor whiteColor] set];
+        [tri fill];
+    }
+
     // the preset menu: tan like the INSTRUMENT menu; numbers only inside the list
     const NSRect r = presetRect();
     NSBezierPath* well = [NSBezierPath bezierPathWithRoundedRect: NSInsetRect (r, -2.0, -2.0) xRadius: 5.0 yRadius: 5.0];
@@ -1310,6 +1328,30 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
     return m;
 }
 
+// the arrows: the next or previous preset in this instrument's menu, wrapping round;
+// with none chosen, next starts at the first and previous at the last
+- (void) stepPreset: (int) dir
+{
+    if (! host) return;
+    if (nameField) [self finishNaming: NO];
+    host->refreshPresets();
+    [self refreshBank];
+    const int inst = [self inst];
+    int keys[kSlotsPerBank], n = 0, cur = -1;
+    for (int k = 0; k < kSlotsPerBank; ++k)
+        if (presetUsed[k]) { if (bankSlot (inst, k) == activePreset) cur = n; keys[n++] = k; }
+    if (n == 0)
+    {
+        std::snprintf (status, sizeof (status), "NO PRESETS YET");
+        [self setNeedsDisplay: YES];
+        return;
+    }
+    const int next = cur < 0 ? (dir > 0 ? 0 : n - 1) : (cur + dir + n) % n;
+    NSMenuItem* it = [[[NSMenuItem alloc] initWithTitle: @"" action: nil keyEquivalent: @""] autorelease];
+    [it setTag: bankSlot (inst, keys[next])];
+    [self presetPicked: it];
+}
+
 - (void) presetPicked: (id) sender
 {
     if (! host) return;
@@ -1353,6 +1395,8 @@ NSRect readRect() { return NSMakeRect (kReadX, kReadY, kReadW, kReadH); }
 - (BOOL) presetClick: (NSPoint) p
 {
     if (NSPointInRect (p, defaultRect())) { [self defaultSound]; return YES; }
+    if (NSPointInRect (p, prevRect())) { [self stepPreset: -1]; return YES; }
+    if (NSPointInRect (p, nextRect())) { [self stepPreset: 1]; return YES; }
     if (NSPointInRect (p, saveRect()))
     {
         if (nameField) [self finishNaming: YES];

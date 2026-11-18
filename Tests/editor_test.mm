@@ -273,6 +273,23 @@ int main (int argc, char** argv)
                "the OB-X menu lists 1 Queen, 2 Japan, 3 Foxx ... 10 Jarre Brass");
         PICK (bankSlot (kOBX, 1));
         check (e->getParameter (e, kOxModPw) == 1.0f && e->getParameter (e, kOxO1Pls) == 1.0f, "choosing 'Japan' from the menu loads it");
+        // the arrows step through the menu, wrapping round
+        const NSPoint prevPt = NSMakePoint (kPrevX + kStepW * 0.5, kStepY + kStepH * 0.5);
+        const NSPoint nextPt = NSMakePoint (kNextX + kStepW * 0.5, kStepY + kStepH * 0.5);
+        #define NEAR(p, v) (std::fabs (e->getParameter (e, p) - (v)) < 1e-5f)
+        click (win, panel, nextPt);
+        check (NEAR (kOxO2Det, 0.64f) && NEAR (kOxPW, 0.25f), "the next arrow loads 3 Foxx after 2 Japan");
+        click (win, panel, prevPt);
+        check (NEAR (kOxModPw, 1.0f) && NEAR (kOxO2Det, 0.55f), "the previous arrow goes back to 2 Japan");
+        click (win, panel, prevPt);
+        check (NEAR (kOxO2Det, 0.6f) && NEAR (kOxEnvAm, 0.62f), "and to 1 Queen");
+        click (win, panel, prevPt);
+        check (NEAR (kOxO2Frq, 0.75f) && NEAR (kOxO2Det, 0.57f), "previous from the first preset wraps to the last (Tenebre)");
+        click (win, panel, nextPt);
+        check (NEAR (kOxO2Det, 0.6f) && NEAR (kOxEnvAm, 0.62f), "next from the last wraps to the first");
+        pump (0.1);
+        renderPNG (panel, dir + "/panel_preset_arrows.png");
+        PICK (bankSlot (kOBX, 1));
         pump (0.1);
         renderPNG (panel, dir + "/panel_preset_menu.png");
         e->setParameter (e, kInst, instValue (kCembalet));
